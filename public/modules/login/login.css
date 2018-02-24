@@ -1,8 +1,6 @@
 .form-1 {
     width: 230px;
     padding: 10px;
-    position: relative; 
-	top: -60px;
    
 }
 
@@ -55,8 +53,6 @@
 
 #login {
 	border-left: 1px solid black;
-	left: 240px;
-	position: relative;
 	height: 100%;
 }
 
@@ -64,4 +60,8 @@
 	padding: 0px;
 	margin: 0px;
 	cursor: pointer;
+}
+
+.Registration {
+    margin-left: 4px;
 }

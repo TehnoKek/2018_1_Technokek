@@ -4,7 +4,12 @@
   "description": "Frontend",
   "main": "server/index.js",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "morgan": "^1.9.0",
+    "mylogger": "^1.1.5",
+    "path": "^0.12.7"
   },
   "devDependencies": {},
   "scripts": {
