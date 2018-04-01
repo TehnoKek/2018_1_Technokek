@@ -856,7 +856,7 @@ app.get(URLS.get.USER, function(req, res) {
 	const responceData = new ResponceData();
 
 	const userId = req.params.id;
-	for (let user of usersList.values()) {
+	for (let user of Object.values(usersList)) {
 		if (user.id === userId) {
 			responceData.setSuccessData({
 				id: user.id,

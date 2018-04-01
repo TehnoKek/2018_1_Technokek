@@ -8,8 +8,8 @@ const perPage = 10;
 const multiplayerScoreboard = Array(28).keys.map((key) => {
     return {
         index: key,
-        nickname1: usersList.keys[key].nickname,
-        nickname2: usersList.keys[key + 1].nickname,
+        nickname1: Object.keys(usersList)[key].nickname,
+        nickname2: Object.keys(usersList)[key + 1].nickname,
         score: Math.floor(Math.random() * 4000)
     };
 }).sort((a, b) => {
@@ -23,7 +23,7 @@ const getScoreboardData = function({
 } = {}) {
 
     if (mode === MODES.SINGLEPLAYER) {
-        const query = usersList.values.sort(function(a, b) {
+        const query = Object.values(usersList).sort(function(a, b) {
             return a.score > b.score;
         });
     
