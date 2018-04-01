@@ -47,10 +47,11 @@ ________________________________________________________________________
 {
     message: {
         id: 1,
-        nickname: "vitaliycherkov",
-        password: 1,
-        email: "vitaliycherkov@gmail.com",
-        avatar: null,
+        nickname: 'vitalyCherkov',
+        email: 'vitaly@cher.kov',
+        score: 0,
+        games_number: 0,
+        avatar: null
     },
     successful: true,
 }
