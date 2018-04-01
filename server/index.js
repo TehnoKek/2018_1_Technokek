@@ -919,6 +919,7 @@ app.get('/history/:mode/page/:pageNumber', function(req, res) {
 // NEW API
 // -------------------------------------------------------------------------------------
 
+// GET ME
 app.get(URLS.get.ME, function(req, res) {
 	const responceData = new ResponceData();
 
@@ -944,6 +945,7 @@ app.get(URLS.get.ME, function(req, res) {
 	res.json(responceData.data);
 });
 
+// GET USER
 app.get(URLS.get.USER, function(req, res) {
 	const responceData = new ResponceData();
 
