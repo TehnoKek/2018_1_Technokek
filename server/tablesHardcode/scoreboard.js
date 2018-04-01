@@ -1,11 +1,11 @@
 'use sctrict';
 
 const MODES = require('../costants.js').constants.MODES;
-const usersList = require('users.js').usersList;
+const usersList = require('./users.js').usersList;
 
 const perPage = 10;
 
-const multiplayerScoreboard = Array(28).keys.map((key) => {
+const multiplayerScoreboard = Object.keys(Array(28)).map((key) => {
     return {
         index: key,
         nickname1: Object.keys(usersList)[key].nickname,

@@ -1,15 +1,17 @@
 import utiles from './utiles.js';
+import baseUrl from './globalData/baseUrl.js';
 
 class HttpRequester {
 
     _doRequest({
         method = 'GET',
-        url = '/',
+        url = '',
         callback = utiles.noop,
-        data = {}
+        data = {},
+        base = baseUrl.BASE
     } = {}) {
         const xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
+        xhr.open(method, `${base}${url}`, true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState != 4) {
@@ -40,13 +42,13 @@ class HttpRequester {
         xhr.send(JSON.stringify(data));      
     }
 
-    doGet({url = '/', callback = utiles.noop, data = {}} = {}) {
+    doGet({url = '', callback = utiles.noop, data = {}, base = baseUrl.BASE} = {}) {
         this._doRequest({
             method: 'GET', url, callback, data 
         });
     }
 
-    doPost({url = '/', callback = utiles.noop, data = {}} = {}) {
+    doPost({url = '', callback = utiles.noop, data = {}, base = baseUrl.BASE} = {}) {
         this._doRequest({
             method: 'POST', url, callback, data 
         });

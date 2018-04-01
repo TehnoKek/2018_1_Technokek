@@ -9,19 +9,19 @@ class GlobalValues {
     constructor() {
         this._apiUrls = {
             GET: {
-                USER: '/user',
-                HISTORY: ({mode, page}) => `/history/${mode}/page/${page}`,
-                SCOREBOARD: ({mode, page}) => `/scoreboard/${mode}/page/${page}`,
-                ABOUT: '/about',
-                RULES: '/rules',
-                ME: '/me'
+                USER: 'user',
+                HISTORY: ({mode, page}) => `history/${mode}/page/${page}`,
+                SCOREBOARD: ({mode, page}) => `scoreboard/${mode}/page/${page}`,
+                ABOUT: 'about',
+                RULES: 'rules',
+                ME: 'me'
             },
         
             POST: {
-                AUTH: '/login',
-                SIGNUP: '/signup',
-                LOGOUT: '/logout',
-                EDIT_USER: '/edit'
+                AUTH: 'login',
+                SIGNUP: 'signup',
+                LOGOUT: 'logout',
+                EDIT_USER: 'edit'
             }
         };
     }
