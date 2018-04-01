@@ -18,80 +18,6 @@ app.use(express.static(path.resolve(__dirname, '..', 'public')));
 app.use(body.json());
 app.use(cookie());
 
-const NEW_BASE = '/new';
-const MODES = {
-	MULTIPLAYER: 'multiplayer',
-	SINGLEPLAYER: 'singleplayer'
-};
-class Urls {
-	constructor(base = '') {
-		this._get = {
-			ME: `${base}/user/me`,
-			USER: `${base}/user/:id`,
-			SCOREBOARD: `${base}/scoreboard/:mode/:page`,
-			HISTORY: `${base}/history/:mode/:page`,
-			//TODO: AVATAR,
-			//TODO: ABOUT,
-			//TODO: RULES,
-		};
-		this._post = {
-			LOGIN: `${base}/login`,
-			REGISTRATION: `${base}/signup`,
-			//TODO: AVATAR UPLOAD
-			USER_EDIT: `${base}/user/edit`,
-			LOGOUT: `${base}/logout`
-		};
-	}
-
-	get get() {
-		return this._get;
-	}
-
-	get post() {
-		return this._post;
-	}
-}
-
-const URLS = new Urls(NEW_BASE);
-class ResponceData {
-	constructor () {
-		this._successful = true;
-		this._message = {
-			global: [],
-			fields: {}
-		};
-	}
-
-	get data() {
-		return {
-			successful: this._successful,
-			message: this._message
-		};
-	}
-
-	addFieldError(fieldName, error) {
-		this._successful = false;
-
-		if (!this._message.fields[fieldName]) {
-			this._message.fields[fieldName] = [];
-		}
-
-		this._message.fields[fieldName].push(error);
-	}
-
-	addGlobalError(error) {
-		this._successful = false;
-
-		this._message.global.push(error);
-	}
-
-	setSuccessData(data = {}) {
-		this._successful = true;
-		this._message = data;
-	}
-}
-
-
 const allowedOrigins = [
 	'localhost:3000',
 	'localhost',
@@ -641,16 +567,11 @@ app.post('/signup', function (req, res) {
 	const email = req.body.email;
 	const nickname = req.body.nickname;
 
-	const responceData = new ResponceData();
-
 	if (
 		!password || !email ||
 		!password.match(/^\S{4,}$/) ||
 		!email.match(/@/)
 	) {
-		//TODO:
-		responceData.addGlobalError('Invalid data');
-
 		return res.status(400).json({
 			error: {
 				global: 'Не валидные данные пользователя',
@@ -659,9 +580,6 @@ app.post('/signup', function (req, res) {
 		});
 	}
 	if (users[email]) {
-		//TODO:
-		responceData.addFieldError('email', 'Email already used');
-
 		return res.status(400).json({
 			error: {
 				global: '',
@@ -675,9 +593,6 @@ app.post('/signup', function (req, res) {
 		});
 	}
 	if (password !== passwordRepeat) {
-		//TODO:
-		responceData.addFieldError('password', 'Passwords do not match');
-
 		return res.status(400).json({
 			error: {
 				global: '',
@@ -689,9 +604,6 @@ app.post('/signup', function (req, res) {
 		});
 	}
 	for (let user of Object.values(users)) {
-		//TODO:
-		responceData.addFieldError('nickname', 'This nickname already used');
-
 		if (user.nickname === nickname) {
 			return res.status(400).json({
 				error: {
@@ -717,14 +629,10 @@ app.post('/signup', function (req, res) {
 // TODO: API refactor
 app.post('/login', function (req, res) {
 
-	const responceData = new ResponceData();
-
 	const password = req.body.password;
 	const email = req.body.email;
 
 	if (!password || !email) {
-		responceData.addGlobalError('not ');
-
 		return res.status(400).json({error: {
 			global: 'Не указан E-Mail или пароль',
 			fields: []
@@ -817,25 +725,13 @@ app.post('/edit', function(req, res) {
 
 // TODO: API refactor
 app.get('/me', function (req, res) {
-	// TODO: responceData
-	const responceData = new ResponceData();
-
 	const id = req.cookies['frontend'];
 	const email = ids[id];
 	if (!email || !users[email]) {
-		responceData.addGlobalError('You are unauthorized');
 		return res.status(401).end();
 	}
 
 	users[email].score += 1;
-	responceData.setSuccessData({
-		id: users[email].id,
-		nickname: users[email].nickname,
-		email: users[email].email,
-		score: users[email].score,
-		games_number: users[email].games,
-		avatar: users[email].avatar
-	});
 	res.json(users[email]);
 });
 
@@ -919,6 +815,16 @@ app.get('/history/:mode/page/:pageNumber', function(req, res) {
 // NEW API
 // -------------------------------------------------------------------------------------
 
+const errors = require('./errors.js').errors;
+const constants = require('./costants.js').constants;
+const Urls = require('./urls.js').Urls;
+const ResponceData = require('./responceData.js').ResponceData;
+
+const usersList = require('./tablesHardcode/users.js').users;
+const UserModel = require('./tablesHardcode/users.js').UserModel;
+
+const URLS = new Urls(constants.NEW_BASE);
+
 // GET ME
 app.get(URLS.get.ME, function(req, res) {
 	const responceData = new ResponceData();
@@ -926,19 +832,19 @@ app.get(URLS.get.ME, function(req, res) {
 	const id = req.cookies['frontend'];
 	const email = ids[id];
 	
-	if (!email || !users[email]) {
-		responceData.addGlobalError('You are not authorized');
+	if (!email || !usersList[email]) {
+		responceData.addGlobalError(errors.common.NOT_AUTHORIZED.data);
 	}
 
 	else {
-		users[email].score += 1;
+		usersList[email].score += 1;
 		responceData.setSuccessData({
-			id: users[email].id,
-			nickname: users[email].nickname,
-			email: users[email].email,
-			score: users[email].score,
-			games_number: users[email].games,
-			avatar: users[email].avatar
+			id: usersList[email].id,
+			nickname: usersList[email].nickname,
+			email: usersList[email].email,
+			score: usersList[email].score,
+			games_number: usersList[email].games,
+			avatar: usersList[email].avatar
 		});
 	}
 
@@ -950,16 +856,255 @@ app.get(URLS.get.USER, function(req, res) {
 	const responceData = new ResponceData();
 
 	const userId = req.params.id;
-	for (let user of users.values()) {
+	for (let user of usersList.values()) {
 		if (user.id === userId) {
+			responceData.setSuccessData({
+				id: user.id,
+				nickname: user.nickname,
+				email: user.email,
+				score: user.score,
+				games_number: user.games,
+				avatar: user.avatar
+			});
 			res.json(responceData.data);
 		}
 	}
 
-	responceData.addGlobalError('Not found');
-	res.json(responceData.addGlobalError);
-	
+	responceData.addGlobalError(errors.common.NOT_FOUND.data);
+	res.json(responceData.data);
 });
+
+// GET SCOREBOARD
+const getScoreboardData = require('./tablesHardcode/scoreboard.js').getScoreboardData;
+app.get(URLS.get.SCOREBOARD, function(req, res) {
+	const responceData = new ResponceData();
+
+	const mode = req.params.mode;
+	const pageNumber = req.params.page;
+
+	const id = req.cookies['frontend'];
+	const email = ids[id];
+
+	
+	const message = getScoreboardData({
+		mode,
+		page: pageNumber,
+		myEmail: email
+	});
+	
+	responceData.setSuccessData(message);
+	res.json(responceData.data);
+});
+
+// GET HISTORY
+const history = require('./tablesHardcode/history.js').histories;
+app.get(URLS.get.HISTORY, function(req, res) {
+	const responceData = new ResponceData();
+
+	const mode = req.params.mode;
+	const pageNumber = req.params.page;
+	const perPage = 10;
+	const currentHistory = mode === constants.MODES.SINGLEPLAYER ?
+		history.SP : history.MP;
+
+	const messageArray = currentHistory.slice( 
+		(pageNumber - 1) * perPage, pageNumber * perPage
+	);
+
+	responceData.setSuccessData(messageArray);
+
+	res.json(responceData.data);
+});
+
+// GET ABOUT
+app.get(URLS.get.ABOUT, function(req, res) {
+	const about = [
+		{
+			type: 'text',
+			content: 'Hello world'
+		},
+		{
+			type: 'text',
+			content: 'Hello world text'
+		}
+	];
+
+	const responceData = new ResponceData();
+	responceData.setSuccessData(about);
+	res.json(responceData.data);
+});
+
+// GET RULES
+app.get(URLS.get.RULES, function(req, res) {
+	const about = [
+		{
+			type: 'text',
+			content: 'Rules'
+		},
+		{
+			type: 'text',
+			content: 'Hello world text'
+		}
+	];
+	
+	const responceData = new ResponceData();
+	responceData.setSuccessData(about);
+	res.json(responceData.data);
+});
+
+// TODO: GET AVATAR
+
+// POST LOGIN
+app.post(URLS.post.LOGIN, function (req, res) {
+	const email = req.body.email;
+	const password = req.body.password;
+
+	const responceData = new ResponceData();
+
+	if (!password || !email) {
+		responceData.addGlobalError('email', errors.forms.INCORRECT_EMAIL_OR_PASSWORD);
+		res.json(responceData.data);
+	}
+	if (!usersList[email] || usersList[email].password !== password) {
+		responceData.addGlobalError('email', errors.forms.INCORRECT_EMAIL_OR_PASSWORD);
+		res.json(responceData.data);
+	}
+
+	const id = uuid();
+	ids[id] = email;
+
+	res.cookie('frontend', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
+	responceData.setSuccessData({
+		id: usersList[email].id,
+		nickname: usersList[email].nickname,
+		email: usersList[email].email,
+		score: usersList[email].score,
+		games_number: usersList[email].games,
+		avatar: usersList[email].avatar
+	});
+	res.json(responceData.data);
+});
+
+// POST REGISTRATION
+app.post(URLS.post.REGISTRATION, function (req, res) {
+	const nickname = req.body.nickname;
+	const email = req.body.email;
+	const password = req.body.password;
+
+	const responceData = new ResponceData();
+
+	if (
+		!password || !email ||
+		!password.match(/^\S{4,}$/) ||
+		!email.match(/@/)
+	) {
+		responceData.addGlobalError(errors.forms.INCORRECT_USER_DATA);
+		res.json(responceData.data);
+	}
+	if (users[email]) {
+		responceData.addFieldError('email', errors.forms.USER_ALREADY_EXISTS);
+		res.json(responceData.data);
+	}
+	for (let user of Object.values(usersList)) {		
+		if (user.nickname === nickname) {
+			responceData.addFieldError('nickname', errors.forms.NICKNAME_TAKEN);
+			return res.json(responceData.data);
+		}
+	}
+
+	const id = uuid();
+	const user = {password, nickname, email, score: 0, games: 0};
+	ids[id] = email;
+	usersList[email] = user;
+
+	res.cookie('frontend', id, {expires: new Date(Date.now() + 1000 * 60 * 10)});
+	responceData.setSuccessData({
+		id: usersList[email].id,
+		nickname: usersList[email].nickname,
+		email: usersList[email].email,
+		score: usersList[email].score,
+		games_number: usersList[email].games,
+		avatar: usersList[email].avatar
+	});
+	res.json(responceData.data);
+});
+
+// TODO: POST UPLOAD AVATAR
+
+// POST EDIT PROFILE
+app.post(URLS.post.USER_EDIT, function(req, res) {
+	const id = req.cookies['frontend'];
+	const email = ids[id];
+
+
+	const responceData = new ResponceData();
+
+	if (!email || !users[email]) {
+		responceData.addGlobalError(errors.common.NOT_AUTHORIZED);
+		return res.json(responceData.data);
+	}
+
+	if (!req.body['password']) {
+
+		let field = '';
+		if (req.body['email']) {
+			field = 'email';
+		}
+		if (req.body['nickname']) {
+			field = 'nickname';
+		}
+		const value = usersList[email][field];
+
+
+		if (users[email][field] === value) {
+			responceData.setSuccessData({
+				id: usersList[email].id,
+				nickname: usersList[email].nickname,
+				email: usersList[email].email,
+				score: usersList[email].score,
+				games_number: usersList[email].games,
+				avatar: usersList[email].avatar
+			});
+			res.json(responceData.data);
+		}
+		for (let user of Object.values(usersList)) {
+			if (user[field] === value) {
+				let error = {};
+				if (field === 'email') {
+					error = errors.forms.USER_ALREADY_EXISTS;
+				}
+				if (field === 'nickname') {
+					error = errors.forms.NICKNAME_TAKEN;
+				}
+				responceData.addFieldError(field, error);
+				res.json(responceData.data);
+			}
+		}
+		users[email][field] = value;
+		res.status(201).json({id});
+	}
+	else {
+		const password = req.body['password'];
+		const new_password = req.body['new_password'];
+
+		if (users[email].password !== password) {
+			responceData.addFieldError('password', errors.forms.INCORRECT_PASSWORD);
+			res.json(responceData.data);
+		}
+
+		users[email].password = new_password;
+		res.status(201).json({});
+	}
+});
+
+// POST LOGOUT
+app.post(URLS.post.LOGOUT, function (req, res) {
+	const id = req.cookies['frontend'];
+	delete ids[id];
+
+	res.status(200).end();
+});
+
 
 // -------------------------------------------------------------------------------------
 // END NEW API

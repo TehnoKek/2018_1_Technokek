@@ -476,6 +476,21 @@ ________________________________________________________________________
         text: 'The minimum length is 8 characters',
     }
     ```
+  * Данные формы регистрации некорректны. _Не окончательно, требует уточнения_
+    ```javascript
+    {
+        code: 1015,
+        text: 'Incorrect registration data',
+    }
+    ```
+  * **password** неверный
+    ```javascript
+    {
+        code: 1016,
+        text: 'Incorrect password',
+    }
+    ```
+
   _Ошибки, связанные с **логином** имеют постфикс_ `2?`
   * Неверные email или пароль
     ```javascript
