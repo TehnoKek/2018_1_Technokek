@@ -27,6 +27,8 @@ class HistorySection {
         else {
             this._innerSections.open();
         }
+
+        this._el.hidden = isHidden;
     }
 }
 
