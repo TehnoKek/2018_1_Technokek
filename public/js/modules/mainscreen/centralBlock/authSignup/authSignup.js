@@ -2,7 +2,7 @@
 
 import utils from '../../../../components/utiles.js';
 import globalValues from '../../../../components/gloabalData.js';
-import errors from '../../../../components/constraints.js';
+import errors from '../../../../components/globalData/errors.js';
 import AbstractForm from '../../../tools/abstractForm/abstractForm.js';
 import * as Buttons from '../../../tools/buttons/buttons.js';
 import * as Toggling from '../../../tools/toggling/toggling.js';
@@ -20,7 +20,8 @@ class BaseAuthSignupForm extends AbstractForm {
             reciverCallback,
             downButtons: [
                 new Buttons.PassiveButton(formOptions.changeFormBtn)
-            ]
+            ],
+            constraintsMixins: formOptions.constraintsMixins
         });
     }
 }
@@ -38,10 +39,11 @@ class SignupForm extends BaseAuthSignupForm {
     constructor() {      
         super({
             formOptions: globalValues.formsOptions.signupForm, 
-            reciverCallback: profileModel.signup.bind(profileModel)
+            reciverCallback: profileModel.signup.bind(profileModel),
         });
     }
 
+    /*
     _isValid() {
         const baseResult = super._isValid();
         return this._comparePasswords() && baseResult; 
@@ -52,12 +54,13 @@ class SignupForm extends BaseAuthSignupForm {
         const passwordRepeat = this._getFieldByName('repeat-password');
 
         if (password.value !== passwordRepeat.value) {
-            passwordRepeat.error = errors.passwordsDontMatch;       
+            passwordRepeat.error = errors.forms.PASSWORDS_DO_NOT_MATCH.text;       
             return false;
         }
 
         return true;
     }
+    */
 }
 
 class AuthSignupFormContainer extends Toggling.AbstractTogglingItem {

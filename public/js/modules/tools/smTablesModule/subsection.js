@@ -42,7 +42,6 @@ class SMSubsection extends AbstractSection{
     }
 
     _reloadTable(isActive) {
-        console.log(`reload table: ${this._tableModel.name}`);
         if (!isActive) {
             this._tableModel.clear();
         }

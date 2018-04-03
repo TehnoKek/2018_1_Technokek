@@ -11,11 +11,11 @@ const apiUrls = {
         RULES: () => `/rules`,
     },
     post: {
-        LOGIN: `/login`,
-        REGISTRATION: `/signup`,
-        UPLOAD_AVATAR: `/upload/avatar`,
-        EDIT_PROFILE: `/user/edit`,
-        LOGOUT: `/logout`
+        LOGIN: () => `/login`,
+        REGISTRATION: () => `/signup`,
+        UPLOAD_AVATAR: () => `/upload/avatar`,
+        EDIT_PROFILE: () => `/user/edit`,
+        LOGOUT: () => `/logout`
     }
 };
 

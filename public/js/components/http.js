@@ -22,14 +22,20 @@ class HttpRequester {
                 const responseText = xhr.responseText;
                 try {
                     const response = JSON.parse(responseText);
-                    callback(null, response);
+                    try {
+                        callback(null, response);
+                    }
+                    catch (err) {}
                 } catch (err) {
                     callback(err);
                 }
             } else {
                 try {
                     const response = JSON.parse(xhr.responseText);
-                    callback(response.error);
+                    try {
+                        callback(response.error);
+                    }
+                    catch (err) {}
                 } catch (err) {
                     callback(err);
                 }
@@ -44,13 +50,13 @@ class HttpRequester {
 
     doGet({url = '', callback = utiles.noop, data = {}, base = baseUrl.BASE} = {}) {
         this._doRequest({
-            method: 'GET', url, callback, data 
+            method: 'GET', url, callback, data , base
         });
     }
 
     doPost({url = '', callback = utiles.noop, data = {}, base = baseUrl.BASE} = {}) {
         this._doRequest({
-            method: 'POST', url, callback, data 
+            method: 'POST', url, callback, data, base
         });
     }
 }

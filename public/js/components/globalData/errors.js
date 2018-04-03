@@ -45,6 +45,7 @@ class Errors {
                 code: 1001,
                 text: 'This field is required',
             }),
+
             USER_ALREADY_EXISTS: new Error({
                 code: 1011,
                 text: 'This user already exists',
@@ -69,6 +70,11 @@ class Errors {
                 code: 1016,
                 text: 'Incorrect password',
             }),
+            PASSWORDS_DO_NOT_MATCH: new Error({
+                code: 1017,
+                text: "Passwords don't match"
+            }),
+
             INCORRECT_EMAIL_OR_PASSWORD: new Error({
                 code: 1021,
                 text: 'Incorrect email or password',

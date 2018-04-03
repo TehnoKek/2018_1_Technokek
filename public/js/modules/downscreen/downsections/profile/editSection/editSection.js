@@ -179,7 +179,8 @@ class PasswordToggler extends FieldEditToggler {
                 fields: globalValues.formsOptions.passwordForm.fields,
                 fieldTemplateFunction: window.editinputTmplTemplate,
                 templateFunction: window.editmodeTmplTemplate,
-                reciverCallback: profileModel.changePassword.bind(profileModel)
+                reciverCallback: profileModel.changePassword.bind(profileModel),
+                constraintsMixins: globalValues.formsOptions.passwordForm.constraintsMixins
             })
         });
     }

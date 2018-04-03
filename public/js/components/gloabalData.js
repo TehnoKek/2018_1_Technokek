@@ -3,6 +3,7 @@
 import Rules from '../modules/downscreen/downsections/rules/rules.js';
 import Profile from '../modules/downscreen/downsections/profile/profile.js';
 import Scoreboard from '../modules/downscreen/downsections/scoreboard/scoreboard.js';
+import formMixins from './formConstraints/formMixins.js';
 
 
 class GlobalValues {
@@ -61,7 +62,7 @@ class GlobalValues {
                 submitBtnText: 'Login!',
                 changeFormBtn: {
                     text: 'Registration'
-                }
+                },
             },
 
             signupForm: {
@@ -107,7 +108,10 @@ class GlobalValues {
                 submitBtnText: 'Register!',
                 changeFormBtn: {
                     text: 'Login'
-                }
+                },
+                constraintsMixins: [
+                    new formMixins.MatchPasswordsMixin('password', 'repeat-password')
+                ]
             },
 
             nicknameForm: {
@@ -142,7 +146,7 @@ class GlobalValues {
                         options: {
                             type: globalValues.inputTypes.password,
                             id: 'edit-old-password',
-                            name: 'old-password',
+                            name: 'password',
                             label: 'Old password',
                             placeholder: 'Old password'
                         }
@@ -151,7 +155,7 @@ class GlobalValues {
                         options: {
                             type: globalValues.inputTypes.password,
                             id: 'edit-new-password',
-                            name: 'new-password',
+                            name: 'new_password',
                             label: 'New password',
                             placeholder: 'New password'
                         }
@@ -160,13 +164,16 @@ class GlobalValues {
                         options: {
                             type: globalValues.inputTypes.password,
                             id: 'edit-new-password-repeat',
-                            name: 'new-password-repeat',
+                            name: 'new_password_repeat',
                             label: 'Repeat password',
                             placeholder: 'Repeat new password'
                         }
                     }
                 ],
-                submitBtnText: 'Save'
+                submitBtnText: 'Save',
+                constraintsMixins: [
+                    new formMixins.MatchPasswordsMixin('new_password', 'new_password_repeat')
+                ]
             }
         };
     }
@@ -260,7 +267,7 @@ class GlobalValues {
                     }
                 ]
             }
-        }
+        };
     }
 }
 

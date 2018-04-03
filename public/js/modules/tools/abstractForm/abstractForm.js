@@ -4,6 +4,7 @@ import * as Buttons from '../buttons/buttons.js';
 import utiles from '../../../components/utiles.js';
 import globalValues from '../../../components/gloabalData.js';
 import * as constrs from '../../../components/constraints.js';
+import GLOBAL_FORM_ERROR from '../../../components/formConstraints/globalFormError.js';
 
 class Field {
     
@@ -129,8 +130,11 @@ class AbstractForm {
         reciverCallback = utiles.noop,
         downButtons = [],
         templateFunction = window.abstractformTmplTemplate,
-        fieldTemplateFunction = window.fieldTmplTemplate
+        fieldTemplateFunction = window.fieldTmplTemplate,
+        constraintsMixins = []
     } = {}) {
+        this._connectToConstraints(constraintsMixins);
+
         const template = templateFunction({ formTitle });
         this._el = utiles.htmlToElements(template)[0];
 
@@ -182,7 +186,17 @@ class AbstractForm {
         }
     }
 
+    // Добавляет примеси валидации к форме
+    _connectToConstraints(constraints) {
+        this._constraints = constraints;
+        for (let constraint of this._constraints) {
+            constraint.connectToForm(this);
+        }
+    }
+
+    // Валидация формы
     _isValid() {
+        console.log('VALIDATE: ', this);
         let valid = true;
         
         for (let field of this._fields) {
@@ -190,9 +204,36 @@ class AbstractForm {
             valid = valid && res;
         }
 
+        if (valid) {
+            for (let constraint of this._constraints) {
+                const resultOfChecking = constraint.check();
+                this._setResultOfCheckingConstraint(resultOfChecking);
+                valid = valid && resultOfChecking.success;
+            }
+        }
+
         return valid;
     }
 
+    // Добавляет в шаблон результат проверки ограничения
+    _setResultOfCheckingConstraint(result) {
+        if (result.success) {
+            return;
+        }
+
+        if (result.targetField === GLOBAL_FORM_ERROR) {
+            this._outputGlobalError([
+                { text: result.text }
+            ]);
+        }
+        else {
+            this._outputFieldError(result.targetField, [{
+                text: result.text
+            }]);
+        }
+    }
+
+    // Отправляет данные формы в соответствующий callback
     _ejectData() {    
         const formdata = this._fields.reduce((allFields, field) => {
             allFields[field.name] = this._el.elements[field.name].value;
@@ -203,32 +244,64 @@ class AbstractForm {
 
         this._reciverCallback({
             data: formdata,
-            callback: this._outputErrors.bind(this)
+            callback: this._responceHandler.bind(this)
         });
     }
 
+    // callback для получения результата выполнения формы
+    _responceHandler({
+        successful = false,
+        errors = {
+            global: [],
+            fields: {}
+        }
+    } = {}) {
+        if (successful) {
+            this.reset();
+        }
+        else {
+            this._outputErrors(errors);
+        } 
+    }
+
+    // Вывод ошибок в форму
     _outputErrors(errors) {
-        const errorContainerS = this._el.querySelector('.js-common-errors');
-        errorContainer.textContent = errors.global;
-        
-        for (let error of errors.fields) {
-            const field = this._getFieldByName(error.name);
-            field.reset();
-            field.error = error.value;
+        this._outputGlobalError(errors.global);
+
+        for (let errorName of Object.keys(errors.fields)) {
+            this._outputFieldError(errorName, errors.fields[errorName]);
         }
     }
 
+    // Выводит в шаблон глобальную ошибку
+    _outputGlobalError(errors = []) {
+        const errorContainer = this._el.querySelector('.js-common-errors');
+        for (let error of errors) {
+            errorContainer.textContent = error.text;
+        }
+    }
+
+    // Выводит в шаблон ошибку поля
+    _outputFieldError(fieldName, errors = []) {
+        const field = this._getFieldByName(fieldName);
+        field.reset();
+        for (let error of errors) {
+            field.error = error.text; 
+        }
+    }
+
+    // сбрасывает глобальные ошибки
     _resetErrors() {
         const errorContainer = this._el.querySelector('.js-common-errors');
         errorContainer.textContent = '';
     }
 
+    // на событие отправки формы
     _processSubmit(evt) {
         evt.preventDefault();
         
         if (this._isValid()) {
             this._ejectData();
-            this.reset();
         }
     }
 

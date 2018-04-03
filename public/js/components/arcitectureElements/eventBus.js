@@ -42,7 +42,7 @@ class EventBus {
     }
 
     call(eventName, eventData = {}) {
-        console.log(`CALL: ${eventName}`);
+        // console.log(`CALL: ${eventName}`);
 
         if (this._events[eventName]) {
             for (let callback of this._events[eventName]) {

@@ -1,5 +1,8 @@
 'use strict';
 
+import baseUrl from '../../components/globalData/baseUrl.js';
+import apiUrls from '../../components/globalData/apiUrls.js';
+
 import globalValues from '../../components/gloabalData.js';
 import httpRequester from '../../components/http.js';
 import utiles from '../../components/utiles.js';
@@ -8,6 +11,8 @@ import eventsTypes from '../../components/eventsTypes.js';
 
 import profileEvents from './eventsNames.js';
 import profileUrls from './urls.js';
+
+import errors from '../../components/globalData/errors.js';
 
 class ProfileModel {
     constructor() {
@@ -20,35 +25,41 @@ class ProfileModel {
 
     checkAuth() {
         console.log('checkAuth');
-        
+
         httpRequester.doGet({
-            url: profileUrls.GET.ME,
+            base: baseUrl.NEW,
+            url: apiUrls.get.ME(),
             callback: (err, resp) => {
-                if (err) {
+                if (err || !resp.successful) {
                     this._deauthenticate();
                 }
                 else {
-                    this._authenticate(resp);
+                    this._authenticate(resp.message);
                 }
-            }
+            } 
         });
-
-
     }
 
     auth({ data = {}, callback = utiles.noop } = {}) {
         console.log('auth', data);
 
         httpRequester.doPost({
-            url: profileUrls.POST.AUTH,
-            data,
+            url: apiUrls.post.LOGIN(),
+            base: baseUrl.NEW,
             callback: (err, resp) => {
-                if (err) {
-                    callback(err);
+                if (err || !resp.successful) {
+                    console.log(resp);
+                    callback({
+                        successful: false,
+                        errors: resp.message
+                    });
                 }
-
-                this.checkAuth();
-            }
+                else {
+                    callback({ successful: true });
+                    this._authenticate(resp.message);
+                }
+            },
+            data
         });
     }
 
@@ -56,14 +67,27 @@ class ProfileModel {
         console.log('signup', data);
 
         httpRequester.doPost({
-            url: profileUrls.POST.SIGNUP,
-            data,
+            url: apiUrls.post.REGISTRATION(),
+            base: baseUrl.NEW,
             callback: (err, resp) => {
-                if (err) {
-                    callback(err);
+                console.log(err, resp);
+
+                if (err || !resp.successful) {
+                    console.log(resp);
+                    callback({
+                        successful: false,
+                        errors: resp.message
+                    });
                 }
-                
-                this.checkAuth();
+                else {
+                    callback({ successful: true });
+                    this._authenticate(resp.message);
+                }
+            },
+            data: {
+                email: data.email,
+                password: data.password,
+                nickname: data.nickname
             }
         });
     }
@@ -72,7 +96,12 @@ class ProfileModel {
         console.log('logut');
 
         httpRequester.doPost({
-            url: profileUrls.POST.LOGOUT
+            url: apiUrls.post.LOGOUT(),
+            base: baseUrl.NEW,
+            callback: (err, resp) => {
+                console.log(err, resp);
+            },
+            data: {}
         });
 
         this.checkAuth();
@@ -103,8 +132,8 @@ class ProfileModel {
     }
 
     get games() {
-        console.log('[get] games');
-        return this._data.games;
+        console.log('[get] games', this._data);
+        return this._data.games_number;
     }
 
 // ---------------------------------------------------------------------------------
@@ -116,8 +145,7 @@ class ProfileModel {
 
         this._changeField({
             data: {
-                field: 'email',
-                value: data.email
+                'email': data.email
             },
             callback
         });    
@@ -128,25 +156,32 @@ class ProfileModel {
 
         this._changeField({
             data: {
-                field: 'nickname',
-                value: data.nickname
+                'nickname': data.nickname
             },
             callback
         });  
     }
 
     changePassword({ data = {}, callback = utiles.noop } = {}) {
-        console.log('changePassword');
-        
-        this._changeField({
-            data: {
-                field: 'password',
-                value: data['old-password'],
-                'new-password': data['new-password'],
-                'new-password-repeat': data['new-password-repeat']
-            },
-            callback
-        });  
+        console.log('[set] password');
+
+        if (data['new_password'] !== data['new_password_repeat']) {
+            callback({
+                global: [],
+                fields: {
+                    'new_password_repeat': [ errors.forms.PASSWORDS_DO_NOT_MATCH ]
+                }
+            });
+        }
+        else {
+            this._changeField({
+                data: {
+                    'password': data['password'],
+                    'new_password': data['new_password'],
+                },
+                callback
+            });  
+        }
     }
 
     get history() {
@@ -162,14 +197,22 @@ class ProfileModel {
         console.log('field data to send', data);
 
         httpRequester.doPost({
-            url: profileUrls.POST.EDIT_USER,
+            url: apiUrls.post.EDIT_PROFILE(),
+            base: baseUrl.NEW,
             data,
             callback(err, resp) {
-                if (err) {
-                    callback(err);
+                console.log(err, resp);
+                if (err || !resp.successful) {
+                    callback({
+                        successful: false,
+                        errors: resp.message
+                    });
                 }
                 else {
-                    profileModel.checkAuth();
+                    if (resp.message) {
+                        callback({ successful: true });
+                        profileModel._authenticate(resp.message);
+                    }
                 }
             }
         });
