@@ -20,7 +20,6 @@ class MatchPasswordsMixin {
     }
 
     check() {
-        console.log('check passwords', this._matchPasswordsMixinFields, this);
         const passwordField = this._form._getFieldByName(this._passwordFieldName);
         const passwordRepeatField = this._form._getFieldByName(this._passwordRepeatFieldName);
         const areMatch = passwordField.value === passwordRepeatField.value;

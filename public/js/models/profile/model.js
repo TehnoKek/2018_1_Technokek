@@ -13,6 +13,8 @@ import profileEvents from './eventsNames.js';
 import profileUrls from './urls.js';
 
 import errors from '../../components/globalData/errors.js';
+import formFieldNames from '../../components/formsOptions/fieldNames.js';
+
 
 class ProfileModel {
     constructor() {
@@ -145,7 +147,8 @@ class ProfileModel {
 
         this._changeField({
             data: {
-                'email': data.email
+                [formFieldNames.edit.email.EMAIL]: 
+                    data[formFieldNames.edit.email.EMAIL]
             },
             callback
         });    
@@ -156,7 +159,8 @@ class ProfileModel {
 
         this._changeField({
             data: {
-                'nickname': data.nickname
+                [formFieldNames.edit.nickname.NICKNAME]: 
+                    data[formFieldNames.edit.nickname.NICKNAME]
             },
             callback
         });  
@@ -165,23 +169,15 @@ class ProfileModel {
     changePassword({ data = {}, callback = utiles.noop } = {}) {
         console.log('[set] password');
 
-        if (data['new_password'] !== data['new_password_repeat']) {
-            callback({
-                global: [],
-                fields: {
-                    'new_password_repeat': [ errors.forms.PASSWORDS_DO_NOT_MATCH ]
-                }
-            });
-        }
-        else {
-            this._changeField({
-                data: {
-                    'password': data['password'],
-                    'new_password': data['new_password'],
-                },
-                callback
-            });  
-        }
+        this._changeField({
+            data: {
+                [formFieldNames.edit.password.PASSWORD]: 
+                    data[formFieldNames.edit.password.PASSWORD],
+                [formFieldNames.edit.password.NEW_PASSWORD]: 
+                    data[formFieldNames.edit.password.NEW_PASSWORD]
+            },
+            callback
+        });  
     }
 
     get history() {

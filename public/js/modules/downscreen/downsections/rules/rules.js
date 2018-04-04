@@ -78,6 +78,8 @@ class Rules extends AbstractSection {
         //     'col3': 'Value3 row'
         // });
     
+
+        
         this._form1 =  new AbstractForm({
             fields: globalValues.formsOptions.nicknameForm.fields,
             fieldTemplateFunction: window.editinputTmplTemplate,

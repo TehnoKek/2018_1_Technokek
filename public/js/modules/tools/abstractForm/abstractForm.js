@@ -5,6 +5,7 @@ import utiles from '../../../components/utiles.js';
 import globalValues from '../../../components/gloabalData.js';
 import * as constrs from '../../../components/constraints.js';
 import GLOBAL_FORM_ERROR from '../../../components/formConstraints/globalFormError.js';
+import formsOptionsTypes from '../../../components/formsOptions/configTypes.js';
 
 class Field {
     
@@ -23,7 +24,7 @@ class Field {
         },
         templateFunction = window.fieldTmplTemplate,
         constraints = [ 
-            new constrs.Required() 
+            new constrs.Required()
         ]
     } = {}) {
         this._constraints = constraints;
@@ -133,6 +134,8 @@ class AbstractForm {
         fieldTemplateFunction = window.fieldTmplTemplate,
         constraintsMixins = []
     } = {}) {
+        console.log('form from: ', arguments[0]);
+
         this._connectToConstraints(constraintsMixins);
 
         const template = templateFunction({ formTitle });
@@ -236,9 +239,11 @@ class AbstractForm {
     // Отправляет данные формы в соответствующий callback
     _ejectData() {    
         const formdata = this._fields.reduce((allFields, field) => {
+            console.log(field);
             allFields[field.name] = this._el.elements[field.name].value;
             return allFields;
         }, {});
+        console.log(this);
 
         this.reset();
 

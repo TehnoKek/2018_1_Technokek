@@ -13,6 +13,10 @@ import AbstractForm from '/js/modules/tools/abstractForm/abstractForm.js';
 import profileModel from '/js/models/profile/model.js';
 import profileEvents from '/js/models/profile/eventsNames.js';
 
+import emailFormConfig from '../../../../../components/formsOptions/configs/email.js';
+import passwordFormConfig from '../../../../../components/formsOptions/configs/password.js';
+import nicknameFormConfig from '../../../../../components/formsOptions/configs/nickname.js';
+
 
 class FieldView {
     constructor({label = '', value = '', dataGetter = profileModel.data} = {}) {
@@ -129,18 +133,19 @@ class FieldEditToggler extends Toggling.AbstractToggler {
 
 class NicknameToggler extends FieldEditToggler {
     constructor(selector) {
+        nicknameFormConfig.templateFunction = window.editmodeTmplTemplate;
+        nicknameFormConfig.reciverCallback = profileModel.changeNickname.bind(profileModel);
+        nicknameFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
+
+        
+
         super({
             selector,
             viewChild: new FieldView({ 
                 label: 'Nickname', 
                 dataGetter: () => profileModel.nickname 
             }),
-            formChild: new AbstractForm({
-                fields: globalValues.formsOptions.nicknameForm.fields,
-                fieldTemplateFunction: window.editinputTmplTemplate,
-                templateFunction: window.editmodeTmplTemplate,
-                reciverCallback: profileModel.changeNickname.bind(profileModel)
-            })
+            formChild: new AbstractForm(nicknameFormConfig)
         });
     }
 }
@@ -149,18 +154,17 @@ class NicknameToggler extends FieldEditToggler {
 class EmailToggler extends FieldEditToggler {
 
     constructor(selector) {
+        emailFormConfig.templateFunction = window.editmodeTmplTemplate;
+        emailFormConfig.reciverCallback = profileModel.changeEmail.bind(profileModel);
+        emailFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
+
         super({
             selector,
             viewChild: new FieldView({ 
                 label: 'Email', 
                 dataGetter: () => profileModel.email 
             }),
-            formChild: new AbstractForm({
-                fields: globalValues.formsOptions.emailForm.fields,
-                fieldTemplateFunction: window.editinputTmplTemplate,
-                templateFunction: window.editmodeTmplTemplate,
-                reciverCallback: profileModel.changeEmail.bind(profileModel)
-            })
+            formChild: new AbstractForm(emailFormConfig)
         });
     }
 }
@@ -169,19 +173,17 @@ class EmailToggler extends FieldEditToggler {
 class PasswordToggler extends FieldEditToggler {
 
     constructor(selector) {
+        passwordFormConfig.templateFunction = window.editmodeTmplTemplate;
+        passwordFormConfig.reciverCallback = profileModel.changePassword.bind(profileModel);
+        passwordFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
+
         super({
             selector,
             viewChild: new FieldView({ 
                 label: 'Password', 
                 dataGetter: () => '***...***' 
             }),
-            formChild: new AbstractForm({
-                fields: globalValues.formsOptions.passwordForm.fields,
-                fieldTemplateFunction: window.editinputTmplTemplate,
-                templateFunction: window.editmodeTmplTemplate,
-                reciverCallback: profileModel.changePassword.bind(profileModel),
-                constraintsMixins: globalValues.formsOptions.passwordForm.constraintsMixins
-            })
+            formChild: new AbstractForm(passwordFormConfig)
         });
     }
 }
