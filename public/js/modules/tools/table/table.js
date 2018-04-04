@@ -68,7 +68,10 @@ class Table {
         const rows = this._el.querySelector(`.js-table-rows`);
         const rowArray = this._tableModel.columns.map(column => rowData[column.name]);
 
-        const template = window.tablerowTmplTemplate({ rowArray });
+        const template = window.tablerowTmplTemplate({ 
+            rowArray,
+            active: rowData.active ? 'active-row' : '' 
+        });
         const rowElement = utiles.htmlToElements(template)[0];
 
         rowElement.style['grid-template-columns'] = this._rowTemplate;

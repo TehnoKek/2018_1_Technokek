@@ -1,19 +1,22 @@
 'use sctrict';
 
 const MODES = require('../costants.js').constants.MODES;
-const usersList = require('./users.js').usersList;
+const usersList = require('./users.js').users;
 
 const perPage = 10;
 
-const multiplayerScoreboard = Object.keys(Array(28)).map((key) => {
+const multiplayerScoreboard = Array.apply(null, Array(28)).map(function (_, i) {return i;}).map((key) => {
     return {
-        index: key,
-        nickname1: Object.keys(usersList)[key].nickname,
-        nickname2: Object.keys(usersList)[key + 1].nickname,
+        index: key + 1,
+        nickname1: Object.values(usersList)[key].nickname,
+        nickname2: Object.values(usersList)[key + 1].nickname,
         score: Math.floor(Math.random() * 4000)
     };
-}).sort((a, b) => {
-    return a.score > b.score;
+}).sort(function(a, b) {
+    return b.score - a.score;
+}).map(function(key, i) {
+    key.index = i + 1;
+    return key;
 });
 
 const getScoreboardData = function({
@@ -24,22 +27,24 @@ const getScoreboardData = function({
 
     if (mode === MODES.SINGLEPLAYER) {
         const query = Object.values(usersList).sort(function(a, b) {
-            return a.score > b.score;
+            return b.score - a.score;
         });
     
         let myIndex = -1;
-        for (let [user, index] of query) {
-            if (user.email === myEmail) {
-                myIndex = index;
+
+        for (let i = 0; i < query.length; i++) {
+            console.log(i, query[i].email, myEmail);
+            if (query[i].email === myEmail) {
+                myIndex = i;
                 break;
             } 
         }
 
         const another = query
-        .slice((pageNumber - 1) * perPage, pageNumber * perPage)
+        .slice((page - 1) * perPage, page * perPage)
         .map(function(user, index) {
             return {
-                index,
+                index: index + (page - 1) * perPage + 1,
                 nickname: user.nickname,
                 score: user.score
             };
@@ -47,16 +52,18 @@ const getScoreboardData = function({
 
         return {
             another: another,
-            me: myIndex > 0 ? {
-                index: myIndex
+            me: myIndex >= 0 ? {
+                index: myIndex + 1
             } : null
         };
     }
 
     if (mode === MODES.MULTIPLAYER) {
         another = multiplayerScoreboard.slice(
-            (pageNumber - 1) * perPage, pageNumber * perPage
+            (page - 1) * perPage, page * perPage
         );
+
+        console.log(another, multiplayerScoreboard);
 
         return {
             another: another,

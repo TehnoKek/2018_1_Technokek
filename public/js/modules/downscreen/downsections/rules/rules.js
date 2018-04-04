@@ -10,7 +10,7 @@ import globalValues from '../../../../components/gloabalData.js';
 
 class Rules extends AbstractSection {
     render() {
-        const template = window.rulesTmplTemplate();
+        /*const template = window.rulesTmplTemplate();
         this._contentBody = utiles.htmlToElements(template)[0];
         this._el.appendChild(this._contentBody);
 
@@ -100,7 +100,7 @@ class Rules extends AbstractSection {
         // this._append(this._underliningButton);
         // this._append(this._table);
         this._append(this._form1);
-        this._append(this._form2);
+        this._append(this._form2);*/
     }
 
     _append(child) {

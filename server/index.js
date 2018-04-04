@@ -885,7 +885,8 @@ app.get(URLS.get.SCOREBOARD, function(req, res) {
 	const id = req.cookies['frontend'];
 	const email = ids[id];
 
-	
+	console.log('EMAIL: ', email);
+
 	const message = getScoreboardData({
 		mode,
 		page: pageNumber,
@@ -1119,7 +1120,9 @@ app.post(URLS.post.LOGOUT, function (req, res) {
 	const id = req.cookies['frontend'];
 	delete ids[id];
 
-	return res.status(200).end();
+	return res.json({
+		success: true
+	});
 });
 
 

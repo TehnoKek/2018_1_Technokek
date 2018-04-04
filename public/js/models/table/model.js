@@ -5,6 +5,7 @@ import httpRequester from "../../components/http.js";
 import utiles from "../../components/utiles.js";
 import eventBus from "../../components/arcitectureElements/eventBus.js";
 import tableEvents from "./eventsNames.js";
+import baseUrl from "../../components/globalData/baseUrl.js";
 
 
 class TableModel {
@@ -13,16 +14,20 @@ class TableModel {
         this._pageLoadUrlFunc = tableOptions.urlFunc;
         
         this._columns = tableOptions.columns;
-
+        
         this._rows = [];
         this._curPage = 0;
+
+        const result = Object.assign(this, tableOptions.httpCallbackMixin);
+        tableOptions.httpCallbackMixin.assignTo(this);
+        console.log(this);
     }
     
     clear() {
         this._rows = [];
         this._curPage = 0;
 
-        eventBus.call(tableEvents.DATA_CHANGED(this._name), this.rows);
+        this._dataChanged();
     }
 
     get name() {
@@ -43,12 +48,9 @@ class TableModel {
 
     loadNextPage() {
         httpRequester.doGet({
+            base: baseUrl.NEW,
             url: this._pageLoadUrlFunc({page: this._curPage + 1}),
-            callback: (err, resp) => {
-                if (!err) {
-                    this._addRows(resp);
-                }
-            }
+            callback: this._httpCallback.bind(this)
         });
     }
 
@@ -60,11 +62,20 @@ class TableModel {
             const newRow = {};
             for (let column of this._columns) {
                 newRow[column.name] = row[column.name] ? row[column.name] : '';
+                if (row.active) {
+                    newRow.active = true;
+                }
             }
             this._rows.push(newRow);
         }
 
         this._curPage += 1;
+        this._dataChanged();
+    }
+
+    _dataChanged() {
+        console.log('Updated rows: ', this._rows);
+
         eventBus.call(tableEvents.DATA_CHANGED(this._name), this._rows);
     }
 }

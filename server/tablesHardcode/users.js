@@ -26,7 +26,7 @@ const USERS_COUNT = 30;
 for (let i = 1; i < USERS_COUNT; i++) {
     users[`example${i}@mail.ru`] = new User({
         id: i,
-        nickname: loremIpsum({ count: 1 }),
+        nickname: `${loremIpsum({ count: 1, units: 'words' })}-${i}`,
         email: `example${i}@mail.ru`,
         score: Math.floor(Math.random() * 2000),
         games_number: Math.floor(Math.random() * 50),
