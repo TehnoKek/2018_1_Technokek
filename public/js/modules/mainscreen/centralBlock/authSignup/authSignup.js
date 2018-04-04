@@ -41,17 +41,7 @@ class AuthSignupFormContainer extends Toggling.AbstractTogglingItem {
             selector,
             childElement: new AbstractForm(childFormOptions),
             hidden,
-        });
-
-        console.log(childFormOptions);
-        console.log('child: ', this._child);
-
-        // this._child.buttons[0].addListeners([
-        //     {
-        //         name: 'click',
-        //         handler: togglingHandler
-        //     }
-        // ]);
+        });        
     }
 
     toggle() {
@@ -94,8 +84,6 @@ class AuthSignup extends Toggling.AbstractToggler {
     }
 
     _createForms() {
-        console.log(authFormConfig, signupFormConfig);
-
         this._togglingItems = [
             new AuthSignupFormContainer({
                 selector: '.js-auth-section',

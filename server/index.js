@@ -843,12 +843,12 @@ app.get(URLS.get.ME, function(req, res) {
 			nickname: usersList[email].nickname,
 			email: usersList[email].email,
 			score: usersList[email].score,
-			games_number: usersList[email].games,
+			games_number: usersList[email].games_number,
 			avatar: usersList[email].avatar
 		});
 	}
 
-	res.json(responceData.data);
+	return res.json(responceData.data);
 });
 
 // GET USER
@@ -863,15 +863,15 @@ app.get(URLS.get.USER, function(req, res) {
 				nickname: user.nickname,
 				email: user.email,
 				score: user.score,
-				games_number: user.games,
+				games_number: user.games_number,
 				avatar: user.avatar
 			});
-			res.json(responceData.data);
+			return res.json(responceData.data);
 		}
 	}
 
 	responceData.addGlobalError(errors.common.NOT_FOUND.data);
-	res.json(responceData.data);
+	return res.json(responceData.data);
 });
 
 // GET SCOREBOARD
@@ -893,7 +893,7 @@ app.get(URLS.get.SCOREBOARD, function(req, res) {
 	});
 	
 	responceData.setSuccessData(message);
-	res.json(responceData.data);
+	return res.json(responceData.data);
 });
 
 // GET HISTORY
@@ -913,7 +913,7 @@ app.get(URLS.get.HISTORY, function(req, res) {
 
 	responceData.setSuccessData(messageArray);
 
-	res.json(responceData.data);
+	return res.json(responceData.data);
 });
 
 // GET ABOUT
@@ -931,7 +931,7 @@ app.get(URLS.get.ABOUT, function(req, res) {
 
 	const responceData = new ResponceData();
 	responceData.setSuccessData(about);
-	res.json(responceData.data);
+	return res.json(responceData.data);
 });
 
 // GET RULES
@@ -949,7 +949,7 @@ app.get(URLS.get.RULES, function(req, res) {
 	
 	const responceData = new ResponceData();
 	responceData.setSuccessData(about);
-	res.json(responceData.data);
+	return res.json(responceData.data);
 });
 
 // TODO: GET AVATAR
@@ -962,12 +962,12 @@ app.post(URLS.post.LOGIN, function (req, res) {
 	const responceData = new ResponceData();
 
 	if (!password || !email) {
-		responceData.addGlobalError('email', errors.forms.INCORRECT_EMAIL_OR_PASSWORD);
-		res.json(responceData.data);
+		responceData.addGlobalError(errors.forms.INCORRECT_EMAIL_OR_PASSWORD);
+		return res.json(responceData.data);
 	}
 	if (!usersList[email] || usersList[email].password !== password) {
-		responceData.addGlobalError('email', errors.forms.INCORRECT_EMAIL_OR_PASSWORD);
-		res.json(responceData.data);
+		responceData.addGlobalError(errors.forms.INCORRECT_EMAIL_OR_PASSWORD);
+		return res.json(responceData.data);
 	}
 
 	const id = uuid();
@@ -979,10 +979,10 @@ app.post(URLS.post.LOGIN, function (req, res) {
 		nickname: usersList[email].nickname,
 		email: usersList[email].email,
 		score: usersList[email].score,
-		games_number: usersList[email].games,
+		games_number: usersList[email].games_number,
 		avatar: usersList[email].avatar
 	});
-	res.json(responceData.data);
+	return res.json(responceData.data);
 });
 
 // POST REGISTRATION
@@ -999,11 +999,11 @@ app.post(URLS.post.REGISTRATION, function (req, res) {
 		!email.match(/@/)
 	) {
 		responceData.addGlobalError(errors.forms.INCORRECT_USER_DATA);
-		res.json(responceData.data);
+		return res.json(responceData.data);
 	}
-	if (users[email]) {
+	if (usersList[email]) {
 		responceData.addFieldError('email', errors.forms.USER_ALREADY_EXISTS);
-		res.json(responceData.data);
+		return res.json(responceData.data);
 	}
 	for (let user of Object.values(usersList)) {		
 		if (user.nickname === nickname) {
@@ -1013,7 +1013,7 @@ app.post(URLS.post.REGISTRATION, function (req, res) {
 	}
 
 	const id = uuid();
-	const user = {password, nickname, email, score: 0, games: 0};
+	const user = {password, nickname, email, score: 0, games_number: 0};
 	ids[id] = email;
 	usersList[email] = user;
 
@@ -1023,10 +1023,11 @@ app.post(URLS.post.REGISTRATION, function (req, res) {
 		nickname: usersList[email].nickname,
 		email: usersList[email].email,
 		score: usersList[email].score,
-		games_number: usersList[email].games,
+		games_number: usersList[email].games_number,
 		avatar: usersList[email].avatar
 	});
-	res.json(responceData.data);
+	console.log(responceData);
+	return res.json(responceData.data);
 });
 
 // TODO: POST UPLOAD AVATAR
@@ -1039,7 +1040,7 @@ app.post(URLS.post.USER_EDIT, function(req, res) {
 
 	const responceData = new ResponceData();
 
-	if (!email || !users[email]) {
+	if (!email || !usersList[email]) {
 		responceData.addGlobalError(errors.common.NOT_AUTHORIZED);
 		return res.json(responceData.data);
 	}
@@ -1053,19 +1054,19 @@ app.post(URLS.post.USER_EDIT, function(req, res) {
 		if (req.body['nickname']) {
 			field = 'nickname';
 		}
-		const value = usersList[email][field];
+		const value = req.body[field];
 
 
-		if (users[email][field] === value) {
+		if (usersList[email][field] === value) {
 			responceData.setSuccessData({
 				id: usersList[email].id,
 				nickname: usersList[email].nickname,
 				email: usersList[email].email,
 				score: usersList[email].score,
-				games_number: usersList[email].games,
+				games_number: usersList[email].games_number,
 				avatar: usersList[email].avatar
 			});
-			res.json(responceData.data);
+			return res.json(responceData.data);
 		}
 		for (let user of Object.values(usersList)) {
 			if (user[field] === value) {
@@ -1077,23 +1078,39 @@ app.post(URLS.post.USER_EDIT, function(req, res) {
 					error = errors.forms.NICKNAME_TAKEN;
 				}
 				responceData.addFieldError(field, error);
-				res.json(responceData.data);
+				return res.json(responceData.data);
 			}
 		}
-		users[email][field] = value;
-		res.status(201).json({id});
+		usersList[email][field] = value;
+		responceData.setSuccessData({
+			id: usersList[email].id,
+			nickname: usersList[email].nickname,
+			email: usersList[email].email,
+			score: usersList[email].score,
+			games_number: usersList[email].games_number,
+			avatar: usersList[email].avatar
+		});
+		return res.json(responceData.data);
 	}
 	else {
 		const password = req.body['password'];
 		const new_password = req.body['new_password'];
 
-		if (users[email].password !== password) {
+		if (usersList[email].password !== password) {
 			responceData.addFieldError('password', errors.forms.INCORRECT_PASSWORD);
-			res.json(responceData.data);
+			return res.json(responceData.data);
 		}
 
-		users[email].password = new_password;
-		res.status(201).json({});
+		usersList[email].password = new_password;
+		responceData.setSuccessData({
+			id: usersList[email].id,
+			nickname: usersList[email].nickname,
+			email: usersList[email].email,
+			score: usersList[email].score,
+			games_number: usersList[email].games_number,
+			avatar: usersList[email].avatar
+		});
+		return res.json(responceData.data);
 	}
 });
 
@@ -1102,7 +1119,7 @@ app.post(URLS.post.LOGOUT, function (req, res) {
 	const id = req.cookies['frontend'];
 	delete ids[id];
 
-	res.status(200).end();
+	return res.status(200).end();
 });
 
 

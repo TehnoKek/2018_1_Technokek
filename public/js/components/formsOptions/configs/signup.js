@@ -48,8 +48,8 @@ const signupFormConfig = new formsOptionsTypes.FormOptions({
     submitBtnText: 'Register!',
     constraintsMixins: [
         new formMixins.MatchPasswordsMixin(
-            formFieldNames.PASSWORD,
-            formFieldNames.PASSWORD_REPEAT
+            formFieldNames.signup.PASSWORD,
+            formFieldNames.signup.PASSWORD_REPEAT
         )
     ]
 });

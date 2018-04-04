@@ -134,8 +134,6 @@ class AbstractForm {
         fieldTemplateFunction = window.fieldTmplTemplate,
         constraintsMixins = []
     } = {}) {
-        console.log('form from: ', arguments[0]);
-
         this._connectToConstraints(constraintsMixins);
 
         const template = templateFunction({ formTitle });
@@ -239,14 +237,11 @@ class AbstractForm {
     // Отправляет данные формы в соответствующий callback
     _ejectData() {    
         const formdata = this._fields.reduce((allFields, field) => {
-            console.log(field);
             allFields[field.name] = this._el.elements[field.name].value;
             return allFields;
         }, {});
-        console.log(this);
 
         this.reset();
-
         this._reciverCallback({
             data: formdata,
             callback: this._responceHandler.bind(this)

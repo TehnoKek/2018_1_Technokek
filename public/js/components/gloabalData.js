@@ -3,26 +3,25 @@
 import Rules from '../modules/downscreen/downsections/rules/rules.js';
 import Profile from '../modules/downscreen/downsections/profile/profile.js';
 import Scoreboard from '../modules/downscreen/downsections/scoreboard/scoreboard.js';
-import formMixins from './formConstraints/formMixins.js';
 
 
 class GlobalValues {
     constructor() {
         this._apiUrls = {
             GET: {
-                USER: 'user',
-                HISTORY: ({mode, page}) => `history/${mode}/page/${page}`,
-                SCOREBOARD: ({mode, page}) => `scoreboard/${mode}/page/${page}`,
-                ABOUT: 'about',
-                RULES: 'rules',
-                ME: 'me'
+                USER: '/user',
+                HISTORY: ({mode, page}) => `/history/${mode}/page/${page}`,
+                SCOREBOARD: ({mode, page}) => `/scoreboard/${mode}/page/${page}`,
+                ABOUT: '/about',
+                RULES: '/rules',
+                ME: '/me'
             },
         
             POST: {
-                AUTH: 'login',
-                SIGNUP: 'signup',
-                LOGOUT: 'logout',
-                EDIT_USER: 'edit'
+                AUTH: '/login',
+                SIGNUP: '/signup',
+                LOGOUT: '/logout',
+                EDIT_USER: '/edit'
             }
         };
     }
@@ -62,7 +61,7 @@ class GlobalValues {
                 submitBtnText: 'Login!',
                 changeFormBtn: {
                     text: 'Registration'
-                },
+                }
             },
 
             signupForm: {
@@ -108,10 +107,7 @@ class GlobalValues {
                 submitBtnText: 'Register!',
                 changeFormBtn: {
                     text: 'Login'
-                },
-                constraintsMixins: [
-                    new formMixins.MatchPasswordsMixin('password', 'repeat-password')
-                ]
+                }
             },
 
             nicknameForm: {
@@ -146,7 +142,7 @@ class GlobalValues {
                         options: {
                             type: globalValues.inputTypes.password,
                             id: 'edit-old-password',
-                            name: 'password',
+                            name: 'old-password',
                             label: 'Old password',
                             placeholder: 'Old password'
                         }
@@ -155,7 +151,7 @@ class GlobalValues {
                         options: {
                             type: globalValues.inputTypes.password,
                             id: 'edit-new-password',
-                            name: 'new_password',
+                            name: 'new-password',
                             label: 'New password',
                             placeholder: 'New password'
                         }
@@ -164,16 +160,13 @@ class GlobalValues {
                         options: {
                             type: globalValues.inputTypes.password,
                             id: 'edit-new-password-repeat',
-                            name: 'new_password_repeat',
+                            name: 'new-password-repeat',
                             label: 'Repeat password',
                             placeholder: 'Repeat new password'
                         }
                     }
                 ],
-                submitBtnText: 'Save',
-                constraintsMixins: [
-                    new formMixins.MatchPasswordsMixin('new_password', 'new_password_repeat')
-                ]
+                submitBtnText: 'Save'
             }
         };
     }

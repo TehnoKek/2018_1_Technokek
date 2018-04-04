@@ -50,7 +50,7 @@ class ProfileModel {
             base: baseUrl.NEW,
             callback: (err, resp) => {
                 if (err || !resp.successful) {
-                    console.log(resp);
+                    console.log(resp, callback);
                     callback({
                         successful: false,
                         errors: resp.message

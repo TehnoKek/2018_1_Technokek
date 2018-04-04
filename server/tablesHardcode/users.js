@@ -39,7 +39,8 @@ users['vv-ch@bk.ru'] = new User({
     email: 'vv-ch@bk.ru',
     score: 2500,
     games_number: 60,
-    avatar: null
+    avatar: null,
+    password: 'password'
 }).data;
 
 exports.UserModel = User;
