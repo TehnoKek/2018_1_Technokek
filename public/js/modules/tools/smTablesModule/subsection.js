@@ -13,7 +13,7 @@ class SMSubsection extends AbstractSection{
         this._initTable();
 
         this._loadMoreBtn = new PassiveButton({
-            text: 'Loade more',
+            text: 'Load more',
             wide: true,
             events: [{
                 name: 'click',
