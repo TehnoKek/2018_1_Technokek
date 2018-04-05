@@ -1,8 +1,8 @@
 'use strict';
 
 const baseUrl = {
-    NEW: '/new',
-    BACKEND: 'https://technokek2018.herokuapp.com',
+    //NEW: '/new',
+    NEW: 'https://technokek2018.herokuapp.com',
     BASE: ''
 };
 
