@@ -69,7 +69,7 @@ class TabbarModel {
                 tabbarName: this._name, 
                 tabName: tab.name
             }), 
-            (isActive) => this._changeActive(tab)
+            () => this._changeActive(tab)
         );
 
         eventBus.on(
@@ -77,7 +77,7 @@ class TabbarModel {
                 tabbarName: this._name, 
                 tabName: tab.name
             }),
-            (isAvaliable) => this._changeAvaliable(tab)
+            () => this._changeAvaliable(tab)
         );
     }
 

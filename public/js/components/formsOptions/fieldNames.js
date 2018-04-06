@@ -14,12 +14,14 @@ const formFieldNames = {
         EMAIL: baseNames.EMAIL,
         PASSWORD: baseNames.PASSWORD
     },
+
     signup: {
         NICKNAME: baseNames.NICKNAME,
         EMAIL: baseNames.EMAIL,
         PASSWORD: baseNames.PASSWORD,
         PASSWORD_REPEAT: baseNames.PASSWORD_REPEAT
     },
+
     edit: {
         nickname: {
             NICKNAME: baseNames.NICKNAME

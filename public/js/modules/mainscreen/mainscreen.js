@@ -1,6 +1,5 @@
 'use strict';
 
-import globalValues from '../../components/gloabalData.js';
 import utiles from '../../components/utiles.js';
 
 import Header from './header/header.js';

@@ -52,7 +52,7 @@ const tabbarsOptions = {
                 authDepends: false,
                 sectionType: SMSubsection,
                 sectionData: {
-                    table: tablesOptions[tablesNames.HISTORY][modes.SP]
+                    table: tablesOptions[tablesNames.HISTORY][modes.SP],
                 }
             },
             {

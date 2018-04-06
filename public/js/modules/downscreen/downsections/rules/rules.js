@@ -6,7 +6,6 @@ import AbstractForm from '../../../tools/abstractForm/abstractForm.js';
 
 import AbstractSection from '/js/modules/tools/section/absctractSection.js';
 import utiles from '../../../../components/utiles.js';
-import globalValues from '../../../../components/gloabalData.js';
 
 class Rules extends AbstractSection {
     render() {

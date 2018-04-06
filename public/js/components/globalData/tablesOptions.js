@@ -10,10 +10,6 @@ const tablesOptions = {
     [tablesNames.SCOREBOARD]: {
         [modes.SP]: {
             name: `scoreboard/${modes.SP}`,
-            // urlFunc: ({page = 1} = {}) => globalValues.apiUrls.GET.SCOREBOARD({
-            //     mode: modes.SP,
-            //     page
-            // }),
             urlFunc: ({page = 1} = {}) => apiUrls.get.SCOREBOARD(modes.SP, page),
             httpCallbackMixin: new httpCollbackMixins.Scoreboard[modes.SP](),
             columns: [
@@ -36,10 +32,6 @@ const tablesOptions = {
         },
         [modes.MP]: {
             name: `scoreboard/${modes.MP}`,
-            // urlFunc: ({page = 1} = {}) => globalValues.apiUrls.GET.SCOREBOARD({
-            //     mode: modes.MP,
-            //     page
-            // }),
             urlFunc: ({page = 1} = {}) => apiUrls.get.SCOREBOARD(modes.MP, page),
             httpCallbackMixin: new httpCollbackMixins.Scoreboard[modes.MP](),
             columns: [
@@ -69,10 +61,6 @@ const tablesOptions = {
     [tablesNames.HISTORY]: {
         [modes.SP]: {
             name: `history/${modes.SP}`,
-            // urlFunc: ({page = 1} = {}) => globalValues.apiUrls.GET.HISTORY({
-            //     mode: modes.SP,
-            //     page
-            // }),
             urlFunc: ({page = 1} = {}) => apiUrls.get.HISTORY(modes.SP, page),
             httpCallbackMixin: new httpCollbackMixins.History(),
             columns: [
@@ -95,10 +83,6 @@ const tablesOptions = {
         },
         [modes.MP]: {
             name: `history/${modes.MP}`,
-            // urlFunc: ({page = 1} = {}) => globalValues.apiUrls.GET.HISTORY({
-            //     mode: modes.MP,
-            //     page
-            // }),
             urlFunc: ({page = 1} = {}) => apiUrls.get.HISTORY(modes.MP, page),
             httpCallbackMixin: new httpCollbackMixins.History(),
             columns: [

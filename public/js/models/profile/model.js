@@ -118,7 +118,7 @@ class ProfileModel {
 // setters
 // ---------------------------------------------------------------------------------
 
-    changeEmail({ data = '', callback = utiles.noop } = {}) {
+    changeEmail({ data = {}, callback = utiles.noop } = {}) {
         this._changeField({
             data: {
                 [formFieldNames.edit.email.EMAIL]: 
@@ -128,9 +128,10 @@ class ProfileModel {
         });    
     }
 
-    changeNickname({ data = '', callback = utiles.noop } = {}) {
+    changeNickname({ data = {}, callback = utiles.noop } = {}) {
         this._changeField({
             data: {
+                //'nickname': data['nickanme']
                 [formFieldNames.edit.nickname.NICKNAME]: 
                     data[formFieldNames.edit.nickname.NICKNAME]
             },
@@ -155,7 +156,7 @@ class ProfileModel {
     }
 
     _changeField({ data = {}, callback = utiles.noop } = {}) {
-            httpRequester.doPost({
+        httpRequester.doPost({
             url: apiUrls.post.EDIT_PROFILE(),
             base: baseUrl.NEW,
             data,

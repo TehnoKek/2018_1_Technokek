@@ -10,14 +10,13 @@ import baseUrl from "../../components/globalData/baseUrl.js";
 class TableModel {
     constructor(tableOptions) {
         this._name = tableOptions.name;
-        this._pageLoadUrlFunc = tableOptions.urlFunc;
+        this._urlFunc = tableOptions.urlFunc;
         
         this._columns = tableOptions.columns;
         
         this._rows = [];
         this._curPage = 0;
 
-        Object.assign(this, tableOptions.httpCallbackMixin);
         tableOptions.httpCallbackMixin.assignTo(this);
     }
     
@@ -47,7 +46,7 @@ class TableModel {
     loadNextPage() {
         httpRequester.doGet({
             base: baseUrl.NEW,
-            url: this._pageLoadUrlFunc({page: this._curPage + 1}),
+            url: this._urlFunc({page: this._curPage + 1}),
             callback: this._httpCallback.bind(this)
         });
     }
