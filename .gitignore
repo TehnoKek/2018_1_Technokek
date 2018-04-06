@@ -2,6 +2,7 @@ node_modules/
 .vscode/
 .jshintrc
 .idea/
+.idea
 *.tmpl.html
 *.tmpl.js
 jslint.conf
