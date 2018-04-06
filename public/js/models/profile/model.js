@@ -102,11 +102,12 @@ class ProfileModel {
             base: baseUrl.NEW,
             callback: (err, resp) => {
                 console.log(err, resp);
+                profileModel.checkAuth();
             },
             data: {}
         });
 
-        this.checkAuth();
+        //this.checkAuth();
     }
 
 // ---------------------------------------------------------------------------------

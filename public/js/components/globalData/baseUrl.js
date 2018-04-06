@@ -2,7 +2,7 @@
 
 const baseUrl = {
     //NEW: '/new',
-    NEW: 'https://technokek2018.herokuapp.com',
+    NEW: location.hostname === "localhost" ? "/new" : "https://technokek2018.herokuapp.com",
     BASE: ''
 };
 
