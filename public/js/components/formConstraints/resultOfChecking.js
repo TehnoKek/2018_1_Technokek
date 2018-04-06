@@ -8,19 +8,7 @@ class FormConstraintResultOfChecking {
         targetField = GLOBAL_FORM_ERROR,
         text = ''
     } = {}) {
-        this._data = arguments[0];
-    }
-    
-    get success() {
-        return this._data.success;
-    }
-
-    get targetField() {
-        return this._data.targetField;
-    }
-
-    get text() {
-        return this._data.text;
+        Object.assign(this, arguments[0]);
     }
 }
 

@@ -1,7 +1,6 @@
 'use sctrict';
 
 import modes from "./modes.js";
-import globalValues from "../gloabalData.js";
 import tablesNames from "./tablesNames.js";
 import httpCollbackMixins from "../httpCallbackMixins/mixins.js";
 import apiUrls from "./apiUrls.js";

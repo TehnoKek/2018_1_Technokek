@@ -1,8 +1,5 @@
 'use strict';
 
-
-
-import globalValues from '/js/components/gloabalData.js';
 import utiles from '/js/components/utiles.js';
 import eventBus from '/js/components/arcitectureElements/eventBus.js';
 

@@ -4,7 +4,6 @@
 import Rules from "../../modules/downscreen/downsections/rules/rules.js";
 import Profile from "../../modules/downscreen/downsections/profile/profile.js";
 import Scoreboard from "../../modules/downscreen/downsections/scoreboard/scoreboard.js";
-import SMTablesModule from "../../modules/tools/smTablesModule/smTablesModule.js";
 import SMSubsection from "../../modules/tools/smTablesModule/subsection.js";
 
 import tablesNames from "./tablesNames.js";

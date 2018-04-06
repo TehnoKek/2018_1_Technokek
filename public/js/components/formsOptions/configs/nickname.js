@@ -3,7 +3,6 @@
 import formsOptionsTypes from "../configTypes.js";
 import inputTypes from "../inputTypes.js";
 import formFieldNames from "../fieldNames.js";
-import formMixins from "../../formConstraints/formMixins.js";
 
 const nicknameFormConfig = new formsOptionsTypes.FormOptions({
     fields: [

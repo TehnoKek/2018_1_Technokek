@@ -2,7 +2,6 @@
 
 import AbstractSection from "../section/absctractSection.js";
 import tableManager from "../../../models/table/manager.js";
-import tablesOptions from "../../../components/globalData/tablesOptions.js";
 import Table from "../table/table.js";
 import { PassiveButton } from "../buttons/buttons.js";
 import eventBus from "../../../components/arcitectureElements/eventBus.js";

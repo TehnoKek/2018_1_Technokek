@@ -1,8 +1,6 @@
 'use strict';
 
-import profileModel from '/js/models/profile/model.js';
 import profileEvents from '/js/models/profile/eventsNames.js';
-import utiles from '/js/components/utiles.js';
 import eventBus from '/js/components/arcitectureElements/eventBus.js';
 import * as Buttons from '/js/modules/tools/buttons/buttons.js';
 

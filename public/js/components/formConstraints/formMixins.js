@@ -3,8 +3,6 @@
 import resultOfChecking from './resultOfChecking.js';
 import constraintsTexts from './constraintsTexts.js';
 
-
-
 class MatchPasswordsMixin {
     constructor(passwordFieldName, passwordRepeatFieldName) {
         this._passwordFieldName = passwordFieldName;

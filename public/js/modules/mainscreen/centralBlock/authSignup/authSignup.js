@@ -1,8 +1,6 @@
 'use strict';
 
 import utils from '../../../../components/utiles.js';
-import globalValues from '../../../../components/gloabalData.js';
-import errors from '../../../../components/globalData/errors.js';
 import AbstractForm from '../../../tools/abstractForm/abstractForm.js';
 import * as Buttons from '../../../tools/buttons/buttons.js';
 import * as Toggling from '../../../tools/toggling/toggling.js';

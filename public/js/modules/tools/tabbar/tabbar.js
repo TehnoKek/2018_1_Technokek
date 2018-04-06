@@ -1,6 +1,5 @@
 'use strict';
 
-import tabbarEvents from "../../../models/tabbar/eventsNames.js";
 import tabbarManager from "../../../models/tabbar/manager.js";
 import utiles from "../../../components/utiles.js";
 import TabDelegate from "./tabDelegate.js";

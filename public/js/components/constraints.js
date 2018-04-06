@@ -7,10 +7,6 @@ const errors = {
     passwordsDontMatch: 'Passwords do not match'
 };
 
-// константа, определяющая, что эта ошибка относится к форме глобально, а не к какому-то полю
-const GLOBAL_FORM_ERROR = '___global';
-
-
 class Required {
     get text() {
         return errors.required;

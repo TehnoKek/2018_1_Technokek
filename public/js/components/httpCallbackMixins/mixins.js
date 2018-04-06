@@ -18,8 +18,6 @@ class ScoreboardBaseMixin {
     }
 
     _httpCallback(err, resp) {
-        console.log(this._name, resp);
-
         if (err || resp.successful === false) {
             return;
         }
@@ -35,8 +33,6 @@ class ScoreboardBaseMixin {
     }
     
     _ejectMe(rows, me) {
-        console.log(this._name);
-
         if (this._checkMeIndex(me.index, rows)) {
             return rows;
         }
@@ -55,8 +51,6 @@ class ScoreboardBaseMixin {
     }
 
     _checkMeIndex(index, rows) {
-        console.log(this._name);
-
         for (let row of rows) {
             if (row.index === index) {
                 row.active = true;
@@ -75,8 +69,6 @@ class ScoreboardSingleplayerHttpMixin extends ScoreboardBaseMixin {
     }
 
     _constructMe(me) {
-        console.log(this._name);
-
         return {
             index: me.index,
             nickname: profileModel.nickname,
@@ -95,8 +87,6 @@ class ScoreboardMultiplayerHttpMixin extends ScoreboardBaseMixin {
     }
     
     _constructMe(me) {
-        console.log(this._name);
-
         return {
             index: me.index,
             nickname1: profileModel.nickname,
@@ -115,8 +105,6 @@ class HistorySingleplayerMixin {
     }
 
     _httpCallback(err, resp) {
-        console.log(this._name, resp);
-
         if (err || !resp.successful) {
             return;
         }

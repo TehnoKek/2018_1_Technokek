@@ -2,7 +2,6 @@
 
 
 import httpRequester from "../../components/http.js";
-import utiles from "../../components/utiles.js";
 import eventBus from "../../components/arcitectureElements/eventBus.js";
 import tableEvents from "./eventsNames.js";
 import baseUrl from "../../components/globalData/baseUrl.js";
@@ -18,9 +17,8 @@ class TableModel {
         this._rows = [];
         this._curPage = 0;
 
-        const result = Object.assign(this, tableOptions.httpCallbackMixin);
+        Object.assign(this, tableOptions.httpCallbackMixin);
         tableOptions.httpCallbackMixin.assignTo(this);
-        console.log(this);
     }
     
     clear() {
@@ -74,8 +72,6 @@ class TableModel {
     }
 
     _dataChanged() {
-        console.log('Updated rows: ', this._rows);
-
         eventBus.call(tableEvents.DATA_CHANGED(this._name), this._rows);
     }
 }

@@ -2,10 +2,8 @@
 
 import * as Buttons from '../buttons/buttons.js';
 import utiles from '../../../components/utiles.js';
-import globalValues from '../../../components/gloabalData.js';
 import * as constrs from '../../../components/constraints.js';
 import GLOBAL_FORM_ERROR from '../../../components/formConstraints/globalFormError.js';
-import formsOptionsTypes from '../../../components/formsOptions/configTypes.js';
 
 class Field {
     
@@ -197,7 +195,6 @@ class AbstractForm {
 
     // Валидация формы
     _isValid() {
-        console.log('VALIDATE: ', this);
         let valid = true;
         
         for (let field of this._fields) {

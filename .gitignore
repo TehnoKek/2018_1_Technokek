@@ -4,3 +4,6 @@ node_modules/
 .idea/
 *.tmpl.html
 *.tmpl.js
+jslint.conf
+.eslintrc
+.eslintrc.js
