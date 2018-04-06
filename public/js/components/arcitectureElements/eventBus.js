@@ -1,3 +1,5 @@
+import utiles from "../utiles";
+
 'use strict';
 
 
@@ -38,6 +40,19 @@ class EventBus {
                     break;
                 }
             }
+        }
+    }
+
+    do(action) {
+        switch (action) {
+            case 'on':
+                return this.on.bind(this);
+            case 'off':
+                return this.off.bing(this);
+            case 'call':
+                return this.call.bind(this);
+            default:
+                return utiles.noop;
         }
     }
 
