@@ -17,15 +17,22 @@ class Router {
 
     start() {
         window.addEventListener('popstate', () => {
-            this._open({path: window.location.pathname});
+            console.log('state changed');
+            if (this._map[window.length.pathname]) {
+                this._open({path: window.location.pathname});
+            }
         });
+
+        this._open({path: window.location.pathname});
     }
 
-    addRoutable({ path, routableName }) {
-        this._map[path] = routableName;
+    addRoutable({ path, name }) {
+        this._map[path] = name;
     }
 
     _open({ path }) {
+        console.log(`OPEN: ${path}`);
+
         if (this._active) {
             eventBus.on(eventTemplates.CLOSED(this._active), this._deepOpen.bind(this));
             eventBus.call(eventTemplates.CLOSE(this._active), { newPath: path });
@@ -50,4 +57,6 @@ class Router {
     }
 }
 
-export default Router;
+const router = new Router();
+
+export default router;

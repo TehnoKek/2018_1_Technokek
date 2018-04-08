@@ -1,22 +1,35 @@
 'use strict';
 
-const routerMap = {
-    '/': 'initScreenView',
-    
-    '/login': 'loginView',
-    '/signup': 'signupView',
-    '/logout': 'logoutView',
+import viewNames from "../../modules/viewNames.js";
 
-    '/user/me': 'profileView',
-    '/user/edit': 'editProfileView',
+const routerMap = [
+    {
+        path: '/',
+        name: viewNames.INITIAL_SCREEN
+    },
+    {
+        path: '/lobby',
+        name: viewNames.LOBBY_SCREEN
+    },
+    {
+        path: '/game',
+        name: viewNames.GAME_SCREEN
+    },
     
-    '/scorebpard': 'scoreboardSingleplayerView',
-    '/scoreobard/singleplayer': 'scoreboardSingleplayerView',
-    '/scoreboard/multiplayer': 'scoreboardMultiplayerView',
+    // '/login': 'loginView',
+    // '/signup': 'signupView',
+    // '/logout': 'logoutView',
+
+    // '/user/me': 'profileView',
+    // '/user/edit': 'editProfileView',
     
-    '/info': 'rulesView',
-    '/info/rules': 'rulesView',
-    '/info/about': 'aboutView',
-};
+    // '/scorebpard': 'scoreboardSingleplayerView',
+    // '/scoreobard/singleplayer': 'scoreboardSingleplayerView',
+    // '/scoreboard/multiplayer': 'scoreboardMultiplayerView',
+    
+    // '/info': 'rulesView',
+    // '/info/rules': 'rulesView',
+    // '/info/about': 'aboutView',
+];
 
 export default routerMap;

@@ -19,6 +19,8 @@ class View {
             sourceClass: RoutableMixin
         });
 
+        
+
         this._active = false;
         this.close();
     }
@@ -30,7 +32,7 @@ class View {
     render(attrs = {}) {
         const tmplHTML = this._tmpl(attrs);
         this._el = utiles.htmlToElements(tmplHTML)[0];
-        
+        this.hide();
         return this;
     }
 
@@ -63,7 +65,5 @@ class View {
         return this;
     }
 }
-
-//Object.assign(BaseView.prototype, RoutableMixin.prototype);
 
 export default View;
