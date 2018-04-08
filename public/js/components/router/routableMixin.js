@@ -4,105 +4,93 @@ import eventBus from "../arcitectureElements/eventBus.js";
 import eventTemplates from "./eventTemplates.js";
 import openingWay from "./openingWay.js";
 
+// Примешивается ко View
+/*
+    Берет из него:
+    * _opened,
+    * _name,
+    * _parentName
+    * show()
+    * hide()
+
+*/
+
+
 class RoutableMixin {
-
-// -----------------------------------------------------------------------------
-// ASSIGN
-// -----------------------------------------------------------------------------
-
-    assign({
-        base = {},
-        routableName = '',
-        opened = false
-    } = {}) {
-        Object.assign(base.prototype, this);
-        this._routableName = routableName;
-        this.routableParentName = ''; // По дефолту корневой
-        this._opened = opened;
-    }
 
 // -----------------------------------------------------------------------------
 // CONNECT / DISCONNECT
 // -----------------------------------------------------------------------------
 
     connectToTheWorld() {
-        eventBus.on(eventTemplates.OPEN(this._routableName), this.open.bind(this));
-        eventBus.on(eventTemplates.CLOSE(this._routableName), this.close.bind(this));
+        eventBus.on(eventTemplates.OPEN(this._name), this.open.bind(this));
+        eventBus.on(eventTemplates.CLOSE(this._name), this.close.bind(this));
     }
     
     disconnectFromTheWorld() {
-        eventBus.off(eventTemplates.OPEN(this._routableName), this.open.bind(this));
-        eventBus.off(eventTemplates.CLOSE(this._routableName), this.close.bind(this));   
+        eventBus.off(eventTemplates.OPEN(this._name), this.open.bind(this));
+        eventBus.off(eventTemplates.CLOSE(this._name), this.close.bind(this));   
     }
 
-    _connectToParent() {
-        eventBus.on(eventTemplates.OPENED(this._routableParentName), this.open.bind(this));
-        eventBus.on(eventTemplates.CLOSED(this._routableParentName), this.close.bind(this));  
+    connectToParent() {
+        eventBus.on(eventTemplates.OPENED(this._parentName), this.open.bind(this));
+        eventBus.on(eventTemplates.CLOSED(this._parentName), this.close.bind(this));  
     }
 
-    _disconnectFromParent() {
-        eventBus.off(eventTemplates.OPENED(this._routableParentName), this.open.bind(this));
-        eventBus.off(eventTemplates.CLOSED(this._routableParentName), this.close.bind(this));    
+    disconnectFromParent() {
+        eventBus.off(eventTemplates.OPENED(this._parentName), this.open.bind(this));
+        eventBus.off(eventTemplates.CLOSED(this._parentName), this.close.bind(this));    
     }
 
     // Дочерние элементы должны быть замиксованы    
-    connectToChildren({ children = [] } = {}) {
+    connectToChildren(...children) {
         for (let child of children) {
-            child.routableParentName = this._routableName;
+            child.connectToParent();
+        }
+    }
+
+    disonnectFromChildren(...children) {
+        for (let child of children) {
+            child.disconnectFromParent();
         }
     }
     
 // -----------------------------------------------------------------------------
-// GETTERS / SETTERS
+// OPEN / CLOSE
 // -----------------------------------------------------------------------------
-
-    get routableName() {
-        return this._routableName;
-    }
-
-    set routableParentName(name) {
-        this.disconnectFromParent();
-        this._routableParentName = name;
-        this.connectToParent();
-    }
-
-    get routableParentName() {
-        return this._routableParentName;
-    }
-
-    get opened() {
-        return this._opened;
-    }
-
-// -----------------------------------------------------------------------------
-// Собственно, функционал
-// -----------------------------------------------------------------------------
-
-    // если открыт, то родители тоже открыты
-    open({ way = openingWay.UP } = {}) {
+    
+    open({ 
+        way = openingWay.UP,
+        initiator = this._name 
+    } = {}) {
+        // если открыт, то родители уже открыты
+        if (this._active) {
+            return;
+        }        
+        
         // сначала открываем родителя
-        if (!this._opened && way === openingWay.UP) {
-            eventBus.call(eventTemplates.OPEN(this._parentName), {
-                way: openingWay.UP
-            });
+        if (way === openingWay.UP) {
+            eventBus.call(eventTemplates.OPEN(this._parentName), arguments[0]);
         }
         
         // затем открываем себя
-        this._openMe(); // Метод объекта, к которому применен mixin
-        this._opened = true;
+        this.show(); // Метод объекта, к которому применен mixin
 
-        // в конце событие для того, чтобы открылись дети
-        eventBus.call(eventTemplates.OPENED(this._routableName), {
-            way: openingWay.DOWN
+        // в конце сигнал о том, что уже открылся
+        eventBus.call(eventTemplates.OPENED(this._name), {
+            way: openingWay.DOWN,
+            initiator
         });
     }
 
-    // если закрывается, дети тоже закрываются
-    close() {
-        this._closeMe(); // Метод объекта, к которому применен mixin
-        this._opened = false;
+    close(eventData) {
+        if (!this._active) {
+            return;
+        }
 
-        eventBus.call(eventTemplates.CLOSED(this._routableName));
+        this.hide(); // Метод объекта, к которому применен mixin
+
+        eventBus.call(eventTemplates.CLOSED(this._name), eventData);
     }
 }
 

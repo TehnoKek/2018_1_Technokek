@@ -26,6 +26,18 @@ class Utiles {
             elem.lastjump = null;
         }
     }
+
+    assignMixin({ dstObject, sourceClass }) {
+        const properties = Object.getOwnPropertyNames(sourceClass.prototype);
+    
+        for (let property of properties) {   
+            if (!dstObject[property]) {
+                Object.defineProperty(dstObject, property, {
+                    value: sourceClass.prototype[property].bind(dstObject)
+                });
+            }
+        }
+    }
 }
 
 const utiles = new Utiles();
