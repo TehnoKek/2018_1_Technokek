@@ -20,8 +20,7 @@ class View {
             sourceClass: RoutableMixin
         });
 
-        this._active = false;
-        this.close();
+        this._initAllowingDependencies();
     }
 
     create(attrs) {
@@ -65,6 +64,11 @@ class View {
 
     renderTo(root) {
         root.appendChild(this._el);
+        return this;
+    }
+
+    // здесь будут навешиваться события на eventBus
+    _initAllowingDependencies() {
         return this;
     }
 }

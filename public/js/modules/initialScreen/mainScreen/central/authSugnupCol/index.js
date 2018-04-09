@@ -10,6 +10,8 @@ import ButtonView from "../../../../toolViews/buttonView/index.js";
 import utiles from "../../../../../components/utiles.js";
 import buttonTypes from "../../../../toolViews/buttonView/types.js";
 import togglerManager from "../../../../toolViews/toggler/manager.js";
+import eventBus from "../../../../../components/arcitectureElements/eventBus.js";
+import profileEvents from "../../../../../models/profile/eventsNames.js";
 
 class AuthSignupCol extends View {
     constructor({ parentName }) {
@@ -82,6 +84,13 @@ class AuthSignupCol extends View {
                 signupFormContainer
             ]
         });
+
+        return this;
+    }
+
+    _initAllowingDependencies() {
+        eventBus.on(profileEvents.AUTHORIZED(), this.hide.bind(this));
+        eventBus.on(profileEvents.DEAUTHORIZED(), this.show.bind(this));
 
         return this;
     }

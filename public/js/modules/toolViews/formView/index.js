@@ -223,7 +223,7 @@ class FormView extends View {
 
     _ejectData() {
         const formdata = this._fields.reduce((allFields, field) => {
-            allFields[field.name] = this._el.elements[field.name].value;
+            allFields[field.fieldName] = this._el.elements[field.fieldName].value;
             return allFields;
         }, {});
 
