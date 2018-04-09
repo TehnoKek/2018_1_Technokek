@@ -43,33 +43,29 @@ class Profile extends AbstractSection {
     }
 
     _updateTmplData() {
-        this._updateTmplEmail(profileModel.email);
-        this._updateTmplNickname(profileModel.nickname);
-        this._updateTmplGames(profileModel.games);
-        this._updateTmplScore(profileModel.score);
+        const fieldClasses = {
+            '.js-email-field': profileModel.email,
+            '.js-nickname-field': profileModel.nickname,
+            '.js-games-field': profileModel.games,
+            '.js-score-field': profileModel.score
+        };
+
+        for (let field of Object.keys(fieldClasses)) {
+            this._updateTmplField(field, fieldClasses[field]);
+        }
     }
 
     _clearTmplData() {
-        this._updateTmplEmail('');
-        this._updateTmplNickname('');
-        this._updateTmplGames('');
-        this._updateTmplScore('');
-    }
+        const fieldClasses = [
+            '.js-email-field',
+            '.js-nickname-field',
+            '.js-games-field',
+            '.js-score-field'
+        ];
 
-    _updateTmplEmail(newEmail) {
-        this._updateTmplField('.js-email-field', newEmail);
-    }
-
-    _updateTmplNickname(newNickname) {
-        this._updateTmplField('.js-nickname-field', newNickname);
-    }
-
-    _updateTmplGames(newGamesCount) {
-        this._updateTmplField('.js-games-field', newGamesCount);
-    }
-
-    _updateTmplScore(newScore) {
-        this._updateTmplField('.js-score-field', newScore);
+        for (let field of fieldClasses) {
+            this._updateTmplField(field, '');
+        }
     }
 
     _updateTmplField(fieldName, value) {

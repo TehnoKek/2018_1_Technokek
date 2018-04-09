@@ -15,6 +15,8 @@ import profileEvents from './eventsNames.js';
 class ProfileModel {
     constructor() {
         this._isAuthinticated = false;
+
+        eventBus.on(profileEvents.LOGOUT(), this.logout.bind(this));
     }
 
 // ---------------------------------------------------------------------------------
@@ -22,7 +24,6 @@ class ProfileModel {
 // ---------------------------------------------------------------------------------
 
     checkAuth() {
-
         httpRequester.doGet({
             base: baseUrl.NEW,
             url: apiUrls.get.ME(),
@@ -194,14 +195,14 @@ class ProfileModel {
         if (!this._isAuthinticated) {
             this._isAuthinticated = true;
 
-            eventBus.call(profileEvents.AUTHORIZED());
+            eventBus.call(profileEvents.AUTHORIZED(), this._data);
         }
 
         this._dataChanged();
     }
 
     _dataChanged() {
-        eventBus.call(profileEvents.DATA_CHANGED());
+        eventBus.call(profileEvents.DATA_CHANGED(), this._data);
     }
 }
 

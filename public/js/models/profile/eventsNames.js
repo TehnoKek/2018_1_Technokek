@@ -9,6 +9,7 @@ const profileEvents = {
 
     // Выход
     DEAUTHORIZED: () => `/${USER}/deauth`,
+    LOGOUT: () => `/${USER}/logout`,
     
     // Изменение данных
     DATA_CHANGED: () => `/${USER}/${DATA_CHANGED}`
