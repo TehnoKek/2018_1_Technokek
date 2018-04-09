@@ -20,6 +20,15 @@ const viewNames = {
     FOOTER: 'footer',
 
     DOWN_SCREEN: 'downScreen',
+
+    TABBAR: tabbarName => `tabbar:${tabbarName}`,
+    TAB: (tabbarName, tabName) => `tabbar:${tabbarName}/${tabName}`,
+    SECTIONS_BAR: tabbarName => `sections:${tabbarName}`,
+    SECTION: (tabbarName, tabName) => `sections:${tabbarName}/${tabName}`,
+    FORM: formName => `form:${formName}`,
+    FORM_FIELD: (formName, fieldName) => `form:${formName}/${fieldName}`,
+
+    BUTTON: (parentName, buttonText) => `${parentName}/button:[${buttonText}]`
 };
 
 export default viewNames;

@@ -1,14 +1,18 @@
 
 'use strict';
 
-import Rules from "../../modules/downscreen/downsections/rules/rules.js";
-import Profile from "../../modules/downscreen/downsections/profile/profile.js";
-import Scoreboard from "../../modules/downscreen/downsections/scoreboard/scoreboard.js";
+// import Rules from "../../modules/downscreen/downsections/rules/rules.js";
+// import Profile from "../../modules/downscreen/downsections/profile/profile.js";
+// import Scoreboard from "../../modules/downscreen/downsections/scoreboard/scoreboard.js";
 import SMSubsection from "../../modules/tools/smTablesModule/subsection.js";
 
 import tablesNames from "./tablesNames.js";
 import tablesOptions from "./tablesOptions.js";
 import modes from "./modes.js";
+
+import ProfileView from "../../modules/initialScreen/downScreen/profileView/index.js";
+import RulesView from "../../modules/initialScreen/downScreen/rulesView/index.js";
+import ScoreboardView from "../../modules/initialScreen/downScreen/scoreboardView/index.js";
 
 
 const tabbarsOptions = {
@@ -21,7 +25,7 @@ const tabbarsOptions = {
                 avaliable: false,
                 active: false,
                 authDepends: true,
-                sectionType: Profile
+                sectionType: ProfileView
             },
             {
                 name: 'rules',
@@ -29,7 +33,7 @@ const tabbarsOptions = {
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: Rules
+                sectionType: RulesView
             },
             {
                 name: 'scoreboard',
@@ -37,7 +41,7 @@ const tabbarsOptions = {
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: Scoreboard
+                sectionType: ScoreboardView
             },
         ]
     },
