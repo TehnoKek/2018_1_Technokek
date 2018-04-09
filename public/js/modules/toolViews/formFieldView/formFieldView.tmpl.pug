@@ -1,0 +1,10 @@
+div(class='js-field field-input')
+    label(for=options.id class='default-form-el')
+        |#{options.label}
+
+    p(class='form-error js-field-error')
+        |#{messages.error}
+    p(class='form-message js-field-message')
+        |#{messages.message}
+
+    input(type=options.type name=options.name id=options.id placeholder=options.placeholder value=options.value class='default-form-el')

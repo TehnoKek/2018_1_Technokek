@@ -13,13 +13,12 @@ class View {
         this._name = name;
         this._parentName = parentName;
         this._tmpl = tmpl;
+        this._attrs = {};
 
         utiles.assignMixin({
             dstObject: this,
             sourceClass: RoutableMixin
         });
-
-        
 
         this._active = false;
         this.close();
@@ -29,10 +28,10 @@ class View {
         return this.render(attrs).show();
     }
 
-    render(attrs = {}) {
-        const tmplHTML = this._tmpl(attrs);
+    render(attrs) {
+        this._attrs = attrs || this._attrs;
+        const tmplHTML = this._tmpl(this._attrs);
         this._el = utiles.htmlToElements(tmplHTML)[0];
-        this.hide();
         return this;
     }
 
@@ -58,6 +57,10 @@ class View {
 
     get parentName() {
         return this._parentName;
+    }
+
+    get element() {
+        return this._el ? this._el : null;
     }
 
     renderTo(root) {

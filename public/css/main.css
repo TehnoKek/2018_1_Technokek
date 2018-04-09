@@ -3,6 +3,8 @@
 @import url("../js/modules/downscreen/downsections/downsections.css");
 @import url("../js/modules/mainscreen/mainscreen.css");
 
+@import url("../js/modules/rootView/style.css");
+
 html, body {
     width: 100%;
     height: 100%;

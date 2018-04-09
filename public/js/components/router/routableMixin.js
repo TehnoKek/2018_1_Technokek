@@ -4,17 +4,6 @@ import eventBus from "../arcitectureElements/eventBus.js";
 import eventTemplates from "./eventTemplates.js";
 import openingWay from "./openingWay.js";
 
-// Примешивается ко View
-/*
-    Берет из него:
-    * _opened,
-    * _name,
-    * _parentName
-    * show()
-    * hide()
-
-*/
-
 
 class RoutableMixin {
 

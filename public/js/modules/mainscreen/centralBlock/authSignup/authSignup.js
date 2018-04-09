@@ -1,6 +1,5 @@
 'use strict';
 
-import utils from '../../../../components/utiles.js';
 import AbstractForm from '../../../tools/abstractForm/abstractForm.js';
 import * as Buttons from '../../../tools/buttons/buttons.js';
 import * as Toggling from '../../../tools/toggling/toggling.js';
@@ -10,46 +9,6 @@ import eventBus from '../../../../components/arcitectureElements/eventBus.js';
 import profileEvents from '../../../../models/profile/eventsNames.js';
 import authFormConfig from '../../../../components/formsOptions/configs/auth.js';
 import signupFormConfig from '../../../../components/formsOptions/configs/signup.js';
-import formsOptionsTypes from '../../../../components/formsOptions/configTypes.js';
-
-
-class AuthSignupFormContainer extends Toggling.AbstractTogglingItem {
-    constructor({
-        selector = '', 
-        togglingHandler = utils.noop, 
-        childFormOptions = new formsOptionsTypes.FormOptions(), 
-        hidden = true,
-        changeBtnText = '',
-        reciverCallback = utiles.noop
-    } = {}) {
-        childFormOptions.downButtons = [
-            new Buttons.PassiveButton({
-                text: changeBtnText,
-                events: [
-                    {
-                        name: 'click',
-                        handler: togglingHandler
-                    }
-                ]
-            })
-        ];
-        childFormOptions.reciverCallback = reciverCallback;
-
-        super({
-            selector,
-            childElement: new AbstractForm(childFormOptions),
-            hidden,
-        });        
-    }
-
-    toggle() {
-        super.toggle();
-        if (this._el.hidden) {
-            this._child.reset();
-        }
-    }
-}
-
 
 class AuthSignup extends Toggling.AbstractToggler {
    
@@ -82,24 +41,43 @@ class AuthSignup extends Toggling.AbstractToggler {
     }
 
     _createForms() {
-        this._togglingItems = [
-            new AuthSignupFormContainer({
-                selector: '.js-auth-section',
-                togglingHandler: this.changeItems.bind(this),
-                childFormOptions: authFormConfig,
-                reciverCallback: profileModel.auth.bind(profileModel),
-                hidden: false,
-                changeBtnText: 'Registration!'
-            }),
-
-            new AuthSignupFormContainer({
-                selector: '.js-signup-section',
-                togglingHandler: this.changeItems.bind(this),
-                childFormOptions: signupFormConfig,
-                reciverCallback: profileModel.signup.bind(profileModel),
-                hidden: true,
-                changeBtnText: 'Login!'
+        authFormConfig.downButtons = [
+            new Buttons.PassiveButton({
+                text: 'Registration!',
+                events: [
+                    {
+                        name: 'click',
+                        handler: this.changeItems.bind(this),
+                    }
+                ]
             })
+        ];
+        authFormConfig.reciverCallback = profileModel.auth.bind(profileModel);
+
+        signupFormConfig.downButtons = [
+            new Buttons.PassiveButton({
+                text: 'Login!',
+                events: [
+                    {
+                        name: 'click',
+                        handler: this.changeItems.bind(this),
+                    }
+                ]
+            })
+        ];
+        signupFormConfig.reciverCallback = profileModel.signup.bind(profileModel);
+
+        this._togglingItems = [
+            new Toggling.AbstractTogglingItem({
+                selector: '.js-auth-section',
+                childElement: new AbstractForm(authFormConfig),
+                hidden:false,
+            }),
+            new Toggling.AbstractTogglingItem({
+                selector: '.js-signup-section',
+                childElement: new AbstractForm(signupFormConfig),
+                hidden:true,
+            }),
         ];
     }
 }

@@ -22,15 +22,10 @@ class RootView extends View {
 
     render() {
         super.render();
-        
-        const initialScreenRoot = this._el.querySelector('.js-initial-screen');
-        this._initialScreen.render().renderTo(initialScreenRoot);
 
-        const lobbyScreenRoot = this._el.querySelector('.js-lobby-screen');
-        this._lobbyScreen.render().renderTo(lobbyScreenRoot);
-
-        const gameScreenRoot = this._el.querySelector('.js-game-screen');
-        this._gameScreen.render().renderTo(gameScreenRoot);
+        this._initialScreen.render().renderTo(this._el);
+        this._lobbyScreen.render().renderTo(this._el);
+        this._gameScreen.render().renderTo(this._el);
 
         return this;
     }

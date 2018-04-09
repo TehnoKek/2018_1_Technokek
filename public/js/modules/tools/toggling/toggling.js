@@ -37,6 +37,9 @@ class AbstractTogglingItem {
 
     toggle() {
         this._el.hidden = !this._el.hidden;
+        if (this._child.reset) {
+            this._child.reset();
+        }
     }
 
     get hidden() {

@@ -1,0 +1,10 @@
+@import url("../initialScreen/style.css");
+@import url("../lobbyScreen/style.css");
+@import url("../gameScreen/style.css");
+
+.fullscreen {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;;
+    min-width: 300px;
+}
