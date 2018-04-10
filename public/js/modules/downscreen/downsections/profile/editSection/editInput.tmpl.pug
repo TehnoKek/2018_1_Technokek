@@ -4,14 +4,14 @@ div(class='js-field edit-row')
     div(class='edit-row-content')
         div(class='edit-row-title')
             label
-                |#{field.label} 
+                |#{options.label} 
             p(class='form-error js-field-error')
                 |#{messages.error}
             p(class='form-message js-field-message')
                 |#{messages.message} 
         
         div(class='edit-row-data')
-            input(type=field.type name=field.name id=field.id placeholder=field.placeholder value=field.value)    
+            input(type=options.type name=options.name id=options.id placeholder=options.placeholder value=options.value)    
 
           
         

@@ -100,19 +100,36 @@ class ProfileModel {
     }
 
     get email() {
-        return this._data.email;
+        return this._data ? this._data.email : '';
+    }
+
+    get password() {
+        return this._data ? '***...***' : '';
     }
 
     get nickname() {
-        return this._data.nickname;
+        return this._data ? this._data.nickname : '';
     }
 
     get score() {
-        return this._data.score;
+        return this._data ? this._data.score : '';
     }
 
     get games() {
-        return this._data.games_number;
+        return this._data ? this._data.games_number : '';
+    }
+
+    get(fieldName) {
+        switch (fieldName) {
+            case formFieldNames.edit.email.EMAIL:
+                return this.email;
+            case formFieldNames.edit.nickname.NICKNAME:
+                return this.nickname;
+            case formFieldNames.edit.password.PASSWORD:
+                return this.password;
+            default:
+                return '';
+        }
     }
 
 // ---------------------------------------------------------------------------------
@@ -132,7 +149,6 @@ class ProfileModel {
     changeNickname({ data = {}, callback = utiles.noop } = {}) {
         this._changeField({
             data: {
-                //'nickname': data['nickanme']
                 [formFieldNames.edit.nickname.NICKNAME]: 
                     data[formFieldNames.edit.nickname.NICKNAME]
             },

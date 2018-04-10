@@ -18,26 +18,27 @@ class Toggler {
         return this._toggle.bind(this);
     }
 
-    addNodes(...nodes) {
+    addNodes(nodes) {
         for (let node of nodes) {
             this._nodes.add(node);
         }
     }
 
-    addViews(...views) {
+    addViews(views) {
         for (let view of views) {
-            this._nodes.add(view);
+            this._views.add(view);
         }
     }
 
     _toggle() {
-        console.log('toggle');
+        console.log('toggle', this);
 
         for (let node of this._nodes) {
             node.hidden = !node.hidden;
         }
 
         for (let view of this._views) {
+            console.log(view);
             if (view.active) {
                 view.hide();
             }

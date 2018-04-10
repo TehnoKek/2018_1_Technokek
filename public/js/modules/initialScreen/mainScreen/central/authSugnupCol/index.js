@@ -7,7 +7,6 @@ import authFormConfig from "../../../../../components/formsOptions/configs/auth.
 import signupFormConfig from "../../../../../components/formsOptions/configs/signup.js";
 import profileModel from "../../../../../models/profile/model.js";
 import ButtonView from "../../../../toolViews/buttonView/index.js";
-import utiles from "../../../../../components/utiles.js";
 import buttonTypes from "../../../../toolViews/buttonView/types.js";
 import togglerManager from "../../../../toolViews/toggler/manager.js";
 import eventBus from "../../../../../components/arcitectureElements/eventBus.js";

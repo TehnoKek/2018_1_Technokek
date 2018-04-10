@@ -14,6 +14,7 @@ class View {
         this._parentName = parentName;
         this._tmpl = tmpl;
         this._attrs = {};
+        this._active = true;
 
         utiles.assignMixin({
             dstObject: this,
@@ -35,18 +36,19 @@ class View {
     }
 
     hide() {
-        this._active = true;
+        this._active = false;
         this._el.setAttribute('hidden', 'hidden');
         return this;
     }
 
     show() {
-        this._active = false;
+        this._active = true;
         this._el.removeAttribute('hidden');
         return this;
     }
 
     get active() {
+        console.log('active view', this._active);
         return this._active;
     }
 

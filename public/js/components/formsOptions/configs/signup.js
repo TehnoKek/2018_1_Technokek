@@ -12,7 +12,7 @@ const signupFormConfig = new formsOptionsTypes.FormOptions({
             options: new formsOptionsTypes.field.Options({
                 id: 'signup-nickname',
                 type: inputTypes.text,
-                label: 'Nickaname',
+                label: 'Nickname',
                 name: formFieldNames.signup.NICKNAME,
                 placeholder: 'Nickname'
             }),

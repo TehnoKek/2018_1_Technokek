@@ -5,6 +5,7 @@ import ButtonView from "../../../toolViews/buttonView/index.js";
 import buttonTypes from "../../../toolViews/buttonView/types.js";
 import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import profileEvents from "../../../../models/profile/eventsNames.js";
+import EditSection from "./editSection/index.js";
 
 const modes = {
     SHOW: 0,
@@ -30,7 +31,7 @@ class ProfileView extends SectionView {
 
     _connectoToEventBus() {
         eventBus.on(profileEvents.AUTHORIZED(), (data) => {
-            this._toShowMode()._updateTmplData(data);
+            return this._toShowMode()._updateTmplData(data);
         });
         eventBus.on(profileEvents.DATA_CHANGED(), this._updateTmplData.bind(this));
         eventBus.on(profileEvents.DEAUTHORIZED(), this._updateTmplData.bind(this));
@@ -81,6 +82,7 @@ class ProfileView extends SectionView {
     }
 
     _initSections() {
+        this._editSection = new EditSection({ parentName: this._name });
         return this;        
     }
 
@@ -116,7 +118,7 @@ class ProfileView extends SectionView {
     _editElementsActive(val) {
         val = Boolean(val);
         const method = val ? 'show' : 'hide';
-        // this._editSection[method]();
+        this._editSection[method]();
         this._stopEditBtn[method]();
         return this;
     }
@@ -127,7 +129,8 @@ class ProfileView extends SectionView {
         const method = val ? 'show' : 'hide';
         // this._historySection.switch(val);
         this._editBtn[method]();
-        this._el.querySelector('.js-personal-info').hidden = val;
+        this._el.querySelector('.js-personal-info').hidden = !val;
+        return this;
     }
 
 // -----------------------------------------------------------------------
@@ -137,13 +140,15 @@ class ProfileView extends SectionView {
     _updateTmplData({
         email = '',
         nickname = '',
-        games = 0,
+        games_number = 0,
         score = 0
     } = {}) {
+        console.log(arguments[0]);
+
         const fieldClasses = {
             '.js-email-field': email,
             '.js-nickname-field': nickname,
-            '.js-games-field': games,
+            '.js-games-field': games_number,
             '.js-score-field': score
         };
 
@@ -162,7 +167,7 @@ class ProfileView extends SectionView {
 // -----------------------------------------------------------------------    
 
     render() {
-        super.render().
+        return super.render().
             _renderButtons().
             _renderSections().
             _switchMode();
@@ -175,6 +180,9 @@ class ProfileView extends SectionView {
         
         const logoutBtnContainer = this._el.querySelector('.js-logout-btn-section');
         this._logoutBtn.render().renderTo(logoutBtnContainer);
+
+        const sectionsContainer = this._el.querySelector('.js-profile-center');
+        this._editSection.render().renderTo(sectionsContainer);
         return this;
     }
 

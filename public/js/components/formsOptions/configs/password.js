@@ -6,6 +6,7 @@ import formFieldNames from "../fieldNames.js";
 import formMixins from "../../formConstraints/formMixins.js";
 
 const passwordFormConfig = new formsOptionsTypes.FormOptions({
+    formTitle: 'Password',
     fields: [
         new formsOptionsTypes.field.Base({
             options: new formsOptionsTypes.field.Options({

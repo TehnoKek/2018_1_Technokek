@@ -20,6 +20,8 @@ const viewNames = {
     FOOTER: 'footer',
 
     DOWN_SCREEN: 'downScreen',
+    EDIT_SECTION: 'editSection',
+    HISTORY_SECTION: 'historySection',
 
     TABBAR: tabbarName => `tabbar:${tabbarName}`,
     TAB: (tabbarName, tabName) => `tabbar:${tabbarName}/${tabName}`,
@@ -28,7 +30,12 @@ const viewNames = {
     FORM: formName => `form:${formName}`,
     FORM_FIELD: (formName, fieldName) => `form:${formName}/${fieldName}`,
 
-    BUTTON: (parentName, buttonText) => `${parentName}/button:[${buttonText}]`
+    BUTTON: (parentName, buttonText) => `${parentName}/button:[${buttonText}]`,
+
+    PROFILE_FEILD_INFO: (fieldName) => `profileFieldInfo:${fieldName}`,
+    PROFILE_FEILD_FORM: (fieldName) => `profileFieldForm:${fieldName}`,
+    PROFILE_FIELD_CONTAINER: (fieldName, indicator) => `profileFieldContainer:${fieldName}[${indicator}]`,
+    PROFILE_FIELD_TOGGLER: (fieldName) => `proflieFieldToggler:${fieldName}`
 };
 
 export default viewNames;

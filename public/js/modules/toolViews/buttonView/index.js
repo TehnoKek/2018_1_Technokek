@@ -1,6 +1,7 @@
 'use strict';
 
 import View from "../../view/index.js";
+import viewNames from "../../viewNames.js";
 
 class ButtonView extends View {
     constructor({
@@ -11,7 +12,7 @@ class ButtonView extends View {
         events = [],
     }) {
         super({
-            name: `${parentName}/button:${text}`, 
+            name: viewNames.BUTTON(parentName, text), 
             parentName, 
             tmpl: window.buttonviewTmplTemplate
         });

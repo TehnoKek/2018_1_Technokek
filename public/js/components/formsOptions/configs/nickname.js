@@ -5,6 +5,7 @@ import inputTypes from "../inputTypes.js";
 import formFieldNames from "../fieldNames.js";
 
 const nicknameFormConfig = new formsOptionsTypes.FormOptions({
+    formTitle: 'Nickname',
     fields: [
         new formsOptionsTypes.field.Base({
             options: new formsOptionsTypes.field.Options({

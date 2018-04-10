@@ -18,13 +18,13 @@ class TogglerManager {
         name = '',
         views = [],
         nodes = []
-    }) {
+    } = {}) {
         if (!this._togglers[name]) {
-            this._togglers[name] = new Toggler(togglingEventTemplates.TOGGLE(name));
+            this._togglers[name] = new Toggler({ name: togglingEventTemplates.TOGGLE(name) });
         }
 
-        this._togglers[name].addNodes(...nodes);
-        this._togglers[name].addViews(...views);
+        this._togglers[name].addNodes(nodes);
+        this._togglers[name].addViews(views);
     }
 
     toggle(name) {

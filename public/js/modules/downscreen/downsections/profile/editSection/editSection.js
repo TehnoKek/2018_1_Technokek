@@ -35,7 +35,6 @@ class FieldView {
     }
 }
 
-
 // Поле редактирования в режиме отображения
 class EditFieldTogglingItem extends Toggling.AbstractTogglingItem {
     constructor({
@@ -128,64 +127,6 @@ class FieldEditToggler extends Toggling.AbstractToggler {
 }
 
 
-class NicknameToggler extends FieldEditToggler {
-    constructor(selector) {
-        nicknameFormConfig.templateFunction = window.editmodeTmplTemplate;
-        nicknameFormConfig.reciverCallback = profileModel.changeNickname.bind(profileModel);
-        nicknameFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
-
-        
-
-        super({
-            selector,
-            viewChild: new FieldView({ 
-                label: 'Nickname', 
-                dataGetter: () => profileModel.nickname 
-            }),
-            formChild: new AbstractForm(nicknameFormConfig)
-        });
-    }
-}
-
-
-class EmailToggler extends FieldEditToggler {
-
-    constructor(selector) {
-        emailFormConfig.templateFunction = window.editmodeTmplTemplate;
-        emailFormConfig.reciverCallback = profileModel.changeEmail.bind(profileModel);
-        emailFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
-
-        super({
-            selector,
-            viewChild: new FieldView({ 
-                label: 'Email', 
-                dataGetter: () => profileModel.email 
-            }),
-            formChild: new AbstractForm(emailFormConfig)
-        });
-    }
-}
-
-
-class PasswordToggler extends FieldEditToggler {
-
-    constructor(selector) {
-        passwordFormConfig.templateFunction = window.editmodeTmplTemplate;
-        passwordFormConfig.reciverCallback = profileModel.changePassword.bind(profileModel);
-        passwordFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
-
-        super({
-            selector,
-            viewChild: new FieldView({ 
-                label: 'Password', 
-                dataGetter: () => '***...***' 
-            }),
-            formChild: new AbstractForm(passwordFormConfig)
-        });
-    }
-}
-
-
 class EditSection {
     constructor() {
         const template = window.editsectionTmplTemplate();
@@ -193,13 +134,44 @@ class EditSection {
     }
 
     render() {
-        this._nicknameToggler = new NicknameToggler('.js-edit-nickname');
+        nicknameFormConfig.templateFunction = window.editmodeTmplTemplate;
+        nicknameFormConfig.reciverCallback = profileModel.changeNickname.bind(profileModel);
+        nicknameFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
+        this._nicknameToggler = new FieldEditToggler({
+            selector: '.js-edit-nickname',
+            viewChild: new FieldView({ 
+                label: 'Nickname', 
+                dataGetter: () => profileModel.nickname 
+            }),
+            formChild: new AbstractForm(nicknameFormConfig)
+        });
+
+        emailFormConfig.templateFunction = window.editmodeTmplTemplate;
+        emailFormConfig.reciverCallback = profileModel.changeEmail.bind(profileModel);
+        emailFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
+        this._emailToggler = new FieldEditToggler({
+            selector: '.js-edit-email',
+            viewChild: new FieldView({ 
+                label: 'Email', 
+                dataGetter: () => profileModel.email 
+            }),
+            formChild: new AbstractForm(emailFormConfig)
+        });
+
+        passwordFormConfig.templateFunction = window.editmodeTmplTemplate;
+        passwordFormConfig.reciverCallback = profileModel.changePassword.bind(profileModel);
+        passwordFormConfig.fieldTemplateFunction = window.editinputTmplTemplate;
+        this._passwordToggler = new FieldEditToggler({
+            selector: '.js-edit-password',
+            viewChild: new FieldView({ 
+                label: 'Password', 
+                dataGetter: () => '***...***' 
+            }),
+            formChild: new AbstractForm(passwordFormConfig)
+        });
+
         this._nicknameToggler.render();
-
-        this._emailToggler = new EmailToggler('.js-edit-email');
         this._emailToggler.render();
-
-        this._passwordToggler = new PasswordToggler('.js-edit-password');
         this._passwordToggler.render();
     }
 

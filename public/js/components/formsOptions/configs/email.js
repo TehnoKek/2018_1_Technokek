@@ -5,6 +5,7 @@ import inputTypes from "../inputTypes.js";
 import formFieldNames from "../fieldNames.js";
 
 const emailFormConfig = new formsOptionsTypes.FormOptions({
+    formTitle: 'Email',
     fields: [
         new formsOptionsTypes.field.Base({
             options: new formsOptionsTypes.field.Options({
