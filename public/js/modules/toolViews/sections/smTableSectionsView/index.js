@@ -44,7 +44,7 @@ class SMTableSectionsView extends View {
 
     render() {
         super.render();
-        console.log(this);
+        console.log('RENDER SECTIONS_VIEW', this);
         this._tabbar.render().renderTo(this._el);
         this._sections.render().renderTo(this._el);
         return this;

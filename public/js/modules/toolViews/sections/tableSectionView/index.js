@@ -40,7 +40,6 @@ class TableSectionView extends SectionView {
                 name: 'click',
                 handler: (evt) => {
                     evt.preventDefault();
-                    console.log('LOAD FROM:', this._tableModel.name);
                     eventBus.call(tableEvents.LOAD_MORE(this._tableModel.name));
                 }
             }]

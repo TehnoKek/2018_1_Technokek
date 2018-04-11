@@ -48,7 +48,6 @@ class View {
     }
 
     get active() {
-        console.log('active view', this._active);
         return this._active;
     }
 

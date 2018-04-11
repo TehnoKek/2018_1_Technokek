@@ -45,8 +45,6 @@ class TableModel {
     }
 
     loadNextPage() {
-        console.log('loading started');
-
         httpRequester.doGet({
             base: baseUrl.NEW,
             url: this._urlFunc({page: this._curPage + 1}),
@@ -74,7 +72,6 @@ class TableModel {
     }
 
     _dataChanged() {
-        console.log('data changed', this._rows);
         eventBus.call(tableEvents.DATA_CHANGED(this._name), this._rows);
     }
 }

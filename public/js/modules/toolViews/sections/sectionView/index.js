@@ -26,7 +26,7 @@ class SectionView extends View {
     }
 
     render() {
-        return super.render()._changeHidden(this._attrs.tabModel.active);
+        return super.render();
     }
 
     _changeHidden(isActive) {

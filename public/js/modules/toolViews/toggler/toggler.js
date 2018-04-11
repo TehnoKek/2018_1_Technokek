@@ -31,14 +31,11 @@ class Toggler {
     }
 
     _toggle() {
-        console.log('toggle', this);
-
         for (let node of this._nodes) {
             node.hidden = !node.hidden;
         }
 
         for (let view of this._views) {
-            console.log(view);
             if (view.active) {
                 view.hide();
             }

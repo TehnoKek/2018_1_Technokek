@@ -69,7 +69,6 @@ class TableView extends View {
     }
 
     extendRows(rows = []) {
-        console.log('adding:', rows);
         for (let row of rows) {
             this.appendRow(row);
         }

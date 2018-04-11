@@ -82,8 +82,6 @@ class ProfileFieldTogglerView extends View {
         this._formChild.render().renderTo(this._el);
         this._viewChild.render().renderTo(this._el);
 
-        console.log('render: ', this._name, this._formChild, this._viewChild);
-
         togglerManager.add({
             name: this._name,
             nodes: [],
@@ -92,8 +90,6 @@ class ProfileFieldTogglerView extends View {
                 this._viewChild
             ]
         });
-
-        console.log(this._name);   
 
         return this._toViewMode();
     }

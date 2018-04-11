@@ -21,9 +21,7 @@ class HistorySection extends View {
 
     render() {
         super.render();
-        console.log('THIS BEFORE', this);
-        this._tables.render();
-        console.log('THIS AFTER', this);        
+        this._tables.render();        
         this._tables.renderTo(this._el);
         return this;
     }
