@@ -35,7 +35,9 @@ const viewNames = {
     PROFILE_FEILD_INFO: (fieldName) => `profileFieldInfo:${fieldName}`,
     PROFILE_FEILD_FORM: (fieldName) => `profileFieldForm:${fieldName}`,
     PROFILE_FIELD_CONTAINER: (fieldName, indicator) => `profileFieldContainer:${fieldName}[${indicator}]`,
-    PROFILE_FIELD_TOGGLER: (fieldName) => `proflieFieldToggler:${fieldName}`
+    PROFILE_FIELD_TOGGLER: (fieldName) => `proflieFieldToggler:${fieldName}`,
+
+    TABLE: (tableName) => `table:${tableName}`,
 };
 
 export default viewNames;

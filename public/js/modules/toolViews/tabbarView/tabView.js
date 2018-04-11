@@ -32,16 +32,19 @@ class TabView extends View {
 
     _connectToEventBus() {
         // Если состояние активности вкладки изменилось, то изменяется ее отображение
-        eventBus.on(tabbarEvents.ACTIVE_CHANGED({
-            tabbarName: this._attrs.tabModel.parentName,
-            tabName: this._attrs.tabModel.name
-        }), this._changeActive.bind(this));
-
-        // Если состояние доступности вкладки изменилось, то изменяется ее отображение        
-        eventBus.on(tabbarEvents.AVALIABLE_CHANGED({
-            tabbarName: this._attrs.tabModel.parentName,
-            tabName: this._attrs.tabModel.name
-        }), this._changeAvaliable.bind(this));
+        eventBus.on(
+            tabbarEvents.ACTIVE_CHANGED({
+                tabbarName: this._attrs.tabModel.parentName,
+                tabName: this._attrs.tabModel.name
+            }), 
+            this._changeActive.bind(this)
+        ).on(
+            tabbarEvents.AVALIABLE_CHANGED({
+                tabbarName: this._attrs.tabModel.parentName,
+                tabName: this._attrs.tabModel.name
+            }), 
+            this._changeAvaliable.bind(this)
+        );
     }
 
     _changeActive(isActive) {

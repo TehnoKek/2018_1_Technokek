@@ -27,6 +27,7 @@ class EventBus {
         }
 
         this._events[eventName].push(callback);
+        return this;
     }
 
     off(eventName, callback) {
@@ -41,6 +42,7 @@ class EventBus {
                 }
             }
         }
+        return this;
     }
 
     do(action) {
@@ -64,6 +66,7 @@ class EventBus {
                 callback(eventData);
             }
         }
+        return this;
     }
 }
 

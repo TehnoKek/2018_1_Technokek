@@ -12,23 +12,23 @@ class RoutableMixin {
 // -----------------------------------------------------------------------------
 
     connectToTheWorld() {
-        eventBus.on(eventTemplates.OPEN(this._name), this.open.bind(this));
-        eventBus.on(eventTemplates.CLOSE(this._name), this.close.bind(this));
+        eventBus.on(eventTemplates.OPEN(this._name), this.open.bind(this)).
+            on(eventTemplates.CLOSE(this._name), this.close.bind(this));
     }
     
     disconnectFromTheWorld() {
-        eventBus.off(eventTemplates.OPEN(this._name), this.open.bind(this));
-        eventBus.off(eventTemplates.CLOSE(this._name), this.close.bind(this));   
+        eventBus.off(eventTemplates.OPEN(this._name), this.open.bind(this)).
+            off(eventTemplates.CLOSE(this._name), this.close.bind(this));   
     }
 
     connectToParent() {
-        eventBus.on(eventTemplates.OPENED(this._parentName), this.open.bind(this));
-        eventBus.on(eventTemplates.CLOSED(this._parentName), this.close.bind(this));  
+        eventBus.on(eventTemplates.OPENED(this._parentName), this.open.bind(this)).
+            on(eventTemplates.CLOSED(this._parentName), this.close.bind(this));  
     }
 
     disconnectFromParent() {
-        eventBus.off(eventTemplates.OPENED(this._parentName), this.open.bind(this));
-        eventBus.off(eventTemplates.CLOSED(this._parentName), this.close.bind(this));    
+        eventBus.off(eventTemplates.OPENED(this._parentName), this.open.bind(this)).
+            off(eventTemplates.CLOSED(this._parentName), this.close.bind(this));    
     }
 
     // Дочерние элементы должны быть замиксованы    

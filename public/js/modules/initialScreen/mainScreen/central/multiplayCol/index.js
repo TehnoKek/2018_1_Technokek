@@ -41,8 +41,8 @@ class MultiplayCol extends View {
     }
 
     _initAllowingDependencies() {
-        eventBus.on(profileEvents.AUTHORIZED(), this.show.bind(this));
-        eventBus.on(profileEvents.DEAUTHORIZED(), this.hide.bind(this));
+        eventBus.on(profileEvents.AUTHORIZED(), this.show.bind(this)).
+            on(profileEvents.DEAUTHORIZED(), this.hide.bind(this));
 
         return this;
     }

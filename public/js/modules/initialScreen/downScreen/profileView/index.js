@@ -6,6 +6,7 @@ import buttonTypes from "../../../toolViews/buttonView/types.js";
 import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import profileEvents from "../../../../models/profile/eventsNames.js";
 import EditSection from "./editSection/index.js";
+import HistorySection from "./historySection/index.js";
 
 const modes = {
     SHOW: 0,
@@ -21,7 +22,7 @@ class ProfileView extends SectionView {
     constructor({ tabModel }) {
         super({
             tabModel,
-            tmpl: window.profileviewTmplTemplate
+            tmpl: window.profileViewTemplate
         });
 
         this._connectoToEventBus().
@@ -30,11 +31,14 @@ class ProfileView extends SectionView {
     }
 
     _connectoToEventBus() {
-        eventBus.on(profileEvents.AUTHORIZED(), (data) => {
+        eventBus.on(
+            profileEvents.AUTHORIZED(), (data) => {
             return this._toShowMode()._updateTmplData(data);
-        });
-        eventBus.on(profileEvents.DATA_CHANGED(), this._updateTmplData.bind(this));
-        eventBus.on(profileEvents.DEAUTHORIZED(), this._updateTmplData.bind(this));
+        }).on(
+            profileEvents.DATA_CHANGED(), this._updateTmplData.bind(this)
+        ).on(
+            profileEvents.DEAUTHORIZED(), this._updateTmplData.bind(this)
+        );
         return this;
     }
 
@@ -83,6 +87,7 @@ class ProfileView extends SectionView {
 
     _initSections() {
         this._editSection = new EditSection({ parentName: this._name });
+        this._historySection = new HistorySection({ parentName: this._name });
         return this;        
     }
 
@@ -127,7 +132,7 @@ class ProfileView extends SectionView {
     _showElementsActive(val) {
         val = Boolean(val);
         const method = val ? 'show' : 'hide';
-        // this._historySection.switch(val);
+        this._historySection[method]();
         this._editBtn[method]();
         this._el.querySelector('.js-personal-info').hidden = !val;
         return this;
@@ -143,7 +148,6 @@ class ProfileView extends SectionView {
         games_number = 0,
         score = 0
     } = {}) {
-        console.log(arguments[0]);
 
         const fieldClasses = {
             '.js-email-field': email,
@@ -183,6 +187,7 @@ class ProfileView extends SectionView {
 
         const sectionsContainer = this._el.querySelector('.js-profile-center');
         this._editSection.render().renderTo(sectionsContainer);
+        this._historySection.render().renderTo(sectionsContainer);
         return this;
     }
 

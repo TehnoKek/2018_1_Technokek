@@ -13,6 +13,7 @@ import modes from "./modes.js";
 import ProfileView from "../../modules/initialScreen/downScreen/profileView/index.js";
 import RulesView from "../../modules/initialScreen/downScreen/rulesView/index.js";
 import ScoreboardView from "../../modules/initialScreen/downScreen/scoreboardView/index.js";
+import TableSectionView from "../../modules/toolViews/sections/tableSectionView/index.js";
 
 
 const tabbarsOptions = {
@@ -54,7 +55,7 @@ const tabbarsOptions = {
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: SMSubsection,
+                sectionType: TableSectionView,
                 sectionData: {
                     table: tablesOptions[tablesNames.HISTORY][modes.SP],
                 }
@@ -65,7 +66,7 @@ const tabbarsOptions = {
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: SMSubsection,
+                sectionType: TableSectionView,
                 sectionData: {
                     table: tablesOptions[tablesNames.HISTORY][modes.MP]
                 }
@@ -81,7 +82,7 @@ const tabbarsOptions = {
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: SMSubsection,
+                sectionType: TableSectionView,
                 sectionData: {
                     table: tablesOptions[tablesNames.SCOREBOARD][modes.SP]
                 }
@@ -92,7 +93,7 @@ const tabbarsOptions = {
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: SMSubsection,
+                sectionType: TableSectionView,
                 sectionData: {
                     table: tablesOptions[tablesNames.SCOREBOARD][modes.MP]
                 }

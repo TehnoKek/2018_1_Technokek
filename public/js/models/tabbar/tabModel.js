@@ -133,10 +133,11 @@ class TabModel {
 // ---------------------------------------------------------------------------------     
     _connectToEventBus() {
         if (this._dependsOnAuth) {
-            eventBus.on(profileEvents.AUTHORIZED(), () => {
+            eventBus.on(
+                profileEvents.AUTHORIZED(), () => {
                 this.avaliable = true;
-            });
-            eventBus.on(profileEvents.DEAUTHORIZED(), () => {
+            }).on(
+                profileEvents.DEAUTHORIZED(), () => {
                 this.avaliable = false;
             });
         }

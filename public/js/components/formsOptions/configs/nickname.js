@@ -11,7 +11,7 @@ const nicknameFormConfig = new formsOptionsTypes.FormOptions({
             options: new formsOptionsTypes.field.Options({
                 id: 'edit-nickname',
                 type: inputTypes.text,
-                label: 'Nickaname',
+                label: 'Nickname',
                 name: formFieldNames.edit.nickname.NICKNAME,
                 placeholder: 'Nickname'
             }),

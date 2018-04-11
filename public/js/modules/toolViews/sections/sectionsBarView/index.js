@@ -28,6 +28,7 @@ class SectionsBarView extends View {
     render() {
         super.render();
 
+        console.log(this._el);
         for (let section of this._sections) {
             section.render().renderTo(this._el);
         }

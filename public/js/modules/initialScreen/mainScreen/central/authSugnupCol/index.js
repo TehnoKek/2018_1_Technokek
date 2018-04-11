@@ -88,8 +88,8 @@ class AuthSignupCol extends View {
     }
 
     _initAllowingDependencies() {
-        eventBus.on(profileEvents.AUTHORIZED(), this.hide.bind(this));
-        eventBus.on(profileEvents.DEAUTHORIZED(), this.show.bind(this));
+        eventBus.on(profileEvents.AUTHORIZED(), this.hide.bind(this)).
+            on(profileEvents.DEAUTHORIZED(), this.show.bind(this));
 
         return this;
     }

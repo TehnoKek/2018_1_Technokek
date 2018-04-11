@@ -36,7 +36,6 @@ class SMTablesModule {
             tabbarOptions: this._tabbarOptions,
             tabStyle: tabsStyles.TAB_SM
         });
-
         this._tabbar.render();
         this._el.appendChild(this._tabbar.element);
     }
@@ -46,7 +45,6 @@ class SMTablesModule {
             tabbarOptions: this._tabbarOptions,
             templateFunction: window.smsubsectionsTmplTemplate
         });
-
         this._sections.render();
         this._el.appendChild(this._sections.element);
     }

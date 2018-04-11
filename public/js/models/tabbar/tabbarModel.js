@@ -61,6 +61,14 @@ class TabbarModel {
         for (let tab of this._tabs) {
             this._connectWithTab(tab);
         }
+
+        eventBus.on(
+            tabbarEvents.DEACTIVATE_ALL({ tabbarName:this._name }), 
+            this.deactivateAll.bind(this)
+        ).on(
+            tabbarEvents.ACTIVATE_FIRST({ tabbarName:this._name }),
+            this.activateFirst.bind(this)
+        );
     }
 
     _connectWithTab(tab) {
@@ -70,9 +78,7 @@ class TabbarModel {
                 tabName: tab.name
             }), 
             () => this._changeActive(tab)
-        );
-
-        eventBus.on(
+        ).on(
             tabbarEvents.AVALIABLE_CHANGED({
                 tabbarName: this._name, 
                 tabName: tab.name

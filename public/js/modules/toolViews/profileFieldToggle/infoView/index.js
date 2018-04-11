@@ -22,8 +22,8 @@ class ProfileFieldView extends View {
             label: editFormsConfig[fieldName].formTitle,
             fieldName
         };
-        eventBus.on(profileEvents.DATA_CHANGED(), this._reloadValue.bind(this));
-        eventBus.on(profileEvents.AUTHORIZED(), this._reloadValue.bind(this));
+        eventBus.on(profileEvents.DATA_CHANGED(), this._reloadValue.bind(this)).
+            on(profileEvents.AUTHORIZED(), this._reloadValue.bind(this));
     }
 
     render() {

@@ -34,8 +34,8 @@ class Router {
         console.log(`OPEN: ${path}`);
 
         if (this._active) {
-            eventBus.on(eventTemplates.CLOSED(this._active), this._deepOpen.bind(this));
-            eventBus.call(eventTemplates.CLOSE(this._active), { newPath: path });
+            eventBus.on(eventTemplates.CLOSED(this._active), this._deepOpen.bind(this)).
+                call(eventTemplates.CLOSE(this._active), { newPath: path });
         }
         else {
             this._deepOpen({newPath: path});
