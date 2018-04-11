@@ -21,7 +21,7 @@ class View {
             sourceClass: RoutableMixin
         });
 
-        this._initAllowingDependencies();
+        this.initRoutable();
     }
 
     create(attrs) {

@@ -1,7 +1,8 @@
 'use strict';
 
 import eventBus from "../arcitectureElements/eventBus.js";
-import eventTemplates from "./eventTemplates.js";
+import routerEvents from "./routerEvents.js";
+import redirectFilter from "../redirectFilter/filter.js";
 
 class Router {
     constructor() { 
@@ -10,50 +11,36 @@ class Router {
         }
 
         this._map = {};
-        this._active = '';
+        this._active = null;
 
         Router.__instance = this;
     }
 
     start() {
         window.addEventListener('popstate', () => {
-            console.log('state changed');
             if (this._map[window.length.pathname]) {
-                this._open({path: window.location.pathname});
+                this.open(window.location.pathname);
             }
         });
 
-        this._open({path: window.location.pathname});
+        this.open(window.location.pathname);
     }
 
-    addRoutable({ path, name }) {
+    register({ path, name }) {
         this._map[path] = name;
     }
 
-    _open({ path }) {
-        console.log(`OPEN: ${path}`);
-
+    open(path) {
         if (this._active) {
-            eventBus.on(eventTemplates.CLOSED(this._active), this._deepOpen.bind(this)).
-                call(eventTemplates.CLOSE(this._active), { newPath: path });
-        }
-        else {
-            this._deepOpen({newPath: path});
+            eventBus.call(routerEvents.CLOSE(this._active));    
         }
 
-    }
-
-    _deepOpen({ newPath }) {
-        if (this._active) {
-            eventBus.off(eventTemplates.CLOSED(this._active), this._deepOpen.bind(this));
-        }
-
-        eventBus.call(eventTemplates.OPEN(this._map[newPath]));
-        this._active = this._map[newPath];
-        
-        if (window.location.pathname !== newPath) {
-            window.history.pushState({}, '', newPath);
-        }
+        const checkedPath = redirectFilter.check(path);
+        eventBus.call(
+            routerEvents.OPEN(this._map[checkedPath]), 
+            { path } // на всякий случай
+        );
+        this._active = this._map[checkedPath];
     }
 }
 

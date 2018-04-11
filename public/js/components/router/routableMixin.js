@@ -1,8 +1,8 @@
 'use strict';
 
 import eventBus from "../arcitectureElements/eventBus.js";
-import eventTemplates from "./eventTemplates.js";
-import openingWay from "./openingWay.js";
+import treeWay from "./treeWay.js";
+import routerEvents from "./routerEvents.js";
 
 
 class RoutableMixin {
@@ -10,38 +10,22 @@ class RoutableMixin {
 // -----------------------------------------------------------------------------
 // CONNECT / DISCONNECT
 // -----------------------------------------------------------------------------
-
-    connectToTheWorld() {
-        eventBus.on(eventTemplates.OPEN(this._name), this.open.bind(this)).
-            on(eventTemplates.CLOSE(this._name), this.close.bind(this));
-    }
     
-    disconnectFromTheWorld() {
-        eventBus.off(eventTemplates.OPEN(this._name), this.open.bind(this)).
-            off(eventTemplates.CLOSE(this._name), this.close.bind(this));   
+    // name и callback передаются, т.к. они в различных состояниях могут иметь различные значения
+    connect({ name, onOpenCallback, onCloseCallback }) {
+        eventBus.on(routerEvents.OPEN(name), onOpenCallback).
+            on(routerEvents.OPENED(this._parentName), onOpenCallback).
+            on(routerEvents.CLOSE(name), onCloseCallback).
+            on(routerEvents.PRE_CLOSING(name), onCloseCallback);
+        return this;
     }
 
-    connectToParent() {
-        eventBus.on(eventTemplates.OPENED(this._parentName), this.open.bind(this)).
-            on(eventTemplates.CLOSED(this._parentName), this.close.bind(this));  
-    }
-
-    disconnectFromParent() {
-        eventBus.off(eventTemplates.OPENED(this._parentName), this.open.bind(this)).
-            off(eventTemplates.CLOSED(this._parentName), this.close.bind(this));    
-    }
-
-    // Дочерние элементы должны быть замиксованы    
-    connectToChildren(...children) {
-        for (let child of children) {
-            child.connectToParent();
-        }
-    }
-
-    disonnectFromChildren(...children) {
-        for (let child of children) {
-            child.disconnectFromParent();
-        }
+    disconnect({ name, onOpenCallback, onCloseCallback }) {
+        eventBus.off(routerEvents.OPEN(name), onOpenCallback).
+            off(routerEvents.OPENED(this._parentName), onOpenCallback).
+            off(routerEvents.CLOSE(name), onCloseCallback).
+            off(routerEvents.PRE_CLOSING(this._parentName), onCloseCallback);
+        return this;
     }
     
 // -----------------------------------------------------------------------------
@@ -49,8 +33,9 @@ class RoutableMixin {
 // -----------------------------------------------------------------------------
     
     open({ 
-        way = openingWay.UP,
-        initiator = this._name 
+        name = '',
+        state = {},
+        way = treeWay.UP,
     } = {}) {
         // если открыт, то родители уже открыты
         if (this._active) {
@@ -58,28 +43,53 @@ class RoutableMixin {
         }        
         
         // сначала открываем родителя
-        if (way === openingWay.UP) {
-            eventBus.call(eventTemplates.OPEN(this._parentName), arguments[0]);
+        if (way === treeWay.UP) {
+            eventBus.call(routerEvents.OPEN(this._parentName), { way: treeWay.UP });
         }
         
-        // затем открываем себя
-        this.show(); // Метод объекта, к которому применен mixin
-
-        // в конце сигнал о том, что уже открылся
-        eventBus.call(eventTemplates.OPENED(this._name), {
-            way: openingWay.DOWN,
-            initiator
-        });
+        this.show(state); // Метод объекта, к которому применен mixin
+        eventBus.call(routerEvents.OPENED(name), { way: treeWay.DOWN });
+        
+        return this;
     }
 
-    close(eventData) {
+    close({
+        name = '',
+        state = {},
+        way = treeWay.UP,
+    } = {}) {
+        
         if (!this._active) {
             return;
         }
+        
+        if (way === treeWay.DOWN) {
+            eventBus.call(routerEvents.PRE_CLOSING(name), { way: treeWay.DOWN });
+        }
 
-        this.hide(); // Метод объекта, к которому применен mixin
+        this.hide(state); // Метод объекта, к которому применен mixin
+        eventBus.call(routerEvents.CLOSE(this._parentName), { way: treeWay.UP });
+        
+        return this;
+    }
 
-        eventBus.call(eventTemplates.CLOSED(this._name), eventData);
+    // базовая реализация
+    initRoutable() {
+        this.connect({
+            name: this._name,
+            onOpenCallback: ({ way = treeWay.UP }) => {
+                this.open({
+                    name: this._name,
+                    way,
+                });
+            },
+            onCloseCallback: ({ way = treeWay.UP }) => {
+                this.close({
+                    name: this._name,
+                    way
+                });
+            }
+        });
     }
 }
 
