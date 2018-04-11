@@ -20,3 +20,5 @@ for (let option of routerMap) {
 }
 
 router.start();
+
+window.router = router;

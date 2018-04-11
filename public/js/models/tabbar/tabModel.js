@@ -141,6 +141,15 @@ class TabModel {
                 this.avaliable = false;
             });
         }
+
+        eventBus.on(
+            tabbarEvents.ACTIVATE({
+                tabbarName: this._parentName,
+                tabName: this._name
+            }, () => {
+                this.active = true;
+            })
+        );
     }
 }
 

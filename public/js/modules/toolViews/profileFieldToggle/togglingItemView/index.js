@@ -5,6 +5,7 @@ import utiles from "../../../../components/utiles.js";
 import ButtonView from "../../buttonView/index.js";
 import buttonTypes from "../../buttonView/types.js";
 import viewNames from "../../../viewNames.js";
+import togglerManager from "../../toggler/manager.js";
 
 class ProfileFieldTogglingItemView extends View {
     constructor({
@@ -44,6 +45,14 @@ class ProfileFieldTogglingItemView extends View {
         
         this._changeBtn.render().renderTo(btnContainer);
         this._child.render().renderTo(contentContainer);
+        return this;
+    }
+
+    show() {
+        if (!this.active) {
+            togglerManager.toggle(this._parentName);
+        }
+        super.show();
         return this;
     }
 

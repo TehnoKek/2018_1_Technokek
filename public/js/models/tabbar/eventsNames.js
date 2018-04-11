@@ -4,6 +4,7 @@
 const TITLE_CHANGED_NAME = 'title';
 const ACTIVE_CHANGED_NAME = 'active';
 const AVALIABLE_CHANGED_NAME = 'avaliable';
+const ACTIVATE_TAB_NAME = 'activate';
 
 const _tabbarEventsTemplate = ({
     tabbarName = '',
@@ -27,6 +28,9 @@ const tabbarEvents = {
     // Изменение состояния активности
     ACTIVE_CHANGED: ({tabbarName = '', tabName = ''} = {}) => 
         _tabbarTabEventsTemplate({tabbarName, tabName, actionName: ACTIVE_CHANGED_NAME}),
+    
+    ACTIVATE: ({ tabbarName = '', tabName = '' } = {}) =>
+        _tabbarTabEventsTemplate({tabbarName, tabName, actionName: ACTIVATE_TAB_NAME}),
     
     // Изменение состояния возможности к использованию
     AVALIABLE_CHANGED: ({tabbarName = '', tabName = ''} = {}) => 

@@ -38,6 +38,12 @@ class SectionView extends View {
         }
         return this;
     }
+
+    show() {
+        super.show();
+        this._attrs.tabModel.active = true;
+        return this;
+    }
 }
 
 export default SectionView;
