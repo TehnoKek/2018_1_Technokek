@@ -34,8 +34,8 @@ class View {
         const tmplHTML = this._tmpl(this._attrs);
         this._el = utiles.htmlToElements(tmplHTML)[0];
         /* сначала все скрыто */
-        // this._el.hidden = true;
-        // this._active = false;
+        this._el.hidden = true;
+        this._active = false;
         return this;
     }
 

@@ -30,6 +30,9 @@ class Router {
 
     register({ path, name }) {
         this._map[path] = name;
+        eventBus.on(routerEvents.OPENED(name), () => {
+            window.history.pushState({}, '', path);
+        });
         return this;
     }
 
@@ -44,8 +47,11 @@ class Router {
             { path } // на всякий случай
         );
         this._active = this._map[checkedPath];
+        
         console.log('pushState');
+        
         window.history.pushState({}, '', path);
+        
         console.log('----------------------------------------------------------------');
         console.log(`FINISHED: ${path}, ${this._map[checkedPath]}`);
         console.log('----------------------------------------------------------------');

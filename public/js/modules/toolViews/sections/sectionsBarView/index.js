@@ -24,7 +24,12 @@ class SectionsBarView extends View {
         });
     }
 
-    
+    initRoutable() {
+        for (let tab of this._attrs.tabbarModel.tabs) {
+            this._initRoutableByName(viewNames.SECTION_PARENT(tab));
+        }
+        return this;
+    }
 
     render() {
         super.render();
@@ -33,7 +38,27 @@ class SectionsBarView extends View {
             section.render().renderTo(this._el);
         }
 
-        this._attrs.tabbarModel.activateFirst();
+        // console.log('ActivateFirst: ', this._attrs.tabbarModel);
+        // this._attrs.tabbarModel.activateFirst();
+
+        return this;
+    }
+
+    show(name) {
+        super.show();
+
+        let fromChild = false;
+        for(let tab of this._attrs.tabbarModel.tabs) {
+            console.log('CHECK', name, viewNames.SECTION_PARENT(tab));
+            if (name === viewNames.SECTION_PARENT(tab)) {
+                fromChild = true;
+                break;
+            }
+        }
+
+        if (!fromChild) {
+            this._attrs.tabbarModel.activateFirst();
+        }
 
         return this;
     }

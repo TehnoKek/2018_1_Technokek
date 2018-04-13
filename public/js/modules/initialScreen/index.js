@@ -19,8 +19,12 @@ class InitialScreen extends View {
             tmpl: window.initialscreenTmplTemplate,
         });
 
-        // this._mainScreen = new MainScreen({ parentName: this.name });
-        this._tabbar = new TabbarView({ parentName: this._name, tabType: tabTypes.TAB_LG, tabbarOptions: tabbarsOptions.MAIN });
+        this._tabbar = new TabbarView({ 
+            parentName: this._name, 
+            tabType: tabTypes.TAB_LG, 
+            tabbarOptions: 
+            tabbarsOptions.MAIN 
+        });
         this._downScreen = new SectionsBarView({ 
             parentName: this.name,
             tabbarModel: tabbarManager.get(tabbarsOptions.MAIN),
