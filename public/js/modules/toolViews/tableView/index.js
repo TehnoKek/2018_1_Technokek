@@ -47,7 +47,7 @@ class TableView extends View {
         header.style['grid-template-columns'] = this._rowTemplate;
         
         for (let column of this._tableModel.columns) {
-            const template = window.headercellTmplTemplate({
+            const template = window.headercellViewTemplate({
                 cell: {
                     class: `js-header-${column.name}`,
                     text: column.title

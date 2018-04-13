@@ -2,7 +2,6 @@
 
 import View from "../../../view/index.js";
 import viewNames from "../../../viewNames.js";
-import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 
 
 class SectionsBarView extends View {
@@ -33,26 +32,14 @@ class SectionsBarView extends View {
         return this;
     }
 
-    // show(name) {
-    //     super.show();
-
-    //     for (let tab of this._attrs.tabbarModel.tabs) {
-    //         if (viewNames.SECTION_PARENT(tab) === name) {
-    //             tab.active = true;
-    //             return this;
-    //         }
-    //     }
-
-    //     this._attrs.tabbarModel.activateFirst();
-    //     return this;
-    // }
-
     render() {
         super.render();
 
         for (let section of this._sections) {
             section.render().renderTo(this._el);
         }
+
+        this._attrs.tabbarModel.activateFirst();
 
         return this;
     }

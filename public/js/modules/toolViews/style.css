@@ -1,13 +1,10 @@
 @import url("./buttonView/style.css");
 @import url("./formFieldView/style.css");
 @import url("./formView/style.css");
+@import url("./sections/style.css");
 @import url("./profileFieldToggle/infoView/style.css");
 @import url("./profileFieldToggle/togglerView/style.css");
 @import url("./profileFieldToggle/togglingItemView/style.css");
-@import url("./");
-@import url("./");
-@import url("./");
-@import url("./");
 @import url("./tabbarView/style.css");
 @import url("./tableView/style.css");
-@import url("./");
+@import url("./textViews/style.css");

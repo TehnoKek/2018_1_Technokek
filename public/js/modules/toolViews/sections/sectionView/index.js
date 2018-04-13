@@ -6,8 +6,6 @@ import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import tabbarEvents from "../../../../models/tabbar/eventsNames.js";
 import routerEvents from "../../../../components/router/routerEvents.js";
 import treeWay from "../../../../components/router/treeWay.js";
-import tabbarsOptions from "../../../../components/globalData/tabbarsOptions.js";
-import router from "../../../../components/router/router.js";
 
 
 class SectionView extends View {
@@ -21,6 +19,22 @@ class SectionView extends View {
             tmpl,
             attrs: { tabModel }
         });
+
+        eventBus.on(tabbarEvents.ACTIVE_CHANGED({
+            tabbarName: this._attrs.tabModel.parentName,
+            tabName: this._attrs.tabModel.name
+        }), this._changeHidden.bind(this));
+    }
+
+    _changeHidden(isActive) {
+        if (isActive) {
+            this.show();
+        }
+        else {
+            this.hide();
+        }
+
+        return this;
     }
 
     initRoutable() {

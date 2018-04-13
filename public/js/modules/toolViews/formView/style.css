@@ -1,0 +1,40 @@
+input, select {
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    width: 100%;
+    min-width: 200px;
+
+    font-size: 18px;
+    font-family: 'ProximaNovaRegular';
+    font-weight: normal;
+    font-style: normal;
+}
+
+.default-form-el {
+    margin-bottom: 10px;
+    margin-top: 3px;
+}
+
+
+.fields-section, .field-input {
+    width: 100%;
+}
+
+.form-message, .form-error {
+    font-size: 14px;
+}
+
+.form-error {
+    color: darkred;
+}
+
+.form-error:empty, .form-message:empty {
+    display: none;
+}
+
+.form-submit-subsection > a {
+    margin-right: 10px;
+}
