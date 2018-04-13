@@ -1,4 +1,6 @@
-@import url("./authSignup/authSignup.css");
+@import url("./singleplayCol/style.css");
+@import url("./authSugnupCol/style.css");
+@import url("./multiplayCol/style.css");
 
 .site-center-sections {
     display: flex;

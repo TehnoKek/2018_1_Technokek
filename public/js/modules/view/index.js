@@ -17,13 +17,13 @@ class View {
         this._attrs = attrs;
         this._active = true;
 
-        utiles.assignMixin({
-            dstObject: this,
-            sourceClass: RoutableMixin
-        });
+        // utiles.assignMixin({
+        //     dstObject: this,
+        //     sourceClass: RoutableMixin
+        // });
 
-        this.initRoutable().
-            _initAllowingDependencies();
+        // this.initRoutable().
+        this._initAllowingDependencies();
     }
 
     create(attrs) {
@@ -35,8 +35,8 @@ class View {
         const tmplHTML = this._tmpl(this._attrs);
         this._el = utiles.htmlToElements(tmplHTML)[0];
         /* сначала все скрыто */
-        this._el.hidden = true;
-        this._active = false;
+        // this._el.hidden = true;
+        // this._active = false;
         return this;
     }
 

@@ -13,8 +13,8 @@ import router from "../../../../components/router/router.js";
 import routerEvents from "../../../../components/router/routerEvents.js";
 
 const modes = {
-    SHOW: 'show',
-    EDIT: 'edit'
+    EDIT: 'edit',
+    SHOW: 'show'
 };
 
 class ProfileView extends SectionView {

@@ -1,8 +1,6 @@
 @import url("./system-font.css");
 @import url("../js/modules/tools/tools.css");
 @import url("../js/modules/downscreen/downsections/downsections.css");
-@import url("../js/modules/mainscreen/mainscreen.css");
-
 @import url("../js/modules/rootView/style.css");
 
 html, body {

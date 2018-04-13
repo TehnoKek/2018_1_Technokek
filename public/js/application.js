@@ -2,7 +2,7 @@
 
 import profileModel from './models/profile/model.js';
 import RootView from './modules/rootView/index.js';
-import router from './components/router/router.js';
+// import router from './components/router/router.js';
 import redirectFilter from './components/redirectFilter/filter.js';
 import routerPaths from './components/router/routerPaths.js';
 import filterMasks from './components/redirectFilter/masks.js';
@@ -33,6 +33,6 @@ redirectFilter.set({
     redirectPath: routerPaths.USER_ME
 });
 
-router.start();
+// router.start();
 
-window.router = router;
+// window.router = router;

@@ -1,11 +1,6 @@
 
 'use strict';
 
-// import Rules from "../../modules/downscreen/downsections/rules/rules.js";
-// import Profile from "../../modules/downscreen/downsections/profile/profile.js";
-// import Scoreboard from "../../modules/downscreen/downsections/scoreboard/scoreboard.js";
-import SMSubsection from "../../modules/tools/smTablesModule/subsection.js";
-
 import tablesNames from "./tablesNames.js";
 import tablesOptions from "./tablesOptions.js";
 import modes from "./modes.js";
@@ -13,6 +8,8 @@ import modes from "./modes.js";
 import ProfileView from "../../modules/initialScreen/downScreen/profileView/index.js";
 import RulesView from "../../modules/initialScreen/downScreen/rulesView/index.js";
 import ScoreboardView from "../../modules/initialScreen/downScreen/scoreboardView/index.js";
+import MainView from "../../modules/initialScreen/downScreen/mainView/index.js";
+
 import TableSectionView from "../../modules/toolViews/sections/tableSectionView/index.js";
 
 
@@ -20,6 +17,13 @@ const tabbarsOptions = {
     MAIN: {
         name: 'main',
         tabs: [
+            {
+                name: 'main',
+                title: 'Mimimi-tro',
+                avaliable: true,
+                active: false,
+                sectionType: MainView
+            },
             {
                 name: 'profile',
                 title: 'Profile',

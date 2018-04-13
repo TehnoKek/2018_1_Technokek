@@ -10,10 +10,9 @@ import ButtonView from "../../../../toolViews/buttonView/index.js";
 import buttonTypes from "../../../../toolViews/buttonView/types.js";
 import togglerManager from "../../../../toolViews/toggler/manager.js";
 import eventBus from "../../../../../components/arcitectureElements/eventBus.js";
-import profileEvents from "../../../../../models/profile/eventsNames.js";
 import router from "../../../../../components/router/router.js";
 import routerPaths from "../../../../../components/router/routerPaths.js";
-
+import profileEvents from "/js/models/profile/eventsNames.js";
 const modes = {
     AUTH: 'auth',
     SIGNUP: 'signup'
@@ -111,6 +110,7 @@ class AuthSignupCol extends View {
     }
 
     _initAllowingDependencies() {
+
         eventBus.on(profileEvents.AUTHORIZED(), this.hide.bind(this)).
             on(profileEvents.DEAUTHORIZED(), this.show.bind(this));
 
