@@ -24,15 +24,6 @@ class ScoreboardView extends SectionView {
         });
     }
 
-    // initRoutable() {
-    //     router.register({
-    //         path: routerPaths.SCOREBOARD,
-    //         name: this._name
-    //     });
-
-    //     return this._initRoutableByName(this._name);
-    // }
-
     render() {
         super.render();
         this._tables.render().renderTo(this._el);

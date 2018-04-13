@@ -24,13 +24,7 @@ class SectionsBarView extends View {
         });
     }
 
-    initRoutable() {
-        this._initRoutableByName(this._name);
-        for (let tab of this._attrs.tabbarModel.tabs) {
-            this._initRoutableByName(viewNames.SECTION_PARENT(tab));
-        }
-        return this;
-    }
+    
 
     render() {
         super.render();

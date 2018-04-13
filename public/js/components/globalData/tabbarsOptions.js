@@ -11,6 +11,7 @@ import ScoreboardView from "../../modules/initialScreen/downScreen/scoreboardVie
 import MainView from "../../modules/initialScreen/downScreen/mainView/index.js";
 
 import TableSectionView from "../../modules/toolViews/sections/tableSectionView/index.js";
+import routerPaths from "../router/routerPaths.js";
 
 
 const tabbarsOptions = {
@@ -22,7 +23,9 @@ const tabbarsOptions = {
                 title: 'Mimimi-tro',
                 avaliable: true,
                 active: false,
-                sectionType: MainView
+                authDepends: false,
+                sectionType: MainView,
+                routerPath: routerPaths.BASE
             },
             {
                 name: 'profile',
@@ -30,15 +33,17 @@ const tabbarsOptions = {
                 avaliable: false,
                 active: false,
                 authDepends: true,
-                sectionType: ProfileView
+                sectionType: ProfileView,
+                routerPath: routerPaths.USER
             },
             {
-                name: 'rules',
-                title: 'Rules',
+                name: 'about',
+                title: 'About',
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: RulesView
+                sectionType: RulesView,
+                routerPath: routerPaths.ABOUT
             },
             {
                 name: 'scoreboard',
@@ -46,7 +51,8 @@ const tabbarsOptions = {
                 avaliable: true,
                 active: false,
                 authDepends: false,
-                sectionType: ScoreboardView
+                sectionType: ScoreboardView,
+                routerPath: routerPaths.SCOREBOARD
             },
         ]
     },

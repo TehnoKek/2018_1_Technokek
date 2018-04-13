@@ -27,8 +27,6 @@ class FormView extends View {
             tmpl
         });
 
-        console.log(`FORM: ${this._name}`);
-
         this._connectToConstraints(constraintsMixins).
             _initFields(fields, fieldTmpl).
             _initSubmitButton(submitBtnText).

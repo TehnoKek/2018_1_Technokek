@@ -30,22 +30,6 @@ class AuthSignupCol extends View {
             _initSignupForm();
     }
 
-    initRoutable() {
-        this._authName = viewNames.VIEW_MODE(this._name, modes.AUTH);
-        this._signupName = viewNames.VIEW_MODE(this._name, modes.SIGNUP);
-
-        router.register({
-            path: routerPaths.LOGIN,
-            name: this._authName
-        }).register({
-            path: routerPaths.SIGNUP,
-            name: this._signupName 
-        });
-
-        return this._initRoutableByName(this._authName).
-                    _initRoutableByName(this._signupName);
-    }
-
     _initAuthForm() {
         authFormConfig.name = viewNames.AUTH_FORM;
         authFormConfig.parentName = this._authName;

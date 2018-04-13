@@ -28,15 +28,6 @@ class InitialScreen extends View {
         });        
     }
 
-    initRoutable() {
-        router.register({
-            path: routerPaths.BASE,
-            name: this._name
-        });
-
-        return this._initRoutableByName(this._name);
-    }
-
     render() {
         super.render();
 

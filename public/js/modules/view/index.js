@@ -17,13 +17,12 @@ class View {
         this._attrs = attrs;
         this._active = true;
 
-        // utiles.assignMixin({
-        //     dstObject: this,
-        //     sourceClass: RoutableMixin
-        // });
+        utiles.assignMixin({
+            dstObject: this,
+            sourceClass: RoutableMixin
+        });
 
-        // this.initRoutable().
-        this._initAllowingDependencies();
+        this.initRoutable()._initAllowingDependencies();
     }
 
     create(attrs) {

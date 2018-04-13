@@ -50,7 +50,8 @@ class TabbarModel {
                 dependsOnAuth: tab.authDepends,
                 parentName: this._name,
                 sectionType: tab.sectionType,
-                sectionData: tab.sectionData
+                sectionData: tab.sectionData,
+                routerPath: tab.routerPath
             })
         );
 

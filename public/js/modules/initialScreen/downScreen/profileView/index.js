@@ -35,26 +35,6 @@ class ProfileView extends SectionView {
     }
 
 // -----------------------------------------------------------------------
-// INIT ROUTABLE
-// -----------------------------------------------------------------------    
-
-    initRoutable() {
-        const showModeName = viewNames.VIEW_MODE(this._name, modes.EDIT);
-        const editModeName = viewNames.VIEW_MODE(this._name, modes.SHOW);
-
-        router.register({ 
-            path: routerPaths.USER_ME,
-            name: showModeName
-        }).register({
-            path: routerPaths.USER_EDIT,
-            name: editModeName
-        });
-
-        return this._initRoutableByName(showModeName).
-            _initRoutableByName(editModeName);
-    }
-
-// -----------------------------------------------------------------------
 // CREATE AND INIT
 // -----------------------------------------------------------------------    
 

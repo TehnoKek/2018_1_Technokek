@@ -32,7 +32,6 @@ class FormFieldView extends View {
             parentName, 
             tmpl
         });
-        console.log(`FIELD: [${parentName}]/[${this._name}]`);
 
         this._constraints = constraints;
         this._attrs = { options, messages };

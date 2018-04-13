@@ -18,7 +18,8 @@ class TabModel {
         dependsOnAuth = false,
         parentName = '',
         sectionType = {},
-        sectionData = {}
+        sectionData = {},
+        routerPath = null
     } = {}) {
         this._name = name;
         this._parentName = parentName;
@@ -26,6 +27,7 @@ class TabModel {
         
         this._sectionType = sectionType;
         this._sectionData = sectionData;
+        this._routerPath = routerPath;
 
         // call setters
         this.title = title;
