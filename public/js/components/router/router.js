@@ -4,6 +4,7 @@ import eventBus from "../arcitectureElements/eventBus.js";
 import routerEvents from "./routerEvents.js";
 import redirectFilter from "../redirectFilter/filter.js";
 import viewNames from "../../modules/viewNames.js";
+import routerPaths from "./routerPaths.js";
 
 class Router {
     constructor() { 
@@ -24,7 +25,7 @@ class Router {
             }
         });
 
-        this.open(window.location.pathname);
+        this.open(routerPaths.SCOREBOARD);
     }
 
     register({ path, name }) {
@@ -43,7 +44,12 @@ class Router {
             { path } // на всякий случай
         );
         this._active = this._map[checkedPath];
+        console.log('pushState');
         window.history.pushState({}, '', path);
+        console.log('----------------------------------------------------------------');
+        console.log(`FINISHED: ${path}, ${this._map[checkedPath]}`);
+        console.log('----------------------------------------------------------------');
+        
         return this;
     }
 }

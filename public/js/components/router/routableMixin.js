@@ -36,14 +36,11 @@ class RoutableMixin {
         name = '',
         way = treeWay.UP,
     } = {}) {
-
-        console.log(`>>> OPEN ${name}`);
-
         // если открыт, то родители уже открыты
         if (this._active) {
             return;
-        }        
-        
+        }   
+        console.log(`>>> OPEN ${name}, way: ${way}`);     
         // сначала открываем родителя
         if (way === treeWay.UP) {
             eventBus.call(routerEvents.OPEN(this._parentName), { way: treeWay.UP });
@@ -51,7 +48,7 @@ class RoutableMixin {
         console.log(`   ...show ${name}`);
         this.show(name);
         eventBus.call(routerEvents.OPENED(name), { way: treeWay.DOWN });
-        console.log(`<<< OPENED ${name}`);
+        console.log(`<<< OPENED ${name}, way: ${way}`);
 
         return this;
     }
@@ -64,14 +61,15 @@ class RoutableMixin {
         if (!this._active) {
             return;
         }
-        
+        console.log(`xxx PRE_CLOSE ${name}, way: ${way}`);
         if (way === treeWay.DOWN) {
             eventBus.call(routerEvents.PRE_CLOSING(name), { way: treeWay.DOWN });
         }
-
+        console.log(`   ...hide ${name}`);
         this.hide(name);
         eventBus.call(routerEvents.CLOSE(this._parentName), { way: treeWay.UP });
-        
+        console.log(`xxx CLOSE ${name}, way: ${way}`);
+
         return this;
     }
 

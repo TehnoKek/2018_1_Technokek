@@ -55,7 +55,6 @@ class SMTableSectionsView extends View {
     show() {
         console.log(`______SHOW ${this._name}`);
         super.show();
-        // eventBus.call(tabbarEvents.ACTIVATE_FIRST({ tabbarName: this._tabbarModel.name }));
         return this;
     }
 

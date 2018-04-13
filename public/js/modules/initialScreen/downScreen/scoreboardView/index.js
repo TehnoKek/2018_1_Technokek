@@ -17,21 +17,25 @@ class ScoreboardView extends SectionView {
             parentName: this._name,
             tabbarOptions: tabbarsOptions.SCOREBOARD,
         });
-    }
 
-    initRoutable() {
         router.register({
             path: routerPaths.SCOREBOARD,
             name: this._name
         });
-
-        return this._initRoutableByName(this._name);
     }
+
+    // initRoutable() {
+    //     router.register({
+    //         path: routerPaths.SCOREBOARD,
+    //         name: this._name
+    //     });
+
+    //     return this._initRoutableByName(this._name);
+    // }
 
     render() {
         super.render();
         this._tables.render().renderTo(this._el);
-        super._changeHidden();
         return this;
     }
 

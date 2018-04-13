@@ -33,6 +33,6 @@ redirectFilter.set({
     redirectPath: routerPaths.USER_ME
 });
 
-//router.start();
+router.start();
 
 window.router = router;

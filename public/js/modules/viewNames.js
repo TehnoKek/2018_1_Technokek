@@ -25,8 +25,11 @@ const viewNames = {
 
     TABBAR: tabbarName => `tabbar:${tabbarName}`,
     TAB: (tabbarName, tabName) => `tabbar:${tabbarName}/${tabName}`,
-    SECTIONS_BAR: tabbarName => `sections:${tabbarName}`,
-    SECTION: (tabbarName, tabName) => `sections:${tabbarName}/${tabName}`,
+    
+    SECTIONS_BAR: tabbarModel => `sections:${tabbarModel.name}`,
+    SECTION: (tabModel) => `sections:${tabModel.parentName}/${tabModel.name}`,
+    SECTION_PARENT: (tabModel) => `sections:${tabModel.parentName}/for:${tabModel.name}`,
+
     FORM: formName => `form:${formName}`,
     FORM_FIELD: (formName, fieldName) => `${formName}/${fieldName}`,
 

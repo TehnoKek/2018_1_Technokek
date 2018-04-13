@@ -229,17 +229,17 @@ class ProfileView extends SectionView {
 // SHOWING
 // -----------------------------------------------------------------------    
 
-    show(name) {
-        super.show();
+    // show(name) {
+    //     super.show();
         
-        if (name !== viewNames.VIEW_MODE(this._name, modes.EDIT)) {
-            eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.SHOW)));
-            return this._toShowMode();
-        }
+    //     if (name !== viewNames.VIEW_MODE(this._name, modes.EDIT)) {
+    //         eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.SHOW)));
+    //         return this._toShowMode();
+    //     }
         
-        eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.EDIT)));
-        return this._toEditMode();
-    }
+    //     eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.EDIT)));
+    //     return this._toEditMode();
+    // }
 
 }
 

@@ -9,11 +9,12 @@ class View {
         name = '',
         parentName = '',
         tmpl = utiles.noop,
+        attrs = {}
     } = {}) {
         this._name = name;
         this._parentName = parentName;
         this._tmpl = tmpl;
-        this._attrs = {};
+        this._attrs = attrs;
         this._active = true;
 
         utiles.assignMixin({
@@ -33,9 +34,9 @@ class View {
         this._attrs = attrs || this._attrs;
         const tmplHTML = this._tmpl(this._attrs);
         this._el = utiles.htmlToElements(tmplHTML)[0];
-        // /* сначала все скрыто */
-        // this._el.hidden = true;
-        // this._active = false;
+        /* сначала все скрыто */
+        this._el.hidden = true;
+        this._active = false;
         return this;
     }
 

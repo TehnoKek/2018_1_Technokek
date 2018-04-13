@@ -4,6 +4,10 @@ import View from "../../../view/index.js";
 import viewNames from "../../../viewNames.js";
 import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import tabbarEvents from "../../../../models/tabbar/eventsNames.js";
+import routerEvents from "../../../../components/router/routerEvents.js";
+import treeWay from "../../../../components/router/treeWay.js";
+import tabbarsOptions from "../../../../components/globalData/tabbarsOptions.js";
+import router from "../../../../components/router/router.js";
 
 
 class SectionView extends View {
@@ -12,47 +16,56 @@ class SectionView extends View {
         tmpl
     }) {
         super({
-            parentName: viewNames.SECTIONS_BAR(tabModel.parentName),
-            name: viewNames.SECTION(tabModel.parentName, tabModel.name),
-            tmpl
+            parentName: viewNames.SECTION_PARENT(tabModel),
+            name: viewNames.SECTION(tabModel),
+            tmpl,
+            attrs: { tabModel }
         });
-
-        
-        eventBus.on(tabbarEvents.ACTIVE_CHANGED({
-            tabbarName: tabModel.parentName,
-            tabName: tabModel.name
-        }), this._changeHidden.bind(this));
-
-        this._attrs.tabModel = tabModel;
     }
 
-    // initRoutable() {
-    //     return this.connect({
-    //         name: this._name,
-    //         onOpenCallback: () => {
-    //             this.open();
-    //         }
-    //     })
-    // }
+    initRoutable() {
+        eventBus.on(tabbarEvents.ACTIVE_CHANGED({
+            tabbarName: this._attrs.tabModel.parentName,
+            tabName: this._attrs.tabModel.name
+        }), this._callOpenCloseCallback.bind(this));
+
+        eventBus.on(routerEvents.OPEN(this._name), () => {
+            this._attrs.tabModel.active = true;    
+        });
+
+        this._onOpenCallback = ({ way = treeWay.UP } = {}) => {
+            this.open({
+                name: this._name,
+                way
+            });
+        };
+
+        this._onCloseCallback = ({ way = treeWay.UP } = {}) => {
+            this.close({
+                name: this._name,
+                way
+            });
+        };
+
+        return this.connect({
+            name: this._name,
+            onOpenCallback: this._onOpenCallback.bind(this),
+            onCloseCallback: this._onCloseCallback.bind(this)
+        });
+    }
+
+    _callOpenCloseCallback(isActive) {
+        if (isActive) {
+            this._onOpenCallback();
+        }
+        else {
+            this._onCloseCallback();
+        }
+        return this;
+    }
 
     render() {
         return super.render();
-    }
-
-    _changeHidden(isActive) {
-        if (isActive) {
-            this.show();
-        }
-        else {
-            this.hide();
-        }
-        return this;
-    }
-
-    show() {
-        super.show();
-        this._attrs.tabModel.active = true;
-        return this;
     }
 }
 
