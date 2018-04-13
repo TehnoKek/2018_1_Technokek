@@ -11,6 +11,13 @@ import buttonTypes from "../../../../toolViews/buttonView/types.js";
 import togglerManager from "../../../../toolViews/toggler/manager.js";
 import eventBus from "../../../../../components/arcitectureElements/eventBus.js";
 import profileEvents from "../../../../../models/profile/eventsNames.js";
+import router from "../../../../../components/router/router.js";
+import routerPaths from "../../../../../components/router/routerPaths.js";
+
+const modes = {
+    AUTH: 'auth',
+    SIGNUP: 'signup'
+};
 
 class AuthSignupCol extends View {
     constructor({ parentName }) {
@@ -24,13 +31,29 @@ class AuthSignupCol extends View {
             _initSignupForm();
     }
 
+    initRoutable() {
+        this._authName = viewNames.VIEW_MODE(this._name, modes.AUTH);
+        this._signupName = viewNames.VIEW_MODE(this._name, modes.SIGNUP);
+
+        router.register({
+            path: routerPaths.LOGIN,
+            name: this._authName
+        }).register({
+            path: routerPaths.SIGNUP,
+            name: this._signupName 
+        });
+
+        return this._initRoutableByName(this._authName).
+                    _initRoutableByName(this._signupName);
+    }
+
     _initAuthForm() {
         authFormConfig.name = viewNames.AUTH_FORM;
-        authFormConfig.parentName = this._name;
+        authFormConfig.parentName = this._authName;
         authFormConfig.reciverCallback = profileModel.auth.bind(profileModel);
         authFormConfig.downButtons = [
             new ButtonView({
-                parentName: this._name,
+                parentName: this._authName,
                 text: 'Registration!',
                 events: [{
                     name: 'click',
@@ -46,11 +69,11 @@ class AuthSignupCol extends View {
 
     _initSignupForm() {
         signupFormConfig.name = viewNames.SIGNUP_FORM;
-        signupFormConfig.parentName = this._name;
+        signupFormConfig.parentName = this._signupName;
         signupFormConfig.reciverCallback = profileModel.signup.bind(profileModel);
         signupFormConfig.downButtons = [
             new ButtonView({
-                parentName: this._name,
+                parentName: this._signupName,
                 text: 'Login!',
                 events: [{
                     name: 'click',
@@ -67,20 +90,20 @@ class AuthSignupCol extends View {
     render() {
         super.render();
 
-        const authFormContainer = this._el.querySelector('.js-auth-form-container');
-        this._authForm.render().renderTo(authFormContainer).show();
-        authFormContainer.hidden = false;
+        this._authFormContainer = this._el.querySelector('.js-auth-form-container');
+        this._authForm.render().renderTo(this._authFormContainer);
+        this._authFormContainer.hidden = false;
 
-        const signupFormContainer = this._el.querySelector('.js-signup-form-container');
-        this._signupForm.render().renderTo(signupFormContainer).show();
-        signupFormContainer.hidden = true;
+        this._signupFormContainer = this._el.querySelector('.js-signup-form-container');
+        this._signupForm.render().renderTo(this._signupFormContainer);
+        this._signupFormContainer.hidden = true;
 
 
         togglerManager.add({
             name: this._name,
             nodes: [
-                authFormContainer,
-                signupFormContainer
+                this._authFormContainer,
+                this._signupFormContainer
             ]
         });
 
@@ -91,6 +114,21 @@ class AuthSignupCol extends View {
         eventBus.on(profileEvents.AUTHORIZED(), this.hide.bind(this)).
             on(profileEvents.DEAUTHORIZED(), this.show.bind(this));
 
+        return this;
+    }
+
+    show(name) {
+        super.show();
+        if (name === this._signupName) {
+            if (this._authFormContainer.hidden) {
+                togglerManager.toggle(this._name);
+            }
+        }
+        else {
+            if (this._signupFormContainer.hidden) {
+                togglerManager.toggle(this._name);
+            }
+        }
         return this;
     }
 }

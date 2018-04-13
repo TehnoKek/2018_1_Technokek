@@ -24,6 +24,7 @@ class Filter {
             this._masks[path] = {};
         }
         this._masks[path][mask] = redirectPath;
+        return this;
     }
 
     check(path) {
@@ -33,7 +34,7 @@ class Filter {
 
         for(let checker of Object.keys(this._masks[path])) {
             if (!checker(path)) {
-                return this._masks[path][checker];
+                return this.check(this._masks[path][checker]);
             }
         }
 

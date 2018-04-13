@@ -12,9 +12,10 @@ const filterMasks = {
             if (path === realPath) {
                 return true;
             }
-            return false;
         }
-    }
+        return false;
+    },
+    PASS_ALL: () => true
 };
 
 export default filterMasks;

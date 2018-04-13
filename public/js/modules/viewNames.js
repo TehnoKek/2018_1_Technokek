@@ -28,7 +28,7 @@ const viewNames = {
     SECTIONS_BAR: tabbarName => `sections:${tabbarName}`,
     SECTION: (tabbarName, tabName) => `sections:${tabbarName}/${tabName}`,
     FORM: formName => `form:${formName}`,
-    FORM_FIELD: (formName, fieldName) => `form:${formName}/${fieldName}`,
+    FORM_FIELD: (formName, fieldName) => `${formName}/${fieldName}`,
 
     BUTTON: (parentName, buttonText) => `${parentName}/button:[${buttonText}]`,
 
@@ -38,6 +38,8 @@ const viewNames = {
     PROFILE_FIELD_TOGGLER: (fieldName) => `proflieFieldToggler:${fieldName}`,
 
     TABLE: (tableName) => `table:${tableName}`,
+
+    VIEW_MODE: (viewName, modeName) => `${viewName}::${modeName}`
 };
 
 export default viewNames;

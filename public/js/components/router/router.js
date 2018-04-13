@@ -3,6 +3,7 @@
 import eventBus from "../arcitectureElements/eventBus.js";
 import routerEvents from "./routerEvents.js";
 import redirectFilter from "../redirectFilter/filter.js";
+import viewNames from "../../modules/viewNames.js";
 
 class Router {
     constructor() { 
@@ -28,6 +29,7 @@ class Router {
 
     register({ path, name }) {
         this._map[path] = name;
+        return this;
     }
 
     open(path) {
@@ -41,6 +43,8 @@ class Router {
             { path } // на всякий случай
         );
         this._active = this._map[checkedPath];
+        window.history.pushState({}, '', path);
+        return this;
     }
 }
 

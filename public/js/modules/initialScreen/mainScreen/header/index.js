@@ -6,7 +6,7 @@ import viewNames from "../../../viewNames.js";
 class Header extends View {
     constructor({ parentName }) {
         super({
-            name: viewNames,
+            name: viewNames.HEADER,
             parentName,
             tmpl: window.header1TmplTemplate
         });

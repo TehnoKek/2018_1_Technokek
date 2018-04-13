@@ -4,6 +4,7 @@ import tabbarManager from "../../../models/tabbar/manager.js";
 import tabTypes from "./types.js";
 import View from "../../view/index.js";
 import TabView from "./tabView.js";
+import viewNames from "../../viewNames.js";
 
 class TabbarView extends View {
     constructor({
@@ -13,7 +14,7 @@ class TabbarView extends View {
     } = {}) {
         super({
             parentName,
-            name: tabbarManager.get(tabbarOptions).name,
+            name: viewNames.TABBAR(tabbarManager.get(tabbarOptions).name),
             tmpl: window.tabbarviewTmplTemplate,
         });
 

@@ -21,6 +21,8 @@ class MainScreen extends View {
         this._tabbar = new TabbarView({ parentName: this._name, tabType: tabTypes.TAB_LG, tabbarOptions: tabbarsOptions.MAIN });
     }
 
+    
+
     render() {
         super.render();
 

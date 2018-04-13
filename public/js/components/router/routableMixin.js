@@ -34,9 +34,11 @@ class RoutableMixin {
     
     open({ 
         name = '',
-        state = {},
         way = treeWay.UP,
     } = {}) {
+
+        console.log(`>>> OPEN ${name}`);
+
         // если открыт, то родители уже открыты
         if (this._active) {
             return;
@@ -46,16 +48,16 @@ class RoutableMixin {
         if (way === treeWay.UP) {
             eventBus.call(routerEvents.OPEN(this._parentName), { way: treeWay.UP });
         }
-        
-        this.show(state); // Метод объекта, к которому применен mixin
+        console.log(`   ...show ${name}`);
+        this.show(name);
         eventBus.call(routerEvents.OPENED(name), { way: treeWay.DOWN });
-        
+        console.log(`<<< OPENED ${name}`);
+
         return this;
     }
 
     close({
         name = '',
-        state = {},
         way = treeWay.UP,
     } = {}) {
         
@@ -67,7 +69,7 @@ class RoutableMixin {
             eventBus.call(routerEvents.PRE_CLOSING(name), { way: treeWay.DOWN });
         }
 
-        this.hide(state); // Метод объекта, к которому применен mixin
+        this.hide(name);
         eventBus.call(routerEvents.CLOSE(this._parentName), { way: treeWay.UP });
         
         return this;
@@ -75,21 +77,26 @@ class RoutableMixin {
 
     // базовая реализация
     initRoutable() {
+        return this._initRoutableByName(this._name);
+    }
+
+    _initRoutableByName(name) {
         this.connect({
-            name: this._name,
+            name,
             onOpenCallback: ({ way = treeWay.UP }) => {
                 this.open({
-                    name: this._name,
+                    name,
                     way,
                 });
             },
             onCloseCallback: ({ way = treeWay.UP }) => {
                 this.close({
-                    name: this._name,
+                    name,
                     way
                 });
             }
         });
+        return this;
     }
 }
 

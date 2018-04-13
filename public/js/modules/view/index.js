@@ -21,7 +21,8 @@ class View {
             sourceClass: RoutableMixin
         });
 
-        this.initRoutable();
+        this.initRoutable().
+            _initAllowingDependencies();
     }
 
     create(attrs) {
@@ -32,18 +33,22 @@ class View {
         this._attrs = attrs || this._attrs;
         const tmplHTML = this._tmpl(this._attrs);
         this._el = utiles.htmlToElements(tmplHTML)[0];
+        // /* сначала все скрыто */
+        // this._el.hidden = true;
+        // this._active = false;
         return this;
     }
 
     hide() {
         this._active = false;
-        this._el.setAttribute('hidden', 'hidden');
+        this._el.hidden = true;
         return this;
     }
 
     show() {
+        // console.log(`--- ${this._name} show`);
         this._active = true;
-        this._el.removeAttribute('hidden');
+        this._el.hidden = false;
         return this;
     }
 

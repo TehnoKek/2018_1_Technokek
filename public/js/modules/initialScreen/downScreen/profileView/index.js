@@ -7,10 +7,14 @@ import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import profileEvents from "../../../../models/profile/eventsNames.js";
 import EditSection from "./editSection/index.js";
 import HistorySection from "./historySection/index.js";
+import viewNames from "../../../viewNames.js";
+import routerPaths from "../../../../components/router/routerPaths.js";
+import router from "../../../../components/router/router.js";
+import routerEvents from "../../../../components/router/routerEvents.js";
 
 const modes = {
-    SHOW: 0,
-    EDIT: 1
+    SHOW: 'show',
+    EDIT: 'edit'
 };
 
 class ProfileView extends SectionView {
@@ -30,6 +34,30 @@ class ProfileView extends SectionView {
             _initSections();
     }
 
+// -----------------------------------------------------------------------
+// INIT ROUTABLE
+// -----------------------------------------------------------------------    
+
+    initRoutable() {
+        const showModeName = viewNames.VIEW_MODE(this._name, modes.EDIT);
+        const editModeName = viewNames.VIEW_MODE(this._name, modes.SHOW);
+
+        router.register({ 
+            path: routerPaths.USER_ME,
+            name: showModeName
+        }).register({
+            path: routerPaths.USER_EDIT,
+            name: editModeName
+        });
+
+        return this._initRoutableByName(showModeName).
+            _initRoutableByName(editModeName);
+    }
+
+// -----------------------------------------------------------------------
+// CREATE AND INIT
+// -----------------------------------------------------------------------    
+
     _connectoToEventBus() {
         eventBus.on(
             profileEvents.AUTHORIZED(), (data) => {
@@ -44,7 +72,7 @@ class ProfileView extends SectionView {
 
     _initButtons() {
         this._editBtn = new ButtonView({
-            parentName: this._name,
+            parentName: viewNames.VIEW_MODE(this._name, modes.SHOW),
             text: 'Edit profile',
             wide: true,
             events: [{
@@ -58,6 +86,7 @@ class ProfileView extends SectionView {
         });
 
         this._stopEditBtn = new ButtonView({
+            parentName: viewNames.VIEW_MODE(this._name, modes.EDIT),            
             text: 'To profile',
             wide: true,
             events: [{
@@ -71,6 +100,7 @@ class ProfileView extends SectionView {
         });
 
         this._logoutBtn = new ButtonView({
+            parentName: viewNames.VIEW_MODE(this._name, modes.SHOW),            
             text: 'Logout',
             wide: true,
             events: [{
@@ -194,6 +224,23 @@ class ProfileView extends SectionView {
     _renderSections() {
         return this;
     }
+
+// -----------------------------------------------------------------------
+// SHOWING
+// -----------------------------------------------------------------------    
+
+    show(name) {
+        super.show();
+        
+        if (name !== viewNames.VIEW_MODE(this._name, modes.EDIT)) {
+            eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.SHOW)));
+            return this._toShowMode();
+        }
+        
+        eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.EDIT)));
+        return this._toEditMode();
+    }
+
 }
 
 export default ProfileView;

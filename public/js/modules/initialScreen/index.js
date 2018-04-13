@@ -6,6 +6,8 @@ import MainScreen from "./mainScreen/index.js";
 import SectionsBarView from "../toolViews/sections/sectionsBarView/index.js";
 import tabbarManager from "../../models/tabbar/manager.js";
 import tabbarsOptions from "../../components/globalData/tabbarsOptions.js";
+import router from "../../components/router/router.js";
+import routerPaths from "../../components/router/routerPaths.js";
 
 class InitialScreen extends View {
     constructor({ parentName }) {
@@ -21,8 +23,15 @@ class InitialScreen extends View {
             tabbarModel: tabbarManager.get(tabbarsOptions.MAIN),
             tmpl: window.downscreen1TmplTemplate 
         });        
+    }
 
-        //this._downScreen = new SectionsBar({ parentName: this._name });
+    initRoutable() {
+        router.register({
+            path: routerPaths.BASE,
+            name: this._name
+        });
+
+        return this._initRoutableByName(this._name);
     }
 
     render() {
@@ -31,9 +40,6 @@ class InitialScreen extends View {
         this._mainScreen.render().renderTo(this._el);
         this._downScreen.render().renderTo(this._el);
         
-        // const downScreenContainer = this._el.querySelector('.js-down-screen-container');
-        // this._downScreen.render().renderTo(downScreenContainer);
-
         return this;
     }
 }

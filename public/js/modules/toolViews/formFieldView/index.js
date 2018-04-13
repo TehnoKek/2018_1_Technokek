@@ -3,11 +3,11 @@
 import View from "../../view/index.js";
 
 import * as constrs from '../../../components/constraints.js';
+import viewNames from "../../viewNames.js";
 
 class FormFieldView extends View {
     
     constructor({
-        name = '',
         parentName = '',
         tmpl = window.fieldviewTmplTemplate,
         
@@ -28,10 +28,11 @@ class FormFieldView extends View {
         },
     } = {}) {
         super({
-            name, 
+            name: viewNames.FORM_FIELD(parentName, options.name), 
             parentName, 
             tmpl
         });
+        console.log(`FIELD: [${parentName}]/[${this._name}]`);
 
         this._constraints = constraints;
         this._attrs = { options, messages };

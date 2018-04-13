@@ -6,6 +6,7 @@ import FormFieldView from "../formFieldView/index.js";
 import GLOBAL_FORM_ERROR from "../../../components/formConstraints/globalFormError.js";
 import ButtonView from "../buttonView/index.js";
 import buttonTypes from "../buttonView/types.js";
+import viewNames from "../../viewNames.js";
 
 class FormView extends View {
     constructor({
@@ -21,10 +22,12 @@ class FormView extends View {
         constraintsMixins = []
     }) {
         super({
-            name,
+            name: viewNames.FORM(name),
             parentName,
             tmpl
         });
+
+        console.log(`FORM: ${this._name}`);
 
         this._connectToConstraints(constraintsMixins).
             _initFields(fields, fieldTmpl).
@@ -47,7 +50,6 @@ class FormView extends View {
 
     _initSubmitButton(submitBtnText) {
         this._submitBtn = new ButtonView({
-            name: `form:${this._name}/${submitBtnText}`,
             parentName: this._name,
             style: buttonTypes.PRIMARY,
             text: submitBtnText,
@@ -62,7 +64,6 @@ class FormView extends View {
     _initFields(fields, fieldTmpl) {
         this._fields = fields.map((option) => {
             option.tmpl = fieldTmpl;
-            option.name = `form:${this._name}/${option.options.name}`;
             option.parentName = this._name;
             return new FormFieldView(option);
         });

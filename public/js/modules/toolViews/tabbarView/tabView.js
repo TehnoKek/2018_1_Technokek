@@ -3,14 +3,15 @@
 import eventBus from "../../../components/arcitectureElements/eventBus.js";
 import tabbarEvents from "../../../models/tabbar/eventsNames.js";
 import View from "../../view/index.js";
+import viewNames from "../../viewNames.js";
 
 class TabView extends View {
     constructor({
         tabModel = {},
         tabType = ''
     } = {}) {
-        const parentName = `tabbarView:${tabModel.parentName}`;
-        const name = `${parentName}/${tabModel.name}`;
+        const parentName = viewNames.TABBAR(tabModel.parentName);
+        const name = viewNames.TAB(parentName, tabModel.name);
         super({
             parentName, 
             name,

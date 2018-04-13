@@ -64,9 +64,12 @@ class ProfileFieldTogglerView extends View {
             default:
                 break;
         }
+        formsOptions.name = fieldName;
+        formsOptions.parentName = this._name;
 
         const formChildInner = new FormView(formsOptions);
         this._formChild = new ProfileFieldTogglingItemView({
+            fieldName,
             parentName: this._name,
             child: formChildInner,
             togglingBtnText: 'Cancel',

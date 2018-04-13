@@ -3,6 +3,8 @@
 import SectionView from "../../../toolViews/sections/sectionView/index.js";
 import SMTableSectionsView from "../../../toolViews/sections/smTableSectionsView/index.js";
 import tabbarsOptions from "../../../../components/globalData/tabbarsOptions.js";
+import router from "../../../../components/router/router.js";
+import routerPaths from "../../../../components/router/routerPaths.js";
 
 class ScoreboardView extends SectionView {
     constructor({ tabModel }) {
@@ -15,6 +17,15 @@ class ScoreboardView extends SectionView {
             parentName: this._name,
             tabbarOptions: tabbarsOptions.SCOREBOARD,
         });
+    }
+
+    initRoutable() {
+        router.register({
+            path: routerPaths.SCOREBOARD,
+            name: this._name
+        });
+
+        return this._initRoutableByName(this._name);
     }
 
     render() {

@@ -5,6 +5,7 @@ import viewNames from "../../../viewNames.js";
 import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import tabbarEvents from "../../../../models/tabbar/eventsNames.js";
 
+
 class SectionView extends View {
     constructor({
         tabModel,
@@ -24,6 +25,15 @@ class SectionView extends View {
 
         this._attrs.tabModel = tabModel;
     }
+
+    // initRoutable() {
+    //     return this.connect({
+    //         name: this._name,
+    //         onOpenCallback: () => {
+    //             this.open();
+    //         }
+    //     })
+    // }
 
     render() {
         return super.render();
