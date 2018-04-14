@@ -28,7 +28,7 @@ class InitialScreen extends View {
         this._downScreen = new SectionsBarView({ 
             parentName: this.name,
             tabbarModel: tabbarManager.get(tabbarsOptions.MAIN),
-            tmpl: window.downscreen1TmplTemplate 
+            tmpl: window.downscreenViewTemplate 
         });        
     }
 
