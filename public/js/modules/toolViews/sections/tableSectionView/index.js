@@ -63,7 +63,7 @@ class TableSectionView extends SectionView {
     }
 
     _reloadTable(isActive) {
-    if (!isActive) {
+        if (!isActive) {
             this._tableModel.clear();
         }
         else {

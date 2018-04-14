@@ -10,15 +10,12 @@ class TabView extends View {
         tabModel = {},
         tabType = ''
     } = {}) {
-        const parentName = viewNames.TABBAR(tabModel.parentName);
-        const name = viewNames.TAB(parentName, tabModel.name);
         super({
-            parentName, 
-            name,
+            parentName: viewNames.TAB_PARENT(tabModel), 
+            name: viewNames.TAB(tabModel),
+            attrs: { tabType, tabModel },
             tmpl: window.tabviewTmplTemplate
         });
-
-        this._attrs = { tabType, tabModel };
         this._connectToEventBus();
     }
 

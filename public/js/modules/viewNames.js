@@ -23,8 +23,9 @@ const viewNames = {
     EDIT_SECTION: 'editSection',
     HISTORY_SECTION: 'historySection',
 
-    TABBAR: tabbarName => `tabbar:${tabbarName}`,
-    TAB: (tabbarName, tabName) => `tabbar:${tabbarName}/${tabName}`,
+    TABBAR: tabbarModel => `tabbar:${tabbarModel.name}`,
+    TAB_PARENT: tabModel => `tabbar:${tabModel.parentName}`,
+    TAB: (tabModel) => `tabbar:${tabModel.parentName}/${tabModel.name}`,
     
     SECTIONS_BAR: tabbarModel => `sections:${tabbarModel.name}`,
     SECTION: (tabModel) => `sections:${tabModel.parentName}/${tabModel.name}`,

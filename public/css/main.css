@@ -60,6 +60,7 @@ SITE-CENTER
 ---------------------------------------------*/
 
 .site-center {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;

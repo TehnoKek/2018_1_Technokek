@@ -4,6 +4,7 @@ import eventBus from "../arcitectureElements/eventBus.js";
 import treeWay from "./treeWay.js";
 import routerEvents from "./routerEvents.js";
 import utiles from "../utiles.js";
+import router from "./router.js";
 
 
 class RoutableMixin {
@@ -14,6 +15,9 @@ class RoutableMixin {
     
     // name и callback передаются, т.к. они в различных состояниях могут иметь различные значения
     connect({ name, onOpenCallback, onOpenedCallback, onCloseCallback }) {
+
+        console.log(`CONNECT: ${name} => ${this._parentName}`);
+
         eventBus.on(routerEvents.OPEN(name), onOpenCallback).
             on(routerEvents.OPENED(this._parentName), onOpenedCallback).
             on(routerEvents.CLOSE(name), onCloseCallback).
@@ -33,70 +37,86 @@ class RoutableMixin {
 // OPEN / CLOSE
 // -----------------------------------------------------------------------------
     
-    open({
-        comeFrom = null,
-        name = this._name,
+    open({ 
+        name, 
+        data = {
+            cameFrom: null,
+        } 
     } = {}) {
-        console.log(`>>> OPEN; come from: ${comeFrom}, me: ${name}`);
-        eventBus.call(routerEvents.OPEN(this._parentName), {
-            comeFrom: name,
-            name: this._parentName,
-        });
-        console.log(`show me: ${name}`);
-        this.show(name);
-
+        if (this._active) {
+            return this;
+        }
         
-        eventBus.call(routerEvents.OPENED(name));
+        this._myCallingName = name;
+        eventBus.call(routerEvents.OPEN(this._parentName), {cameFrom: name});
 
+        if (this._myCallingName) {
+            console.log(`show ${this._myCallingName} from: ${data.cameFrom}`);            
+            this.show(this._myCallingName);
+            eventBus.call(routerEvents.OPENED(this._myCallingName));
+        }
+        else {
+            console.log(`show ${this._name} from: ${data.cameFrom}`);            
+            this.show(this._name);
+            eventBus.call(routerEvents.OPENED(this._name));
+        }
+        this._myCallingName = null;
 
         return this;
     }
 
-    openDown() {
+    openDown({ 
+        name, 
+        data = {}
+    } = {}) {
         if (this._active) {
             return this;
         }
 
-
-        //if (prevComeFrom !== this.name || prevComeFrom === null) { 
-        console.log(`show me: ${this._name}`);
-        this.show(this._name);
-        console.log(`>>> OPEN DOWN; me: ${this._name}`);
-        eventBus.call(routerEvents.OPENED(this._name));
-        //}
+        if (this._myCallingName) {
+            console.log(`show down ${this._myCallingName}`);
+            this.show(this._myCallingName);
+            eventBus.call(routerEvents.OPENED(this._myCallingName));        
+        }
+        else {
+            console.log(`open down ${this._name}`);
+            this.show(this._name);        
+            eventBus.call(routerEvents.OPENED(this._name));
+        }
+        this._myCallingName = null;
+        return this;
     }
 
-    close({
-        name = '',
-        way = treeWay.UP,
+    close({ 
+        name, 
+        data 
     } = {}) {
-        
-        if (!this._active) {
-            return;
-        }
-        console.log(`xxx PRE_CLOSE ${name}, way: ${way}`);
-        if (way === treeWay.DOWN) {
-            eventBus.call(routerEvents.PRE_CLOSING(name), { way: treeWay.DOWN });
-        }
-        console.log(`   ...hide ${name}`);
-        this.hide(name);
-        eventBus.call(routerEvents.CLOSE(this._parentName), { way: treeWay.UP });
-        console.log(`xxx CLOSE ${name}, way: ${way}`);
-
+    
         return this;
     }
 
     // базовая реализация
     initRoutable() {
+        console.log(`call base: initRoutable(${this.name})`);
         return this._initRoutableByName(this._name);
     }
 
     _initRoutableByName(name) {
+        this[`_onOpenCallback:${name}`] = (data = {}) => {
+            this.open({name, data});
+        };
+        this[`_onOpenedCallback:${name}`] = (data = {}) => {
+            this.openDown({name, data});
+        };
+        this[`_onCloseCallback:${name}`] = (data = {}) => {
+            this.close({name, data});
+        };
+
         this.connect({
             name,
-            onOpenCallback: this.open.bind(this), // this._onCallbacks.OPEN[name].bind(this),
-            onOpenedCallback: this.openDown.bind(this),
-            onCloseCallback: this.close.bind(this) // this._onCallbacks.CLOSE[name].bind(this)
+            onOpenCallback: this[`_onOpenCallback:${name}`].bind(this),
+            onOpenedCallback: this[`_onOpenedCallback:${name}`].bind(this),
+            onCloseCallback: this[`_onCloseCallback:${name}`].bind(this)
         });
         return this;
     }

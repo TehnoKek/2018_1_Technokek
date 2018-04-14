@@ -14,7 +14,7 @@ class TabbarView extends View {
     } = {}) {
         super({
             parentName,
-            name: viewNames.TABBAR(tabbarManager.get(tabbarOptions).name),
+            name: viewNames.TABBAR(tabbarManager.get(tabbarOptions)),
             tmpl: window.tabbarviewTmplTemplate,
         });
 
