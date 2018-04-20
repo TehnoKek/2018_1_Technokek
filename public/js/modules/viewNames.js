@@ -43,7 +43,8 @@ const viewNames = {
 
     TABLE: (tableName) => `table:${tableName}`,
 
-    VIEW_MODE: (viewName, modeName) => `${viewName}::${modeName}`
+    VIEW_MODE: (viewName, modeName) => `${viewName}::${modeName}`,
+    NO_PARENT: (parentName) => `noParent:${parentName}`,
 };
 
 export default viewNames;

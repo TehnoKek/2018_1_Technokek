@@ -34,52 +34,56 @@ class RoutableMixin {
 // OPEN / CLOSE
 // -----------------------------------------------------------------------------
 
-    open({ name }) {
-        if (this._active) {
-            this._myCallingName = null;
-            return this;
+
+    // 1) сначала открыть родителя
+    // 2) затем открыть себя
+    // 3) затем сигнал о том, что открылся
+    open({ 
+        name,
+        data = { initiator: null } 
+    } = {}) {
+        if (!this._active) {
+            this.setCallWithName(name);
+            eventBus.call(routerEvents.OPEN(this._parentName), {
+                initiator: this.getCallWithName()
+            });
+        }
+        // если добрались до корня
+        if (!this._active) {
+            console.log('PARENT NAME IN UP', this._parentName, this.getCallWithName());
+            this.show(this.getCallWithName(), data.initiator);
+            eventBus.call(
+                routerEvents.OPENED(this.getCallWithName()),
+                { initiator: this.getCallWithName() }
+            );
         }
         
-        this._myCallingName = name;
-        eventBus.call(routerEvents.OPEN(this._parentName), {cameFrom: name});
-
-        if (!this._active) {
-            const callWithName = this._myCallingName ? this._myCallingName : this._name;
-            this.show(callWithName);
-            eventBus.call(routerEvents.OPENED(callWithName));
-            this._myCallingName = null;
-        }
         return this;
     }
 
-    openDown() {
-        if (this._active) {
-            const callWithName = this._myCallingName ? this._myCallingName : this._name;
-            eventBus.call(routerEvents.OPENED(callWithName));
-            return this;
+    // 1) Если еще не открыт, то открыть себя
+    // 2) Сигнал о том, что открылся
+    openDown({
+        name,
+        data = { initiator: null }
+    } = {}) {
+        if (!this._active) {
+            this.show(this.getCallWithName(), data.initiator);
         }
-
-        const callWithName = this._myCallingName ? this._myCallingName : this._name;        
-        this.show(callWithName);
-        eventBus.call(routerEvents.OPENED(callWithName));        
-    
-        this._myCallingName = null;
+        eventBus.call(
+            routerEvents.OPENED(this.getCallWithName()), 
+            { initiator: this.getCallWithName() }
+        );
         return this;
     }
 
-    close() {
-        if (!this._active) {
-            this._myCallingName = null;
-            return this;
-        }
-
+    close({ name }) {
+        this.setCallWithName(null);        
         if (this._active) {
-            eventBus.call(routerEvents.PRE_CLOSING(this._name));
+            eventBus.call(routerEvents.PRE_CLOSING(name));
             this.hide();
+            eventBus.call(routerEvents.CLOSE(this._parentName));
         }
-        eventBus.call(routerEvents.CLOSE(this._parentName));
-              
-        this._myCallingName = null;
         return this;
     }
 
@@ -105,6 +109,15 @@ class RoutableMixin {
             onOpenedCallback: this[`_onOpenedCallback:${name}`].bind(this),
             onCloseCallback: this[`_onCloseCallback:${name}`].bind(this)
         });
+        return this;
+    }
+    
+    getCallWithName() {
+        return this._myCallingName ? this._myCallingName : this._name;
+    }
+
+    setCallWithName(val) {
+        this._myCallingName = val;
         return this;
     }
 }

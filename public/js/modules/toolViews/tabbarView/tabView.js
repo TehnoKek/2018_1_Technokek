@@ -4,6 +4,7 @@ import eventBus from "../../../components/arcitectureElements/eventBus.js";
 import tabbarEvents from "../../../models/tabbar/eventsNames.js";
 import View from "../../view/index.js";
 import viewNames from "../../viewNames.js";
+import routerEvents from "../../../components/router/routerEvents.js";
 
 class TabView extends View {
     constructor({
@@ -15,17 +16,25 @@ class TabView extends View {
             name: viewNames.TAB(tabModel),
             attrs: { tabType, tabModel },
             tmpl: window.tabviewTmplTemplate
-        });
-        this._connectToEventBus();
+        })._connectToEventBus();
     }
 
     render() {
         super.render();
-        this._el.addEventListener('click', (evt) => {
-            evt.preventDefault();
-            this._attrs.tabModel.active = true;
-        });
+        this._el.addEventListener('click', this._handleClick.bind(this));
         return this;
+    }
+
+    // если есть путь, то открываем его через роутер, иначе просто активируем вкладку
+    _handleClick(evt) {
+        evt.preventDefault();
+        const path = this._attrs.tabModel.routerPath;
+        if (path) {
+            eventBus.call(routerEvents.ROUTER_OPEN_PATH(path));
+        }
+        else {
+            this._attrs.tabModel.active = true;
+        }
     }
 
     _connectToEventBus() {
@@ -43,6 +52,7 @@ class TabView extends View {
             }), 
             this._changeAvaliable.bind(this)
         );
+        return this;
     }
 
     allowed() {

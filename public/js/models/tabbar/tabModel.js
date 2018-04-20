@@ -148,27 +148,15 @@ class TabModel {
                 this.avaliable = false;
             });
         }
-
-        eventBus.on(
-            tabbarEvents.ACTIVATE({
-                tabbarName: this._parentName,
-                tabName: this._name
-            }, () => {
-                this.active = true;
-            })
-        )
-        if (this._routerPath) {
-            eventBus.on(
-                tabbarEvents.ACTIVE_CHANGED(this._parentName, this._name),
-                this._onActivated.bind(this)
-            );
-        }
+     
+        return this;
     }
 
     _onActivated(isActive) {
         if (isActive) {
             router.open(this._routerPath);
         }
+        return this;
     }
 }
 

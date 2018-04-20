@@ -3,7 +3,6 @@
 import View from "../../../view/index.js";
 import viewNames from "../../../viewNames.js";
 
-
 class SectionsBarView extends View {
     constructor({
         parentName,
@@ -15,29 +14,31 @@ class SectionsBarView extends View {
             name: viewNames.SECTIONS_BAR(tabbarModel),
             tmpl,
             attrs: { tabbarModel }
-        });
-        
-        this._sections = this._attrs.tabbarModel.tabs.map(section => {
-            return new section.sectionType({
-                tabModel: section
-            });
-        });
+        })._createSections();
     }
 
     initRoutable() {
+        // Подсоединяемся к миру с помощью псевдонимов для детей
         for (let tab of this._attrs.tabbarModel.tabs) {
             this._initRoutableByName(viewNames.SECTION_PARENT(tab));
         }
         return this;
     }
 
+    _createSections() {
+        this._sections = this._attrs.tabbarModel.tabs.map(
+            tab => new tab.sectionType({
+                tabModel: tab
+            })
+        );
+        return this;
+    }
+
     render() {
         super.render();
-
         for (let section of this._sections) {
             section.render().renderTo(this._el);
         }
-
         return this;
     }
 

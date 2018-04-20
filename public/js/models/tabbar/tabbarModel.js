@@ -79,13 +79,14 @@ class TabbarModel {
                 tabName: tab.name
             }), 
             () => this._changeActive(tab)
-        ).on(
+        );
+        /*.on(
             tabbarEvents.AVALIABLE_CHANGED({
                 tabbarName: this._name, 
                 tabName: tab.name
             }),
             () => this._changeAvaliable(tab)
-        );
+        );*/
     }
 
     _changeActive(newCurTab) {

@@ -21,9 +21,12 @@ class Filter {
         redirectPath = this.baseRedirectPath
     }) {
         if (!this._masks[path]) {
-            this._masks[path] = {};
+            this._masks[path] = [];
         }
-        this._masks[path][mask] = redirectPath;
+        this._masks[path].push({
+            mask,
+            redirectPath
+        });
         return this;
     }
 
@@ -32,9 +35,9 @@ class Filter {
             return path;
         }
 
-        for(let checker of Object.keys(this._masks[path])) {
-            if (!checker(path)) {
-                return this.check(this._masks[path][checker]);
+        for(let {mask, redirectPath} of this._masks[path]) {
+            if (!mask(path)) {
+                return this.check(redirectPath);
             }
         }
 

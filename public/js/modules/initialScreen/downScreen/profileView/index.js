@@ -8,8 +8,9 @@ import profileEvents from "../../../../models/profile/eventsNames.js";
 import EditSection from "./editSection/index.js";
 import HistorySection from "./historySection/index.js";
 import viewNames from "../../../viewNames.js";
-import routerPaths from "../../../../components/router/routerPaths.js";
+import profileModel from "../../../../models/profile/model.js";
 import router from "../../../../components/router/router.js";
+import routerPaths from "../../../../components/router/routerPaths.js";
 import routerEvents from "../../../../components/router/routerEvents.js";
 
 const modes = {
@@ -38,6 +39,19 @@ class ProfileView extends SectionView {
 // CREATE AND INIT
 // -----------------------------------------------------------------------    
 
+    initRoutable() {
+        this._editModeName = viewNames.VIEW_MODE(this._name, modes.EDIT);
+        this._showModeName = viewNames.VIEW_MODE(this._name, modes.SHOW);
+
+        router.register({
+            path: routerPaths.USER,
+            name: this._showModeName
+        });
+
+        return this._initRoutableByName(this._editModeName).
+            _initRoutableByName(this._showModeName);
+    }
+
     _connectoToEventBus() {
         eventBus.on(
             profileEvents.AUTHORIZED(), (data) => {
@@ -52,35 +66,23 @@ class ProfileView extends SectionView {
 
     _initButtons() {
         this._editBtn = new ButtonView({
-            parentName: viewNames.VIEW_MODE(this._name, modes.SHOW),
+            parentName: this._showModeName,
             text: 'Edit profile',
             wide: true,
             events: [{
                 name: 'click',
                 handler: (evt) => {
                     evt.preventDefault();
-                    this._toEditMode();
-                }
-            }],
-            style: buttonTypes.PRIMARY
-        });
-
-        this._stopEditBtn = new ButtonView({
-            parentName: viewNames.VIEW_MODE(this._name, modes.EDIT),            
-            text: 'To profile',
-            wide: true,
-            events: [{
-                name: 'click',
-                handler: (evt) => {
-                    evt.preventDefault();
-                    this._toShowMode();
+                    eventBus.call(routerEvents.ROUTER_OPEN_PATH(
+                        routerPaths.USER_EDIT
+                    ));
                 }
             }],
             style: buttonTypes.PRIMARY
         });
 
         this._logoutBtn = new ButtonView({
-            parentName: viewNames.VIEW_MODE(this._name, modes.SHOW),            
+            parentName: this._showModeName,            
             text: 'Logout',
             wide: true,
             events: [{
@@ -89,15 +91,37 @@ class ProfileView extends SectionView {
                     evt.preventDefault();
                     eventBus.call(profileEvents.LOGOUT());
                 }
-            }]
+            }],
+            style: buttonTypes.PASSIVE
         });
+
+        this._stopEditBtn = new ButtonView({
+            parentName: this._editModeName,            
+            text: 'To profile',
+            wide: true,
+            events: [{
+                name: 'click',
+                handler: (evt) => {
+                    evt.preventDefault();
+                    eventBus.call(routerEvents.ROUTER_OPEN_PATH(
+                        routerPaths.USER
+                    ));
+                }
+            }],
+            style: buttonTypes.PRIMARY
+        });
+
 
         return this;
     }
 
     _initSections() {
-        this._editSection = new EditSection({ parentName: this._name });
-        this._historySection = new HistorySection({ parentName: this._name });
+        this._editSection = new EditSection({ 
+            parentName: viewNames.VIEW_MODE(this._name, modes.EDIT) 
+        });
+        this._historySection = new HistorySection({ 
+            parentName: viewNames.VIEW_MODE(this._name, modes.SHOW) 
+        });
         return this;        
     }
 
@@ -132,18 +156,19 @@ class ProfileView extends SectionView {
 
     _editElementsActive(val) {
         val = Boolean(val);
-        const method = val ? 'show' : 'hide';
-        this._editSection[method]();
-        this._stopEditBtn[method]();
+        // const method = val ? 'show' : 'hide';
+        // this._editSection[method]();
+        // this._stopEditBtn[method]();
         return this;
     }
 
     // задать свойство hidden все элементам, отвечающим за отображение пользовательской информации
     _showElementsActive(val) {
         val = Boolean(val);
-        const method = val ? 'show' : 'hide';
-        this._historySection[method]();
-        this._editBtn[method]();
+        // const method = val ? 'show' : 'hide';
+        // this._historySection[method]();
+        // this._editBtn[method]();
+        // this._logoutBtn[method]();
         this._el.querySelector('.js-personal-info').hidden = !val;
         return this;
     }
@@ -205,22 +230,21 @@ class ProfileView extends SectionView {
         return this;
     }
 
-// -----------------------------------------------------------------------
-// SHOWING
-// -----------------------------------------------------------------------    
+    show(name) {
+        if (super.show().allowed()) {
+            if (name === this._showModeName) {
+                this._toShowMode();
+            }
+            else {
+                this._toEditMode();
+            }
+        }
+        return this;
+    }
 
-    // show(name) {
-    //     super.show();
-        
-    //     if (name !== viewNames.VIEW_MODE(this._name, modes.EDIT)) {
-    //         eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.SHOW)));
-    //         return this._toShowMode();
-    //     }
-        
-    //     eventBus.call(routerEvents.OPENED(viewNames.VIEW_MODE(this._name, modes.EDIT)));
-    //     return this._toEditMode();
-    // }
-
+    allowed() {
+        return profileModel.authenticated;
+    }
 }
 
 export default ProfileView;

@@ -5,7 +5,6 @@ import viewNames from "../../../viewNames.js";
 import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import tabbarEvents from "../../../../models/tabbar/eventsNames.js";
 import router from "../../../../components/router/router.js";
-import routerEvents from "../../../../components/router/routerEvents.js";
 
 class SectionView extends View {
     constructor({
@@ -37,15 +36,10 @@ class SectionView extends View {
     }
 
     _onActiveChanged(isActive) {
-        if (isActive && !this._active) {
-            if (this._attrs.tabModel.routerPath) {
-                eventBus.call(routerEvents.ROUTER_OPEN_PATH(this._attrs.tabModel.routerPath));
-            }
-            else {
-                this.open({name: this._name});
-            }
+        if (isActive) {
+            this.open({name: this._name});
         }
-        if (!isActive && this._active) {
+        else {
             this.close({name: this._name});
         }
         return this;
@@ -55,7 +49,12 @@ class SectionView extends View {
         if (super.show().allowed()) {
             this._attrs.tabModel.active = true;
         }
-        
+        return this;
+    }
+
+    hide() {
+        super.hide();
+        this._attrs.tabModel.active = false;
         return this;
     }
 

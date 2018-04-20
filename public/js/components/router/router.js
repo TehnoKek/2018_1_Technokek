@@ -21,7 +21,8 @@ class Router {
 
     start() {
         window.addEventListener('popstate', () => {
-            if (this._map[window.length.pathname]) {
+            console.log('POPSTATE', window.location.pathname, window.location);
+            if (this._map[window.location.pathname]) {
                 this.open(window.location.pathname);
             }
         });

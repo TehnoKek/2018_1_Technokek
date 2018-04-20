@@ -36,12 +36,7 @@ class Toggler {
         }
 
         for (let view of this._views) {
-            if (view.active) {
-                view.hide();
-            }
-            else {
-                view.show();
-            }
+            view.toggleShow();
         }
     }
 }

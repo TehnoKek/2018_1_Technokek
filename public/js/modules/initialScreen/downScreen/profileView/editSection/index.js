@@ -4,6 +4,8 @@ import View from "../../../../view/index.js";
 import viewNames from "../../../../viewNames.js";
 import ProfileFieldTogglerView from "../../../../toolViews/profileFieldToggle/togglerView/index.js";
 import formFieldNames from "../../../../../components/formsOptions/fieldNames.js";
+import router from "../../../../../components/router/router.js";
+import routerPaths from "../../../../../components/router/routerPaths.js";
 
 class EditSection extends View {
     constructor({ parentName }) {
@@ -25,6 +27,15 @@ class EditSection extends View {
             parentName: this._name,
             fieldName: formFieldNames.edit.password.PASSWORD
         });
+    }
+
+    initRoutable() {
+        router.register({
+            path: routerPaths.USER_EDIT,
+            name: this._name
+        });
+
+        return this._initRoutableByName(this._name);
     }
 
     render() {

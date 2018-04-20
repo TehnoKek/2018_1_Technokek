@@ -10,6 +10,7 @@ import GameScreen from "../gameScreen/index.js";
 class RootView extends View {
     constructor() {
         super({
+            parentName: null,
             name: viewNames.ROOT,
             tmpl: window.rootviewTmplTemplate,
             active: true,
@@ -19,6 +20,8 @@ class RootView extends View {
         this._lobbyScreen = new LobbyScreen({ parentName: this._name });
         this._gameScreen = new GameScreen({ parentName: this._name });
     }
+
+
 
     render() {
         super.render();

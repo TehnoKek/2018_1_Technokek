@@ -5,8 +5,6 @@ import tabbarManager from "../../../../models/tabbar/manager.js";
 import TabbarView from "../../tabbarView/index.js";
 import tabTypes from "../../tabbarView/types.js";
 import SectionsBarView from "../sectionsBarView/index.js";
-import eventBus from "../../../../components/arcitectureElements/eventBus.js";
-import tabbarEvents from "../../../../models/tabbar/eventsNames.js";
 
 class SMTableSectionsView extends View {
     constructor({
@@ -51,7 +49,6 @@ class SMTableSectionsView extends View {
 
     hide() {
         super.hide();
-        // eventBus.call(tabbarEvents.DEACTIVATE_ALL({ tabbarName: this._tabbarModel.name }));
         return this;
     }
 } 

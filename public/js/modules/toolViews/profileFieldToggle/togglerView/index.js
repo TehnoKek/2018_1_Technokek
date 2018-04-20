@@ -7,11 +7,10 @@ import ProfileFieldView from "../infoView/index.js";
 import editFormsConfig from "../../../../components/formsOptions/configs/editForms.js";
 import profileModel from "../../../../models/profile/model.js";
 import ProfileFieldTogglingItemView from "../togglingItemView/index.js";
-import togglerManager from "../../toggler/manager.js";
 import viewNames from "../../../viewNames.js";
 import FormView from "../../formView/index.js";
 import formFieldNames from "../../../../components/formsOptions/fieldNames.js";
-
+import toggleStates from "../togglingItemView/toggleStates.js";
 
 class ProfileFieldTogglerView extends View {
     constructor({
@@ -22,12 +21,10 @@ class ProfileFieldTogglerView extends View {
             tmpl: window.profilefieldtogglerViewTemplate,
             name: viewNames.PROFILE_FIELD_TOGGLER(fieldName),
             parentName
-        });
-
-        this._initViewChild(fieldName).
+        })._initViewChild(fieldName).
             _initFormChild(fieldName);
 
-        eventBus.on(profileEvents.DATA_CHANGED(), this._toViewMode.bind(this));
+        eventBus.on(profileEvents.DATA_CHANGED(), this._toShowMode.bind(this));
     }
 
     _initViewChild(fieldName) {
@@ -36,11 +33,11 @@ class ProfileFieldTogglerView extends View {
             parentName: this._name
         });
         this._viewChild = new ProfileFieldTogglingItemView({
+            initialState: toggleStates.ON,
             parentName: this._name,
             child: viewChildInner,
             togglingBtnText: 'Edit',
-            togglingBtnListener: togglerManager.toggle(this._name),
-
+            togglingBtnListener: this._toEditMode.bind(this)
         });
 
         return this;
@@ -69,11 +66,12 @@ class ProfileFieldTogglerView extends View {
 
         const formChildInner = new FormView(formsOptions);
         this._formChild = new ProfileFieldTogglingItemView({
+            initialState: toggleStates.OFF,
             fieldName,
             parentName: this._name,
             child: formChildInner,
             togglingBtnText: 'Cancel',
-            togglingBtnListener: togglerManager.toggle(this._name)
+            togglingBtnListener: this._toShowMode.bind(this)
         });
 
         return this;
@@ -85,21 +83,18 @@ class ProfileFieldTogglerView extends View {
         this._formChild.render().renderTo(this._el);
         this._viewChild.render().renderTo(this._el);
 
-        togglerManager.add({
-            name: this._name,
-            nodes: [],
-            views: [
-                this._formChild,
-                this._viewChild
-            ]
-        });
-
-        return this._toViewMode();
+        return this._toShowMode();
     }
 
-    _toViewMode() {
-        this._formChild.hide();
-        this._viewChild.show();
+    _toEditMode() {
+        this._formChild.toggleShow(toggleStates.ON);
+        this._viewChild.toggleShow(toggleStates.OFF);
+        return this;
+    }
+
+    _toShowMode() {
+        this._formChild.toggleShow(toggleStates.OFF);
+        this._viewChild.toggleShow(toggleStates.ON);
         return this;
     }
 }
