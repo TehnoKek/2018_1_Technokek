@@ -30,8 +30,6 @@ class TabbarModel {
     }
 
     activateFirst() {
-        console.log(this.activateFirst);
-
         this.deactivateAll();
         for (let tab of this._tabs) {
             if (tab.avaliable) {

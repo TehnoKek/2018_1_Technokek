@@ -26,6 +26,7 @@ class TableModel {
         this._curPage = 0;
 
         this._dataChanged();
+        return this;
     }
 
     get name() {
@@ -44,12 +45,17 @@ class TableModel {
         return this._columns;
     }
 
+    reload() {
+        this.clear().loadNextPage();
+    }
+
     loadNextPage() {
         httpRequester.doGet({
             base: baseUrl.NEW,
             url: this._urlFunc({page: this._curPage + 1}),
             callback: this._httpCallback.bind(this)
         });
+        return this;
     }
 
     _addRows(rows) {
@@ -66,9 +72,12 @@ class TableModel {
             }
             this._rows.push(newRow);
         }
-
-        this._curPage += 1;
-        this._dataChanged();
+        if (rows.length) {
+            this._curPage += 1;
+            this._dataChanged();
+        }
+        
+        return this;
     }
 
     _dataChanged() {

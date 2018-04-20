@@ -14,6 +14,8 @@ const routerEvents = {
     PRE_CLOSING: name => generateTemplate('pre-closing')(name),   
     // Уже закрыт
     OPENED: name => generateTemplate('opened')(name),
+
+    ROUTER_OPEN_PATH: path => `router/open:${path}`
 };
 
 export default routerEvents;

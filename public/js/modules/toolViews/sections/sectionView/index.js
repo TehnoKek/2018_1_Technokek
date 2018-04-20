@@ -18,40 +18,50 @@ class SectionView extends View {
             tmpl,
             attrs: { tabModel }
         });
-
-        eventBus.on(tabbarEvents.ACTIVE_CHANGED({
-            tabbarName: this._attrs.tabModel.parentName,
-            tabName: this._attrs.tabModel.name
-        }), this._changeHidden.bind(this));
     }
 
-    // initRoutable() {
-    //     if (this._attrs.tabModel.routerPath) {
-    //         router.register({ 
-    //             path: this._attrs.tabModel.routerPath,
-    //             name: this._name
-    //         });
-    //     }
+    initRoutable() {
+        if (this._attrs.tabModel.routerPath) {
+            router.register({ 
+                path: this._attrs.tabModel.routerPath,
+                name: this._name
+            });
+        }
+        eventBus.on(
+            tabbarEvents.ACTIVE_CHANGED({
+                tabbarName: this._attrs.tabModel.parentName,
+                tabName: this._attrs.tabModel.name
+            }), this._onActiveChanged.bind(this)
+        );
+        return this._initRoutableByName(this._name);
+    }
 
-    //     this._initRoutableByName(this._name);
+    _onActiveChanged(isActive) {
+        if (isActive && !this._active) {
+            if (this._attrs.tabModel.routerPath) {
+                eventBus.call(routerEvents.ROUTER_OPEN_PATH(this._attrs.tabModel.routerPath));
+            }
+            else {
+                this.open({name: this._name});
+            }
+        }
+        if (!isActive && this._active) {
+            this.close({name: this._name});
+        }
+        return this;
+    }
 
-    //     eventBus.on(
-    //         tabbarEvents.ACTIVE_CHANGED({
-    //             tabbarName: this._attrs.tabModel.parentName,
-    //             tabName: this._attrs.tabModel.name
-    //         }), (isActive) => {
-    //             if (isActive) {
-    //                 this.open({name: this._name});
-    //             }
-    //             else {
-    //                 this.close({name: this._name});
-    //             }
-    //             return this;
-    //         }
-    //     );
+    show(name) {
+        if (super.show().allowed()) {
+            this._attrs.tabModel.active = true;
+        }
+        
+        return this;
+    }
 
-    //     return this;
-    // }
+    allowed() {
+        return this._attrs.tabModel.avaliable;
+    }
 
     _changeHidden(isActive) {
         if (this._attrs.tabModel.active) {
@@ -63,16 +73,6 @@ class SectionView extends View {
 
         return this;
     }
-
-    // _callOpenCloseCallback(isActive) {
-    //     if (isActive) {
-    //         this._onOpenCallback();
-    //     }
-    //     else {
-    //         this._onCloseCallback();
-    //     }
-    //     return this;
-    // }
 
     render() {
         super.render();

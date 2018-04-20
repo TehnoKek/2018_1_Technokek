@@ -7,7 +7,6 @@ import buttonTypes from "../../buttonView/types.js";
 import tableManager from "../../../../models/table/manager.js";
 import eventBus from "../../../../components/arcitectureElements/eventBus.js";
 import tableEvents from "../../../../models/table/eventsNames.js";
-import tabbarEvents from "../../../../models/tabbar/eventsNames.js";
 
 class TableSectionView extends SectionView {
     constructor({
@@ -18,7 +17,7 @@ class TableSectionView extends SectionView {
              tmpl: window.tablesectionViewTemplate
         });
         this._attrs.section = tabModel;
-        this._initTable()._initLoadBtn()._linkTable();
+        this._initTable()._initLoadBtn();
     }
 
     _initTable() {
@@ -51,24 +50,6 @@ class TableSectionView extends SectionView {
         super.render();
         this._table.render().renderTo(this._el);
         this._loadBtn.render().renderTo(this._el);
-        return this;
-    }
-
-    _linkTable() {
-        eventBus.on(tabbarEvents.ACTIVE_CHANGED({
-            tabbarName: this._attrs.section.parentName,
-            tabName: this._attrs.section.name
-        }), this._reloadTable.bind(this));
-        return this;
-    }
-
-    _reloadTable(isActive) {
-        if (!isActive) {
-            this._tableModel.clear();
-        }
-        else {
-            this._tableModel.loadNextPage();
-        }
         return this;
     }
 }

@@ -34,11 +34,11 @@ class AuthSignupCol extends View {
 
     _initAuthForm() {
         authFormConfig.name = viewNames.AUTH_FORM;
-        authFormConfig.parentName = this._authName;
+        authFormConfig.parentName = this._name;
         authFormConfig.reciverCallback = profileModel.auth.bind(profileModel);
         authFormConfig.downButtons = [
             new ButtonView({
-                parentName: this._authName,
+                parentName: this._name,
                 text: 'Registration!',
                 events: [{
                     name: 'click',
@@ -54,11 +54,11 @@ class AuthSignupCol extends View {
 
     _initSignupForm() {
         signupFormConfig.name = viewNames.SIGNUP_FORM;
-        signupFormConfig.parentName = this._signupName;
+        signupFormConfig.parentName = this._name;
         signupFormConfig.reciverCallback = profileModel.signup.bind(profileModel);
         signupFormConfig.downButtons = [
             new ButtonView({
-                parentName: this._signupName,
+                parentName: this._name,
                 text: 'Login!',
                 events: [{
                     name: 'click',
@@ -103,18 +103,14 @@ class AuthSignupCol extends View {
     }
 
     show(name) {
-        super.show();
-        if (name === this._signupName) {
-            if (this._authFormContainer.hidden) {
-                togglerManager.toggle(this._name);
-            }
-        }
-        else {
-            if (this._signupFormContainer.hidden) {
-                togglerManager.toggle(this._name);
-            }
+        if (super.show().allowed() && this._authFormContainer.hidden) {
+            togglerManager.toggle(this._name);
         }
         return this;
+    }
+    
+    allowed() {
+        return !profileModel.authenticated;
     }
 }
 

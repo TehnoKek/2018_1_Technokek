@@ -16,14 +16,12 @@ class View {
         this._attrs = attrs;
         this._active = true;
 
-        // utiles.assignMixin({
-        //     dstObject: this,
-        //     sourceClass: RoutableMixin
-        // });
-
-        // this.initRoutable().
-        
-        this._initAllowingDependencies();
+        utiles.assignMixin({
+            dstObject: this,
+            sourceClass: RoutableMixin
+        }).
+            initRoutable().
+            _initAllowingDependencies();
     }
 
     create(attrs) {
@@ -35,21 +33,24 @@ class View {
         const tmplHTML = this._tmpl(this._attrs);
         this._el = utiles.htmlToElements(tmplHTML)[0];
         /* сначала все скрыто */
-        // this._el.hidden = true;
-        // this._active = false;
+        this._el.hidden = true;
+        this._active = false;
         return this;
     }
 
     hide() {
+        console.log(`--- ${this._name} hide`);
         this._active = false;
         this._el.hidden = true;
         return this;
     }
 
     show() {
-        // console.log(`--- ${this._name} show`);
-        this._active = true;
-        this._el.hidden = false;
+        if (this.allowed()) {
+            console.log(`+++ ${this._name} show`);
+            this._active = true;
+            this._el.hidden = false;
+        }
         return this;
     }
 
@@ -72,6 +73,10 @@ class View {
     renderTo(root) {
         root.appendChild(this._el);
         return this;
+    }
+
+    allowed() {
+        return true;
     }
 
     // здесь будут навешиваться события на eventBus

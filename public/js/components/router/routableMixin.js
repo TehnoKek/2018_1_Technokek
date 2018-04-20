@@ -1,10 +1,7 @@
 'use strict';
 
 import eventBus from "../arcitectureElements/eventBus.js";
-import treeWay from "./treeWay.js";
 import routerEvents from "./routerEvents.js";
-import utiles from "../utiles.js";
-import router from "./router.js";
 
 
 class RoutableMixin {
@@ -21,7 +18,7 @@ class RoutableMixin {
         eventBus.on(routerEvents.OPEN(name), onOpenCallback).
             on(routerEvents.OPENED(this._parentName), onOpenedCallback).
             on(routerEvents.CLOSE(name), onCloseCallback).
-            on(routerEvents.PRE_CLOSING(name), onCloseCallback);
+            on(routerEvents.PRE_CLOSING(this._parentName), onCloseCallback);
         return this;
     }
 
@@ -36,68 +33,58 @@ class RoutableMixin {
 // -----------------------------------------------------------------------------
 // OPEN / CLOSE
 // -----------------------------------------------------------------------------
-    
-    open({ 
-        name, 
-        data = {
-            cameFrom: null,
-        } 
-    } = {}) {
+
+    open({ name }) {
         if (this._active) {
+            this._myCallingName = null;
             return this;
         }
         
         this._myCallingName = name;
         eventBus.call(routerEvents.OPEN(this._parentName), {cameFrom: name});
 
-        if (this._myCallingName) {
-            console.log(`show ${this._myCallingName} from: ${data.cameFrom}`);            
-            this.show(this._myCallingName);
-            eventBus.call(routerEvents.OPENED(this._myCallingName));
+        if (!this._active) {
+            const callWithName = this._myCallingName ? this._myCallingName : this._name;
+            this.show(callWithName);
+            eventBus.call(routerEvents.OPENED(callWithName));
+            this._myCallingName = null;
         }
-        else {
-            console.log(`show ${this._name} from: ${data.cameFrom}`);            
-            this.show(this._name);
-            eventBus.call(routerEvents.OPENED(this._name));
-        }
-        this._myCallingName = null;
-
         return this;
     }
 
-    openDown({ 
-        name, 
-        data = {}
-    } = {}) {
+    openDown() {
         if (this._active) {
+            const callWithName = this._myCallingName ? this._myCallingName : this._name;
+            eventBus.call(routerEvents.OPENED(callWithName));
             return this;
         }
 
-        if (this._myCallingName) {
-            console.log(`show down ${this._myCallingName}`);
-            this.show(this._myCallingName);
-            eventBus.call(routerEvents.OPENED(this._myCallingName));        
-        }
-        else {
-            console.log(`open down ${this._name}`);
-            this.show(this._name);        
-            eventBus.call(routerEvents.OPENED(this._name));
-        }
+        const callWithName = this._myCallingName ? this._myCallingName : this._name;        
+        this.show(callWithName);
+        eventBus.call(routerEvents.OPENED(callWithName));        
+    
         this._myCallingName = null;
         return this;
     }
 
-    close({ 
-        name, 
-        data 
-    } = {}) {
-    
+    close() {
+        if (!this._active) {
+            this._myCallingName = null;
+            return this;
+        }
+
+        if (this._active) {
+            eventBus.call(routerEvents.PRE_CLOSING(this._name));
+            this.hide();
+        }
+        eventBus.call(routerEvents.CLOSE(this._parentName));
+              
+        this._myCallingName = null;
         return this;
     }
 
     // базовая реализация
     initRoutable() {
-        console.log(`call base: initRoutable(${this.name})`);
         return this._initRoutableByName(this._name);
     }
 

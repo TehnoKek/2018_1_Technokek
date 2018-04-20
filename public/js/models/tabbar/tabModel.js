@@ -5,6 +5,7 @@ import eventBus from "/js/components/arcitectureElements/eventBus.js";
 import tabbarEvents from "./eventsNames.js";
 import profileEvents from "/js/models/profile/eventsNames.js";
 import profileModel from "/js/models/profile/model.js";
+import router from "../../components/router/router.js";
 
 class TabModel {
 // ---------------------------------------------------------------------------------
@@ -155,7 +156,19 @@ class TabModel {
             }, () => {
                 this.active = true;
             })
-        );
+        )
+        if (this._routerPath) {
+            eventBus.on(
+                tabbarEvents.ACTIVE_CHANGED(this._parentName, this._name),
+                this._onActivated.bind(this)
+            );
+        }
+    }
+
+    _onActivated(isActive) {
+        if (isActive) {
+            router.open(this._routerPath);
+        }
     }
 }
 

@@ -17,6 +17,8 @@ class TableView extends View {
             tmpl: window.tableViewTemplate
         });
         
+        console.log(`TABLE ${this._name}; PARENT_NAME ${this._parentName}`);
+
         this._tableModel = tableModel;
         this._initRowTemplate().
             _connectToEventBus();
@@ -29,7 +31,9 @@ class TableView extends View {
     
     _connectToEventBus() {
         eventBus.on(tableEvents.DATA_CHANGED(this._tableModel.name), (rows) => {
-            this.reset().extendRows(rows);
+            if (this._active) {
+                this.reset().extendRows(rows);
+            }
         });
 
         return this;
@@ -86,6 +90,20 @@ class TableView extends View {
         const rowElement = utiles.htmlToElements(rowTemplate)[0];
         rowElement.style['grid-template-columns'] = this._rowTemplate;
         rowsContainer.appendChild(rowElement);
+        return this;
+    }
+
+    hide() {
+        console.log('HIDE TABLE');
+        this._tableModel.clear();
+        return super.hide();
+    }
+
+    show() {
+        this.reset();
+        if (super.show().allowed()) {
+            this._tableModel.reload();
+        }
         return this;
     }
 

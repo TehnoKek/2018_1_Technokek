@@ -37,6 +37,8 @@ class Utiles {
                 });
             }
         }
+
+        return dstObject;
     }
 }
 

@@ -45,6 +45,10 @@ class TabView extends View {
         );
     }
 
+    allowed() {
+        return this._attrs.tabModel.avaliable;
+    }
+
     _changeActive(isActive) {
         if (!this._el) {
             return;
@@ -59,16 +63,13 @@ class TabView extends View {
     }
 
     _changeAvaliable(isAvaliable) {
-        if (!this._el) {
-            return;
-        }
-
         if (isAvaliable) {
             this.show();
         }
         else {
             this.hide();
         }
+        return this;
     }
 }
 

@@ -7,6 +7,7 @@ import ButtonView from "../../../../../toolViews/buttonView/index.js";
 import buttonTypes from "../../../../../toolViews/buttonView/types.js";
 import eventBus from "../../../../../../components/arcitectureElements/eventBus.js";
 import profileEvents from "../../../../../../models/profile/eventsNames.js";
+import profileModel from "../../../../../../models/profile/model.js";
 
 
 class MultiplayCol extends View {
@@ -45,6 +46,10 @@ class MultiplayCol extends View {
             on(profileEvents.DEAUTHORIZED(), this.hide.bind(this));
 
         return this;
+    }
+
+    allowed() {
+        return profileModel.authenticated;
     }
 }
 

@@ -46,22 +46,12 @@ class SMTableSectionsView extends View {
         super.render();
         this._tabbar.render().renderTo(this._el);
         this._sections.render().renderTo(this._el);
-
-        console.log(this._name, 'TABBAR:', this._tabbar, this._sections);
-
-        return this;
-    }
-
-    show() {
-        console.log(`______SHOW ${this._name}`);
-        super.show();
-        this._tabbarModel.activateFirst();
         return this;
     }
 
     hide() {
         super.hide();
-        eventBus.call(tabbarEvents.DEACTIVATE_ALL({ tabbarName: this._tabbarModel.name }));
+        // eventBus.call(tabbarEvents.DEACTIVATE_ALL({ tabbarName: this._tabbarModel.name }));
         return this;
     }
 } 
